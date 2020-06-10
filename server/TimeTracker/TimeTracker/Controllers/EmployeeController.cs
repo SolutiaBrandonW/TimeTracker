@@ -18,9 +18,9 @@ namespace TimeTracker.Controllers
     public class EmployeeController : ApiController
     {
         private readonly EmployeeRepository employeeRepository;
-        public EmployeeController(EmployeeRepository employeeRepository)
+        public EmployeeController()
         {
-            this.employeeRepository = employeeRepository;
+            this.employeeRepository = new EmployeeRepository();
         }
 
         public string Get(int id)
