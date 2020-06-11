@@ -92,7 +92,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TimeTracker.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\AssignmentTimeDTO.cs" />
     <Compile Include="Models\CreateAssignmentDTO.cs" />
+    <Compile Include="Models\EmployeeDTO.cs" />
     <Compile Include="Models\ProjectDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -17,6 +17,7 @@ namespace DataContracts.EntityFramework
         public long assignment_id { get; set; }
         public System.DateTime start_time { get; set; }
         public System.DateTime end_time { get; set; }
+        public long assignment_time_id { get; set; }
     
         public virtual assignment assignment { get; set; }
     }

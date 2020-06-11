@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TimeTrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TimeTrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="assignment">
           <Key>
             <PropertyRef Name="assignment_id" />
@@ -17,14 +17,11 @@
           <Property Name="role_id" Type="bigint" Nullable="false" />
           <Property Name="is_active" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="assignment_time">
           <Key>
-            <PropertyRef Name="assignment_id" />
-            <PropertyRef Name="start_time" />
-            <PropertyRef Name="end_time" />
+            <PropertyRef Name="assignment_time_id" />
           </Key>
+          <Property Name="assignment_time_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="assignment_id" Type="bigint" Nullable="false" />
           <Property Name="start_time" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="end_time" Type="datetime2" Precision="7" Nullable="false" />
@@ -167,18 +164,12 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
         </Function>
         <EntityContainer Name="TimeTrackingModelStoreContainer">
           <EntitySet Name="assignment" EntityType="Self.assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assignment_time" EntityType="Self.assignment_time" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="project" EntityType="Self.project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="security_level" EntityType="Self.security_level" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="status" EntityType="Self.status" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="assignment_time" EntityType="Self.assignment_time" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [assignment_time].[assignment_id] AS [assignment_id], 
-    [assignment_time].[start_time] AS [start_time], 
-    [assignment_time].[end_time] AS [end_time]
-    FROM [dbo].[assignment_time] AS [assignment_time]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_assignment_project" Association="Self.FK_assignment_project">
             <End Role="project" EntitySet="project" />
             <End Role="assignment" EntitySet="assignment" />
@@ -204,8 +195,7 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
             <End Role="security_level1" EntitySet="security_level" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TimeTrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -278,14 +268,13 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
         </EntityType>
         <EntityType Name="assignment_time">
           <Key>
-            <PropertyRef Name="assignment_id" />
-            <PropertyRef Name="start_time" />
-            <PropertyRef Name="end_time" />
+            <PropertyRef Name="assignment_time_id" />
           </Key>
           <Property Name="assignment_id" Type="Int64" Nullable="false" />
           <Property Name="start_time" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="end_time" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="assignment" Relationship="Self.FK_assignment_time_assignment" FromRole="assignment_time" ToRole="assignment" />
+          <Property Name="assignment_time_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <Association Name="FK_assignment_project">
           <End Role="project" Type="Self.project" Multiplicity="1" />
@@ -392,7 +381,7 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
             <End Role="security_level1" EntitySet="security_level" />
           </AssociationSet>
           <FunctionImport Name="ArchiveProject">
-            <Parameter Name="project_id" Mode="In" Type="Int64" />
+          <Parameter Name="project_id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="CreateAssignment" ReturnType="Collection(Int32)">
             <Parameter Name="project_id" Mode="In" Type="Int64" />
@@ -402,10 +391,10 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
             <Parameter Name="role_id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="GetEmployeeBySecuritylevel" ReturnType="Collection(TimeTrackingModel.GetEmployeeBySecuritylevel_Result)">
-            <Parameter Name="security_level_name" Mode="In" Type="String" />
+          <Parameter Name="security_level_name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetHoursByProject" ReturnType="Collection(TimeTrackingModel.GetHoursByProject_Result)">
-            <Parameter Name="project_id" Mode="In" Type="Int64" />
+          <Parameter Name="project_id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="UpdateProjectStatus">
             <Parameter Name="project_id" Mode="In" Type="Int64" />
@@ -492,6 +481,7 @@ warning 6002: The table/view 'TimeTracking.dbo.assignment_time' does not have a 
           <EntitySetMapping Name="assignment_time">
             <EntityTypeMapping TypeName="TimeTrackingModel.assignment_time">
               <MappingFragment StoreEntitySet="assignment_time">
+                <ScalarProperty Name="assignment_time_id" ColumnName="assignment_time_id" />
                 <ScalarProperty Name="assignment_id" ColumnName="assignment_id" />
                 <ScalarProperty Name="start_time" ColumnName="start_time" />
                 <ScalarProperty Name="end_time" ColumnName="end_time" />
