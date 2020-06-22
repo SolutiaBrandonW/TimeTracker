@@ -1,1 +1,30 @@
-<p>project-time-entry works!</p>
+<div class="table">
+    <div class="table-heading">
+        <h3>Project</h3>
+    </div>
+    <div class="table-heading">
+        <h3>Hours</h3>
+    </div>
+    <div class="table-heading">
+        <h3>Description</h3>
+    </div>
+    <div class="table-heading">
+        <h3>Status</h3>
+    </div>
+    <div class="table-data" *ngFor="let entry of currProjectTimeEntries;">
+        <!-- Display Project -->
+        <span>{{entry.projectName}}</span>
+        <!-- Display Hours -->
+        <span>{{entry.projectHours}}</span>
+        <!-- Display Description -->
+        <span>{{entry.projectDescription}}</span>
+        <!-- Display Status -->
+        <span>{{entry.projectStatus}}</span>
+        <button type="button" (click)="addTimeEntry(entry.projectId)">
+            Add
+        </button>
+        <button type="button" (click)="viewTimeEntry(entry.projectId)">
+            View
+        </button>
+    </div>
+</div>
