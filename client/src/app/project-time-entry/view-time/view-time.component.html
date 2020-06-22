@@ -1,1 +1,17 @@
 <p>view-time works!</p>
+<div class="container">
+    <div>
+        <div>
+            <div class="table-header">
+                <div class="row-header">
+                    <span>Assignment ID</span>
+                    <span>Start Date</span>
+                    <span>End Date</span>
+                    <div *ngFor="let assignmentTime of assignmentTimes">
+                        {{assignmentTime.assignment_id }}    -   {{(assignmentTime.start_time | date:'M-d-yyyy h:mm aa')}}   -   {{(assignmentTime.end_time | date:'M-d-yyyy h:mm aa')}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
