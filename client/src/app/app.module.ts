@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from './app.component';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
@@ -16,7 +17,8 @@ import { EditTimeComponent } from './project-time-entry/edit-time/edit-time.comp
     EditTimeComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
