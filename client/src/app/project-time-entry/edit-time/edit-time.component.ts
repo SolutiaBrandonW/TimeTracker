@@ -24,12 +24,12 @@ export class EditTimeComponent implements OnInit {
     this.state$ = this.activatedRoute.paramMap
       .pipe(map(() => window.history.state))
 
-     this.state$.subscribe(data => {
+      this.state$.subscribe(data => {
        
-     })
+    })
 
-     this.assignmentTime = this.assiServ.getSelectedAssignmentTimeEntry()
-     //console.log(this.)
+    this.assignmentTime = this.assiServ.getSelectedAssignmentTimeEntry()
+    console.log(this.assignmentTime)
 
   }
 

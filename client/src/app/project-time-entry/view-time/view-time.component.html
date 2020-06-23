@@ -1,5 +1,7 @@
-<p>view-time works!</p>
-<div class="container">
+
+<div class="mat-app-background">
+    <mat-toolbar color="primary">My App</mat-toolbar>
+    <p>view-time works!</p>
     <div>
         <div>
             <div class="table-header">
@@ -23,5 +25,8 @@
             </div>
         </div>
         <button type="button" [routerLink]="['/project-time-entry/add-time/']">Add time</button>
+        <button type="button" (click)="openDialog()">Open</button>
+
     </div>
 </div>
+
