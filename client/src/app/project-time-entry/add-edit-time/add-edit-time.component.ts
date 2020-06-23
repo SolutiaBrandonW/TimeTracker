@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-add-time',
-  templateUrl: './add-time.component.html',
-  styleUrls: ['./add-time.component.css']
+  selector: 'app-add-edit-time',
+  templateUrl: './add-edit-time.component.html',
+  styleUrls: ['./add-edit-time.component.css']
 })
-export class AddTimeComponent implements OnInit {
+export class AddEditTimeComponent implements OnInit {
   projectName: string;
   form: FormGroup;
 
@@ -27,7 +27,5 @@ export class AddTimeComponent implements OnInit {
 
   submitForm() {
     // Project Time Entry
-    
-    
   }
 }
