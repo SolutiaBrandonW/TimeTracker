@@ -12,7 +12,7 @@ import { ProjectService, ProjectTimeEntry } from '../project.service';
 export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries : ProjectTimeEntry[];
-  employee_id = 1;
+  employee_id = 3;
 
   constructor(private pte: ProjectService, 
               private route: ActivatedRoute,

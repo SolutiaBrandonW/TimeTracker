@@ -30,7 +30,7 @@ export class TimeEntryDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      projectName:new FormControl(),
+      projectName:new FormControl({ value: '', disabled: true }),
       start_date:new FormControl(),
       end_date:new FormControl(),
       description: new FormControl()

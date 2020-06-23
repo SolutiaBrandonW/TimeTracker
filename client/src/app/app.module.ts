@@ -22,7 +22,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog/time-entry-dialog.component';
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule, MatIcon } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
   declarations: [
