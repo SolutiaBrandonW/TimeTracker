@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AssignmentTimeEntry, ProjectService } from "../../project.service";
+import { AssignmentTimeService, AssignmentTimeEntry } from "../../assignment-time.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -18,8 +18,7 @@ export class EditTimeComponent implements OnInit {
 
   state$: Observable<object>;
 
-
-  constructor(private projServ:ProjectService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private assiServ:AssignmentTimeService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.state$ = this.activatedRoute.paramMap
@@ -29,7 +28,7 @@ export class EditTimeComponent implements OnInit {
        
      })
 
-     this.assignmentTime = this.projServ.getSelectedAssignmentTimeEntry()
+     this.assignmentTime = this.assiServ.getSelectedAssignmentTimeEntry()
      //console.log(this.)
 
   }

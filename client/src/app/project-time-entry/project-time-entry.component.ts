@@ -11,22 +11,29 @@ import { ProjectService, ProjectTimeEntry } from '../project.service';
 })
 export class ProjectTimeEntryComponent implements OnInit {
   currProjectTimeEntries : ProjectTimeEntry[];
-  route: ActivatedRoute;
-  router: Router;
+  employee_id = 1;
 
   constructor(private pte: ProjectService, 
-              private rte: ActivatedRoute,
-              private rtr: Router
-              ) { }
+              private route: ActivatedRoute,
+              private router: Router
+              ) {}
 
   ngOnInit(): void {
-    this.currProjectTimeEntries = this.pte.getProjectTimeEntries();
-    this.route = this.rte;
-    this.router = this.rtr;
+    this.pte.getProjectTimeEntries(this.employee_id).subscribe(projectEntries => {
+      this.currProjectTimeEntries = projectEntries;
+      //this.getProjectHourEntries(this.employee_id);
+    });
+  }
+
+  getProjectHourEntries(employee_id: number) {
+    for (let project of this.currProjectTimeEntries)
+    this.pte.getEmployeeProjectHours(this.employee_id, project.projectId).subscribe(projectHours => {
+      project.projectHours = projectHours;
+    });
   }
   
-  viewTimeEntry(projectName: string) {
-    this.router.navigate(['view-time', projectName], {relativeTo: this.route});
+  viewTimeEntry(projectId: number) {
+    this.router.navigate(['view-time', projectId], {relativeTo: this.route});
   }
 
   addTimeEntry(projectName: string) {

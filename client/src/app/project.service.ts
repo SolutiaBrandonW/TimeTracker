@@ -1,61 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  selectedAssignmentTime:AssignmentTimeEntry
 
-  projectTimeEntries: ProjectTimeEntry[] = [
-    {
-      "projectId": 1,
-      "projectName":"TimeCube",
-      "projectHours": 17000,
-      "projectDescription":"Theory of Everything",
-      "projectStatus":"Complete"
-    },
-    {
-      "projectId": 2,
-      "projectName":"Woop",
-      "projectHours":2,
-      "projectDescription":"Woop Woop",
-      "projectStatus":"In Progress"
-    },
-  ];
+  constructor(private http: HttpClient) { }
 
-  constructor(private http:HttpClient) { }
-
-  getProjectTimeEntries() {
-    return this.projectTimeEntries;
+  getProjectTimeEntries(employee_id) : Observable<ProjectTimeEntry[]> {
+    return this.http.get<ProjectTimeEntry[]>(`https://localhost:44342/api/Employee/GetProjectsByEmployee/${employee_id}`)
   }
 
-  //  get assignment time entries for an employee for a specific project
-  //  need employee id and project id?
-  //  return an observable to then subscribe to by the component
-  getAssignmentTimeEntries(employee_id:number) : Observable<AssignmentTimeEntry[]>{
-    return this.http.get<AssignmentTimeEntry[]>(`https://localhost:44342/api/Employee/GetAssignmentTimesByEmployee/${employee_id}`)
+  getEmployeeProjectHours(employee_id: number, project_id: number) : Observable<number> {
+    return this.http.get<number>(`https://localhost:44342/api/Employee/GetEmployeeProjectTime?employee_id=${employee_id}&project_id=${project_id}`)
   }
-  setSelectedAssignmentTimeEntry(selectedAssignmentTime:AssignmentTimeEntry){
-    console.log("Set Assignment")
-    this.selectedAssignmentTime = selectedAssignmentTime
-  }
-  getSelectedAssignmentTimeEntry():AssignmentTimeEntry{
-    return this.selectedAssignmentTime
-  }
-
-
 
 }
-
-export class AssignmentTimeEntry{
-  assignment_time_id: number
-  assignment_id: number
-  start_time: Date
-  end_time:Date
-}
-
 
 export class ProjectTimeEntry {
   projectId: number;

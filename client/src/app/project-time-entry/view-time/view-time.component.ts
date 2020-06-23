@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AssignmentTimeEntry, ProjectService } from "../../project.service";
-import { AppRoutingModule } from 'src/app/app-routing.module';
-import { Router } from '@angular/router';
+import { AssignmentTimeEntry, AssignmentTimeService} from "../../assignment-time.service"
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view-time',
@@ -11,18 +10,18 @@ import { Router } from '@angular/router';
 export class ViewTimeComponent implements OnInit {
 
   //TODO: make sure to add assignment_time_id to the model and the stored procedure we we can update and delete it by id
-  assignmentTimes: AssignmentTimeEntry[] = []
+  assignmentTimes: AssignmentTimeEntry[] = [];
+  projectId: number;
 
-
-
-
-  // selectedAssignmentTime: AssignmentTimeEntry
-  // selectedID: number
-
-  constructor(private projSvc:ProjectService, private router:Router) { }
+  constructor(private assiSvc:AssignmentTimeService,
+              private route:ActivatedRoute,
+              private router:Router) { }
 
   ngOnInit(): void {
-    this.projSvc.getAssignmentTimeEntries(3).subscribe( assignmentTimes => {
+
+    this.projectId = this.route.snapshot.params['projectId'];
+
+    this.assiSvc.getAssignmentTimeEntries(this.projectId).subscribe( assignmentTimes => {
       this.assignmentTimes = assignmentTimes
       console.log(assignmentTimes)
     })
@@ -30,7 +29,7 @@ export class ViewTimeComponent implements OnInit {
 
   editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Edit time: ${assignmentTime.assignment_time_id}`)
-    this.projSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
     //this.router.navigateByUrl('/project-time-entry/edit-time/', assignmentTime.assignment_time_id)
     this.router.navigate(['/project-time-entry/edit-time/', assignmentTime.assignment_time_id]);
     //this.router.navigate(['/project-time-entry/edit-time2/']);
@@ -41,7 +40,7 @@ export class ViewTimeComponent implements OnInit {
 
   deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
-    this.projSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
     // this.selectedAssignmentTime = assignmentTime
   }
 
