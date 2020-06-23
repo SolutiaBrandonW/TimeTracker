@@ -13,17 +13,17 @@
     </div>
     <div class="table-data" *ngFor="let entry of currProjectTimeEntries;">
         <!-- Display Project -->
-        <span>{{entry.projectName}}</span>
+        <span>{{entry.name}}</span>
         <!-- Display Hours -->
         <span>{{entry.projectHours}}</span>
         <!-- Display Description -->
-        <span>{{entry.projectDescription}}</span>
+        <span>{{entry.description}}</span>
         <!-- Display Status -->
-        <span>{{entry.projectStatus}}</span>
-        <button (click)="addTimeEntry(entry.projectName)">
+        <span>{{entry.status_name}}</span>
+        <button (click)="addTimeEntry(entry.name)">
             Add
         </button>
-        <button (click)="viewTimeEntry(entry.projectName)">
+        <button (click)="viewTimeEntry(entry.project_id)">
             View
         </button>
     </div>
