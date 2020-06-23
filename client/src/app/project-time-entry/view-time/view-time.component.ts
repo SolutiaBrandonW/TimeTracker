@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AssignmentTimeEntry, ProjectService } from "../../project.service";
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { Router } from '@angular/router';
+import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+
 
 @Component({
   selector: 'app-view-time',
@@ -15,11 +18,10 @@ export class ViewTimeComponent implements OnInit {
 
 
 
-
   // selectedAssignmentTime: AssignmentTimeEntry
   // selectedID: number
 
-  constructor(private projSvc:ProjectService, private router:Router) { }
+  constructor(private projSvc:ProjectService, private router:Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.projSvc.getAssignmentTimeEntries(3).subscribe( assignmentTimes => {
@@ -49,4 +51,23 @@ export class ViewTimeComponent implements OnInit {
   //   return this.selectedAssignmentTime
   // }
 
+  openDialog() {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: "angular"
+    }
+
+    //this.dialog.open(TimeEntryDialogComponent, dialogConfig);
+
+    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+
+    dialogRef.afterClosed().subscribe( data => console.log("Dialog output: ", data))
+
+
+  }
 }

@@ -29,8 +29,8 @@ export class EditTimeComponent implements OnInit {
        
      })
 
-     this.assignmentTime = this.projServ.getSelectedAssignmentTimeEntry()
-     //console.log(this.)
+    this.assignmentTime = this.projServ.getSelectedAssignmentTimeEntry()
+    console.log(this.assignmentTime)
 
   }
 
