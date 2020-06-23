@@ -1,5 +1,10 @@
-<p>Edit Time</p>
-<h2 mat-dialog-title>{{description}}</h2>
+
+<div *ngIf="editing; else !editing">
+    <h2 mat-dialog-title>Edit Time</h2>
+</div>
+<ng-template #!editing>
+    <h2 mat-dialog-title>Add Time</h2>
+</ng-template>
 
 <div mat-dialog-content [formGroup]="form">
     <mat-form-field appearance="fill">

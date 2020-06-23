@@ -16,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
-import { AddEditTimeComponent } from './project-time-entry/add-edit-time/add-edit-time.component';
 import { ViewTimeComponent } from './project-time-entry/view-time/view-time.component';
 import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog/time-entry-dialog.component';
 
@@ -24,7 +23,6 @@ import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog
   declarations: [
     AppComponent,
     ProjectTimeEntryComponent,
-    AddEditTimeComponent,
     ViewTimeComponent,
     TimeEntryDialogComponent,
   ],

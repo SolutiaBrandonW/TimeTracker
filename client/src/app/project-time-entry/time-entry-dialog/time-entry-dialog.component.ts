@@ -15,25 +15,29 @@ export class TimeEntryDialogComponent implements OnInit {
   start_date: Date
   end_date: Date
   description:string;
-
+  editing = false;
 
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<TimeEntryDialogComponent>,
         @Inject(MAT_DIALOG_DATA) data) {
 
-        this.projectName = data.projectName
-        this.start_date = data.start_date
-        this.end_date = data.end_date
-        this.description = data.description;
+        this.projectName = data.projectName;
+        if (data.start_date) {
+          this.start_date = data.start_date;
+          this.end_date = data.end_date;
+          this.description = data.description;
+          this.editing = true;
+        }
+        
     }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      projectName:new FormControl(),
-      start_date:new FormControl(),
-      end_date:new FormControl(),
-      description: new FormControl()
+      projectName:new FormControl(''),
+      start_date:new FormControl(''),
+      end_date:new FormControl(''),
+      description: new FormControl('')
     })
 
     this.form.patchValue({

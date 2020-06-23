@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { ProjectService, ProjectTimeEntry } from '../project.service';
+import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.component';
 
 @Component({
   selector: 'app-project-time-entry',
@@ -16,8 +18,8 @@ export class ProjectTimeEntryComponent implements OnInit {
 
   constructor(private pte: ProjectService, 
               private route: ActivatedRoute,
-              private router: Router
-              ) {}
+              private router: Router,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.pte.getProjectTimeEntries(this.employee_id).subscribe(projectEntries => {
@@ -37,7 +39,16 @@ export class ProjectTimeEntryComponent implements OnInit {
     this.router.navigate(['view-time', projectId, projectName], {relativeTo: this.route});
   }
 
-  addTimeEntry(projectName: string) {
-    this.router.navigate(['add-time', projectName], {relativeTo: this.route});
+  openTimeEntryDialog(projectName: string) {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      projectName: projectName
+    }
+
+    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( data => console.log("Dialog output: ", data))
   }
 }
