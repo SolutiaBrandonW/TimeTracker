@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 
 @Component({
   selector: 'app-time-entry-dialog',
@@ -22,6 +22,9 @@ export class TimeEntryDialogComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      description:new FormControl()
+    })
     
   }
 
