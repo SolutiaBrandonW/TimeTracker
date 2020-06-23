@@ -1,8 +1,8 @@
 
-<div *ngIf="editing; else !editing">
+<div *ngIf="editing; else adding">
     <h2 mat-dialog-title>Edit Time</h2>
 </div>
-<ng-template #!editing>
+<ng-template #adding>
     <h2 mat-dialog-title>Add Time</h2>
 </ng-template>
 

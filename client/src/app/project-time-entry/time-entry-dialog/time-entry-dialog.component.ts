@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ThrowStmt } from '@angular/compiler';
 
 @Component({
@@ -17,26 +17,28 @@ export class TimeEntryDialogComponent implements OnInit {
   description:string;
   editing = false;
 
-    constructor(
-        private fb: FormBuilder,
-        private dialogRef: MatDialogRef<TimeEntryDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) data) {
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<TimeEntryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) data) {
 
-        this.projectName = data.projectName;
-        if (data.start_date) {
-          this.start_date = data.start_date;
-          this.end_date = data.end_date;
-          this.description = data.description;
-          this.editing = true;
-        }
-        
+    this.projectName = data.projectName;
+    if (data.start_date &&
+        data.end_date
+        ) {
+      this.start_date = data.start_date;
+      this.end_date = data.end_date;
+      this.description = data.description;
+      this.editing = true;
     }
+      
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      projectName:new FormControl(''),
-      start_date:new FormControl(''),
-      end_date:new FormControl(''),
+      projectName:new FormControl({value: "", disabled: true}, [Validators.required]),
+      start_date:new FormControl('', [Validators.required]),
+      end_date:new FormControl('', [Validators.required]),
       description: new FormControl('')
     })
 
@@ -50,7 +52,9 @@ export class TimeEntryDialogComponent implements OnInit {
   }
 
   save() {
-    this.dialogRef.close(this.form.value);
+    if(this.form.valid) {
+      this.dialogRef.close(this.form.value);
+    }
   }
 
   close() {

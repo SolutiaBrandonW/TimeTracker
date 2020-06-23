@@ -8,7 +8,7 @@ import { ViewTimeComponent } from "./project-time-entry/view-time/view-time.comp
 const appRoutes: Routes = [
     {path: 'project-time-entry', component: ProjectTimeEntryComponent},
     {path: 'project-time-entry/view-time/:projectId/:projectName', component: ViewTimeComponent},
-    //{path: '**', component: ErrorComponent}
+    {path: '**', redirectTo: 'project-time-entry'}
 ];
 
 @NgModule({
