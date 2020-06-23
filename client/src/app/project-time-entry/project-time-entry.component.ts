@@ -32,8 +32,8 @@ export class ProjectTimeEntryComponent implements OnInit {
     });
   }
   
-  viewTimeEntry(projectId: number) {
-    this.router.navigate(['view-time', projectId], {relativeTo: this.route});
+  viewTimeEntry(projectId: number, projectName: string) {
+    this.router.navigate(['view-time', projectId, projectName], {relativeTo: this.route});
   }
 
   addTimeEntry(projectName: string) {

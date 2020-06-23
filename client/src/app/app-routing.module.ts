@@ -8,7 +8,7 @@ import { AddTimeComponent } from './project-time-entry/add-time/add-time.compone
 
 const appRoutes: Routes = [
     {path: 'project-time-entry', component: ProjectTimeEntryComponent},
-    {path: 'project-time-entry/view-time/:projectId', component: ViewTimeComponent},
+    {path: 'project-time-entry/view-time/:projectId/:projectName', component: ViewTimeComponent},
     {path: 'project-time-entry/edit-time/:projectId', component: EditTimeComponent},
     {path: 'project-time-entry/add-time/:projectName', component: AddTimeComponent},
     //{path: '**', component: ErrorComponent}

@@ -24,9 +24,8 @@
                 </div>
             </div>
         </div>
-        <button type="button" [routerLink]="['/project-time-entry/add-time/']">Add time</button>
+        <button type="button" (click)="addAssignmentTimeEntry(projectName)">Add time</button>
         <button type="button" (click)="openDialog()">Open</button>
-
     </div>
 </div>
 

@@ -5,8 +5,6 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { ViewTimeComponent } from "../view-time/view-time.component";
 
-
-
 @Component({
   selector: 'app-edit-time',
   templateUrl: './edit-time.component.html',

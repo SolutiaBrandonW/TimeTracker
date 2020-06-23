@@ -16,6 +16,7 @@ export class ViewTimeComponent implements OnInit {
   //TODO: make sure to add assignment_time_id to the model and the stored procedure we we can update and delete it by id
   assignmentTimes: AssignmentTimeEntry[] = [];
   projectId: number;
+  projectName: string;
 
   constructor(private assiSvc:AssignmentTimeService,
               private route:ActivatedRoute,
@@ -25,6 +26,7 @@ export class ViewTimeComponent implements OnInit {
   ngOnInit(): void {
 
     this.projectId = this.route.snapshot.params['projectId'];
+    this.projectName = this.route.snapshot.params['projectName'];
 
     this.assiSvc.getAssignmentTimeEntries(this.projectId).subscribe( assignmentTimes => {
       this.assignmentTimes = assignmentTimes
@@ -47,6 +49,10 @@ export class ViewTimeComponent implements OnInit {
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
     this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
     // this.selectedAssignmentTime = assignmentTime
+  }
+
+  addAssignmentTimeEntry(projectName: string) {
+    this.router.navigate(['/project-time-entry/add-time/', this.projectName]);
   }
 
   // getSelectedAssignmentTime():AssignmentTimeEntry{
