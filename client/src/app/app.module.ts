@@ -18,6 +18,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDialogModule } from "@angular/material/dialog";
 import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog/time-entry-dialog.component';
+import { MatInputModule } from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog
     MatSliderModule,
     MatToolbarModule,
     MatFormFieldModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule
 
   ],
   providers: [],
