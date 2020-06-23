@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AssignmentTimeEntry, AssignmentTimeService} from "../../assignment-time.service"
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
+import { MatButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-view-time',
@@ -21,7 +22,7 @@ export class ViewTimeComponent implements OnInit {
   constructor(private assiSvc:AssignmentTimeService,
               private route:ActivatedRoute,
               private router:Router,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,) { }
 
   ngOnInit(): void {
 
@@ -59,18 +60,21 @@ export class ViewTimeComponent implements OnInit {
   //   return this.selectedAssignmentTime
   // }
 
-  openDialog() {
+  openDialog(assignmentTimeEntry: AssignmentTimeEntry) {
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      id: 1,
-      title: "angular"
+      start_date: assignmentTimeEntry.start_time,
+      end_date: assignmentTimeEntry.end_time,
+      projectName: `Project ${assignmentTimeEntry.assignment_time_id}`,
+      description: "test Description"
     }
 
     //this.dialog.open(TimeEntryDialogComponent, dialogConfig);
+    console.log(dialogConfig.data)
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
 
