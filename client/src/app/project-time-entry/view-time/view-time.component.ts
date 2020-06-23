@@ -6,6 +6,7 @@ import { AssignmentTimeEntry, AssignmentTimeService} from "../../assignment-time
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-view-time',
@@ -14,7 +15,7 @@ import { MatButton } from "@angular/material/button";
 })
 export class ViewTimeComponent implements OnInit {
 
-  //TODO: make sure to add assignment_time_id to the model and the stored procedure we we can update and delete it by id
+  displayedColumns: string[] = ['start_date', 'end_date', 'description','actions'];
   assignmentTimes: AssignmentTimeEntry[] = [];
   projectId: number;
   projectName: string;
@@ -22,7 +23,8 @@ export class ViewTimeComponent implements OnInit {
   constructor(private assiSvc:AssignmentTimeService,
               private route:ActivatedRoute,
               private router:Router,
-              public dialog: MatDialog,) { }
+              public dialog: MatDialog,
+              private _location: Location) { }
 
   ngOnInit(): void {
 
@@ -38,34 +40,25 @@ export class ViewTimeComponent implements OnInit {
   editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Edit time: ${assignmentTime.assignment_time_id}`)
     this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
-    //this.router.navigateByUrl('/project-time-entry/edit-time/', assignmentTime.assignment_time_id)
     this.router.navigate(['/project-time-entry/edit-time/', assignmentTime.assignment_time_id]);
-    //this.router.navigate(['/project-time-entry/edit-time2/']);
-
-    // this.selectedAssignmentTime = assignmentTime
-    //this.router.navigateByUrl('/project-time-entry/edit-time/', {state: assignmentTime})
   }
 
   deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
     this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
-    // this.selectedAssignmentTime = assignmentTime
   }
 
   addAssignmentTimeEntry(projectName: string) {
     this.router.navigate(['/project-time-entry/add-time/', this.projectName]);
   }
 
-  // getSelectedAssignmentTime():AssignmentTimeEntry{
-  //   return this.selectedAssignmentTime
-  // }
-
-  openDialog(assignmentTimeEntry: AssignmentTimeEntry) {
+  openDialogEdit(assignmentTimeEntry: AssignmentTimeEntry) {
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.closeOnNavigation = true;
     dialogConfig.data = {
       start_date: assignmentTimeEntry.start_time,
       end_date: assignmentTimeEntry.end_time,
@@ -73,7 +66,6 @@ export class ViewTimeComponent implements OnInit {
       description: "test Description"
     }
 
-    //this.dialog.open(TimeEntryDialogComponent, dialogConfig);
     console.log(dialogConfig.data)
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
@@ -83,5 +75,28 @@ export class ViewTimeComponent implements OnInit {
 
   }
 
-  
+  openDialogAdd() {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.closeOnNavigation = true;
+    dialogConfig.data = {
+      start_date: undefined,
+      end_date: undefined,
+      projectName: `Project Name`,
+      description: undefined
+    }
+
+    console.log(dialogConfig.data)
+
+    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+
+    dialogRef.afterClosed().subscribe( data => console.log("Dialog output: ", data))
+  }
+
+  backClicked() {
+    this._location.back();
+  }
 }
