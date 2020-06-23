@@ -20,10 +20,10 @@
         <span>{{entry.projectDescription}}</span>
         <!-- Display Status -->
         <span>{{entry.projectStatus}}</span>
-        <button type="button" (click)="addTimeEntry(entry.projectId)">
+        <button (click)="addTimeEntry(entry.projectName)">
             Add
         </button>
-        <button type="button" (click)="viewTimeEntry(entry.projectId)">
+        <button (click)="viewTimeEntry(entry.projectName)">
             View
         </button>
     </div>

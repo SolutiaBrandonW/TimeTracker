@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProjectService, ProjectTimeEntry } from '../project.service';
 
@@ -9,25 +10,27 @@ import { ProjectService, ProjectTimeEntry } from '../project.service';
   providers: [ProjectService]
 })
 export class ProjectTimeEntryComponent implements OnInit {
-
   currProjectTimeEntries : ProjectTimeEntry[];
+  route: ActivatedRoute;
+  router: Router;
 
-  constructor(private pte: ProjectService) { }
+  constructor(private pte: ProjectService, 
+              private rte: ActivatedRoute,
+              private rtr: Router
+              ) { }
 
   ngOnInit(): void {
-    // Get service values
-    // call service getter for time entry values
     this.currProjectTimeEntries = this.pte.getProjectTimeEntries();
+    this.route = this.rte;
+    this.router = this.rtr;
+  }
+  
+  viewTimeEntry(projectName: string) {
+    this.router.navigate(['view', projectName], {relativeTo: this.route});
   }
 
-  // Add time button click event
-  addTimeEntry(projectId: number) {
-    console.log('woah add time for: ' + projectId);
-  }
-
-  // View time button click event
-  viewTimeEntry(projectId: number) {
-    console.log('woah view time for: ' + projectId);
+  addTimeEntry(projectName: string) {
+    this.router.navigate(['add', projectName], {relativeTo: this.route});
   }
 
 }
