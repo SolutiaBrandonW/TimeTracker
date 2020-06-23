@@ -10,6 +10,7 @@ import { ProjectService, ProjectTimeEntry } from '../project.service';
   providers: [ProjectService]
 })
 export class ProjectTimeEntryComponent implements OnInit {
+  displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries : ProjectTimeEntry[];
   employee_id = 1;
 
@@ -39,5 +40,4 @@ export class ProjectTimeEntryComponent implements OnInit {
   addTimeEntry(projectName: string) {
     this.router.navigate(['add-time', projectName], {relativeTo: this.route});
   }
-
 }

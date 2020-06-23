@@ -1,0 +1,6 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+mat-toolbar a {
+    text-decoration: none;
+    color: inherit;
+}
