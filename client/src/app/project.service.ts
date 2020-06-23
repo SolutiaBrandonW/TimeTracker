@@ -6,6 +6,8 @@ import { HttpClient } from "@angular/common/http";
   providedIn: 'root'
 })
 export class ProjectService {
+  selectedAssignmentTime:AssignmentTimeEntry
+
   projectTimeEntries: ProjectTimeEntry[] = [
     {
       "projectId": 1,
@@ -35,12 +37,20 @@ export class ProjectService {
   getAssignmentTimeEntries(employee_id:number) : Observable<AssignmentTimeEntry[]>{
     return this.http.get<AssignmentTimeEntry[]>(`https://localhost:44342/api/Employee/GetAssignmentTimesByEmployee/${employee_id}`)
   }
+  setSelectedAssignmentTimeEntry(selectedAssignmentTime:AssignmentTimeEntry){
+    console.log("Set Assignment")
+    this.selectedAssignmentTime = selectedAssignmentTime
+  }
+  getSelectedAssignmentTimeEntry():AssignmentTimeEntry{
+    return this.selectedAssignmentTime
+  }
 
 
 
 }
 
 export class AssignmentTimeEntry{
+  assignment_time_id: number
   assignment_id: number
   start_time: Date
   end_time:Date

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AssignmentTimeEntry, ProjectService } from "../../project.service";
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-time',
@@ -8,22 +10,43 @@ import { AssignmentTimeEntry, ProjectService } from "../../project.service";
 })
 export class ViewTimeComponent implements OnInit {
 
-  // assignmentTimes: AssignmentTimeEntry[] = [
-  //   {assignment_id: 1, start_time: new Date(1,1,2000), end_time: new Date(1,2,2000)},
-  //   {assignment_id: 1, start_time: new Date(1,3,2000), end_time: new Date(1,4,2000)},
-  //   {assignment_id: 1, start_time: new Date(1,3,2000), end_time: new Date(1,4,2000)}
-  // ]
+  //TODO: make sure to add assignment_time_id to the model and the stored procedure we we can update and delete it by id
   assignmentTimes: AssignmentTimeEntry[] = []
 
-  constructor(private projSvc:ProjectService) { }
+
+
+
+  // selectedAssignmentTime: AssignmentTimeEntry
+  // selectedID: number
+
+  constructor(private projSvc:ProjectService, private router:Router) { }
 
   ngOnInit(): void {
-    //on init, populate the assignemntTimes array
     this.projSvc.getAssignmentTimeEntries(3).subscribe( assignmentTimes => {
       this.assignmentTimes = assignmentTimes
       console.log(assignmentTimes)
     })
-
   }
+
+  editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
+    console.log(`Edit time: ${assignmentTime.assignment_time_id}`)
+    this.projSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    //this.router.navigateByUrl('/project-time-entry/edit-time/', assignmentTime.assignment_time_id)
+    this.router.navigate(['/project-time-entry/edit-time/', assignmentTime.assignment_time_id]);
+    //this.router.navigate(['/project-time-entry/edit-time2/']);
+
+    // this.selectedAssignmentTime = assignmentTime
+    //this.router.navigateByUrl('/project-time-entry/edit-time/', {state: assignmentTime})
+  }
+
+  deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
+    console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
+    this.projSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    // this.selectedAssignmentTime = assignmentTime
+  }
+
+  // getSelectedAssignmentTime():AssignmentTimeEntry{
+  //   return this.selectedAssignmentTime
+  // }
 
 }

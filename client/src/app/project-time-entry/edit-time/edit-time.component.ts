@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AssignmentTimeEntry, ProjectService } from "../../project.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { ViewTimeComponent } from "../view-time/view-time.component";
+
+
 
 @Component({
   selector: 'app-edit-time',
@@ -7,9 +14,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditTimeComponent implements OnInit {
 
-  constructor() { }
+  assignmentTime:AssignmentTimeEntry
+
+  state$: Observable<object>;
+
+
+  constructor(private projServ:ProjectService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    this.state$ = this.activatedRoute.paramMap
+      .pipe(map(() => window.history.state))
+
+     this.state$.subscribe(data => {
+       
+     })
+
+     this.assignmentTime = this.projServ.getSelectedAssignmentTimeEntry()
+     //console.log(this.)
+
+  }
+
+  onSubmit(){
+      console.log(this.activatedRoute.params['id'])
   }
 
 }
