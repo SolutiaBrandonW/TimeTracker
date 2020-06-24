@@ -35,34 +35,28 @@ namespace TimeTracker.Controllers
             return employeeRepository.GetProjectsByEmployee(id);
         }
 
+        [Route("getAssignmentTimesByEmployee/{id:long}")]
+        [HttpGet()]
+        public List<AssignmentTimeDTO> GetAssignmentTimesByEmployee(long id)
+        {
+            return employeeRepository.GetAssignmentTimesByEmployee(id);
+        }
 
 
-        /*[Route("CreateEmployeeAssignment")]
+        [Route("CreateEmployeeAssignment")]
         [HttpPost()]
         public int CreateEmployeeAssignment([FromBody] CreateAssignemntDTO createAssignemntDTO)
         {
-
-            using (var context = new TimeTracker())
-            {
-                SqlParameter project_id = new SqlParameter("@project_id", createAssignemntDTO.project_id);
-                SqlParameter employee_id = new SqlParameter("@employee_id", createAssignemntDTO.employee_id);
-                SqlParameter start_date = new SqlParameter("@start_date", createAssignemntDTO.start_date);
-                SqlParameter end_date = new SqlParameter("@end_date", createAssignemntDTO.end_date);
-                SqlParameter role_id = new SqlParameter("@role_id", createAssignemntDTO.role_id);
-
-                try
-                {
-                    return context.Database.SqlQuery<int>("CreateAssignment @project_id, @employee_id, @start_date, @end_date, @role_id", project_id, employee_id, start_date, end_date, role_id).FirstOrDefault();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine($"Error: {e.Message}");
-                    return 0;
-                }
-            }
+            return employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
+        }
 
 
-        }*/
+        [Route("GetEmployeeHeirarchy/{id:long}")]
+        [HttpGet()]
+        public List<EmployeeDTO> getemployeeHeirarchy(long id)
+        {
+            return employeeRepository.GetEmployeeHierarchy(id);
+        }
 
 
 
