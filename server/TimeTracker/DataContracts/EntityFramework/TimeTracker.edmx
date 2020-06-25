@@ -25,6 +25,7 @@
           <Property Name="assignment_id" Type="bigint" Nullable="false" />
           <Property Name="start_time" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="end_time" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -275,6 +276,7 @@
           <Property Name="end_time" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="assignment" Relationship="Self.FK_assignment_time_assignment" FromRole="assignment_time" ToRole="assignment" />
           <Property Name="assignment_time_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_assignment_project">
           <End Role="project" Type="Self.project" Multiplicity="1" />
@@ -481,6 +483,7 @@
           <EntitySetMapping Name="assignment_time">
             <EntityTypeMapping TypeName="TimeTrackingModel.assignment_time">
               <MappingFragment StoreEntitySet="assignment_time">
+                <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="assignment_time_id" ColumnName="assignment_time_id" />
                 <ScalarProperty Name="assignment_id" ColumnName="assignment_id" />
                 <ScalarProperty Name="start_time" ColumnName="start_time" />

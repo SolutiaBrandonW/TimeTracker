@@ -45,7 +45,7 @@ namespace TimeTracker.Controllers
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
-        public int CreateEmployeeAssignment([FromBody] CreateAssignemntDTO createAssignemntDTO)
+        public int CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
         {
             return employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
@@ -57,8 +57,5 @@ namespace TimeTracker.Controllers
         {
             return employeeRepository.GetEmployeeHierarchy(id);
         }
-
-
-
     }
 }

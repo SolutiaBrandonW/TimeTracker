@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Assignment\AssignmentRepository.cs" />
     <Compile Include="Repositories\Employee\EmployeeRepository.cs" />
+    <Compile Include="ReturnAPI\ReturnAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataContracts\DataContracts.csproj">

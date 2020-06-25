@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Results;
 using DataContracts.Models;
 using Repository.Repositories.Assignment;
+using Repository.ReturnAPI;
 
 namespace TimeTracker.Controllers
 {
@@ -22,9 +24,16 @@ namespace TimeTracker.Controllers
 
         [Route("LogHours")]
         [HttpPost()]
-        public int CreateEmployeeAssignment([FromBody] AssignmentTimeDTO assignmentTimeDTO)
+        public int LogHours([FromBody] AssignmentTimeDTO assignmentTimeDTO)
         {
             return assignmentRepository.LogHours(assignmentTimeDTO);
+        }
+
+        [Route("GetLoggedHoursByAssignment/{id:long}")]
+        [HttpGet()]
+        public ReturnAPI<List<AssignmentTimeDTO>> GetLoggedHoursByAssignment(long id)
+        {
+           return assignmentRepository.GetLoggedHoursByAssignment(id);
         }
 
     }

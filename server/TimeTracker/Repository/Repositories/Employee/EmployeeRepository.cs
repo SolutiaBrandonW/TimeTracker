@@ -87,7 +87,7 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public int CreateEmployeeAssignment(CreateAssignemntDTO createAssignemntDTO)
+        public int CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
         {
             using (var context = new TimeTrackingEntities())
             {
@@ -95,6 +95,5 @@ namespace Repository.Repositories.Employee
                 return result != null ? (int)result : 0;
             }
         }
-
     }
 }

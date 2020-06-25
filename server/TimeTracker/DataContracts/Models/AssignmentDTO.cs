@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DataContracts.Models
 {
-    public class CreateAssignemntDTO
+    public class AssignmentDTO
     {
         public long project_id;
         public long employee_id;
