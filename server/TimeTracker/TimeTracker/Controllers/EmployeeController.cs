@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -23,39 +24,32 @@ namespace TimeTracker.Controllers
             this.employeeRepository = new EmployeeRepository();
         }
 
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         [Route("getProjectsByEmployee/{id:long}")]
         [HttpGet()] 
-        public List<ProjectDTO> GetProjectsByEmployee(long id)
+        public async Task<List<ProjectDTO>> GetProjectsByEmployee(long id)
         {
-            return employeeRepository.GetProjectsByEmployee(id);
+            return await employeeRepository.GetProjectsByEmployee(id);
         }
 
         [Route("getAssignmentTimesByEmployee/{id:long}")]
         [HttpGet()]
-        public List<AssignmentTimeDTO> GetAssignmentTimesByEmployee(long id)
+        public async Task<List<AssignmentTimeDTO>> GetAssignmentTimesByEmployee(long id)
         {
-            return employeeRepository.GetAssignmentTimesByEmployee(id);
+            return await employeeRepository.GetAssignmentTimesByEmployee(id);
         }
-
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
-        public int CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+        public async Task<int> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
         {
-            return employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
+            return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
-
 
         [Route("GetEmployeeHeirarchy/{id:long}")]
         [HttpGet()]
-        public List<EmployeeDTO> getemployeeHeirarchy(long id)
+        public async Task<List<EmployeeDTO>> getemployeeHeirarchy(long id)
         {
-            return employeeRepository.GetEmployeeHierarchy(id);
+            return await employeeRepository.GetEmployeeHierarchy(id);
         }
     }
 }
