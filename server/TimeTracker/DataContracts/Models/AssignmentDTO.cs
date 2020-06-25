@@ -8,6 +8,7 @@ namespace DataContracts.Models
 {
     public class AssignmentDTO
     {
+        public long assignment_id;
         public long project_id;
         public long employee_id;
         public DateTime start_date;

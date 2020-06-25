@@ -1,14 +1,15 @@
 ﻿using DataContracts.EntityFramework;
 using DataContracts.Models;
 using Repository.Mappers;
-using Repository.ReturnAPI;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Repository.APIReturnObjects;
 using TimeTracker.Mappers;
 
 
@@ -108,7 +109,7 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public Task<ReturnAPI> CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
+        public async Task<ReturnAPI> CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
         {
             try
             {
@@ -121,9 +122,13 @@ namespace Repository.Repositories.Employee
                     create_assignment.end_date = create_assignment.end_date;
                     create_assignment.role_id = create_assignment.role_id;
                     context.assignments.Add(create_assignment);
-                    context.SaveChangesAsync();
+                    var queryReturn = await context.SaveChangesAsync();
 
-                    return new ReturnAPI("Success", 200);
+                    if (queryReturn.Equals(1))
+                    {
+                        return new ReturnAPI("Success", 200);
+                    }
+                    throw new DataException("Failed to insert");
                 }
             }
             catch (Exception e)

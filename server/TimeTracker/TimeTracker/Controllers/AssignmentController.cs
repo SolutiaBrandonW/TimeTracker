@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Results;
 using DataContracts.Models;
 using Repository.Repositories.Assignment;
-using Repository.ReturnAPI;
+using Repository.APIReturnObjects;
 
 namespace TimeTracker.Controllers
 {
@@ -24,16 +25,23 @@ namespace TimeTracker.Controllers
 
         [Route("LogHours")]
         [HttpPost()]
-        public int LogHours([FromBody] AssignmentTimeDTO assignmentTimeDTO)
+        public async Task<ReturnAPI> LogHours([FromBody] AssignmentTimeDTO assignmentTimeDTO)
         {
-            return assignmentRepository.LogHours(assignmentTimeDTO);
+            return await assignmentRepository.LogHours(assignmentTimeDTO);
         }
 
         [Route("GetLoggedHoursByAssignment/{id:long}")]
         [HttpGet()]
-        public ReturnAPI<List<AssignmentTimeDTO>> GetLoggedHoursByAssignment(long id)
+        public async Task<ReturnAPI<List<AssignmentTimeDTO>>> GetLoggedHoursByAssignment(long id)
         {
-           return assignmentRepository.GetLoggedHoursByAssignment(id);
+           return await assignmentRepository.GetLoggedHoursByAssignment(id);
+        }
+
+        [Route("getAssignmentByProjectAndEmployee")]
+        [HttpGet()]
+        public async Task<ReturnAPI<AssignmentDTO>> getAssignmentByProjectAndEmployee(long project_id, long employee_id)
+        {
+            return await assignmentRepository.getAssignmentByProjectAndEmployee(project_id, employee_id);
         }
 
     }

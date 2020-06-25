@@ -41,7 +41,11 @@ namespace TimeTracker.Controllers
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
+<<<<<<< HEAD
         public async Task<ReturnAPI> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+=======
+        public async Task<int> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+>>>>>>> ec2e41b0d0d2dc489c35fc27159d3f2beec77251
         {
             return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
