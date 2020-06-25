@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -45,9 +46,9 @@ namespace TimeTracker.Controllers
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
-        public int CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+        public async Task<int> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
         {
-            return employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
+            return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
 
 

@@ -87,7 +87,7 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public int CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
+        public async Task<int> CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
         {
             using (var context = new TimeTrackingEntities())
             {
