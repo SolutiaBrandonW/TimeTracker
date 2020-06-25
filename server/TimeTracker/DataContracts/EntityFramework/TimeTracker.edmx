@@ -156,6 +156,9 @@
         <Function Name="GetEmployeeBySecuritylevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="security_level_name" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="GetHoursByAssignment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="assignment_id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="GetHoursByProject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="project_id" Type="bigint" Mode="In" />
         </Function>
@@ -402,6 +405,9 @@
             <Parameter Name="project_id" Mode="In" Type="Int64" />
             <Parameter Name="status_name" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="GetHoursByAssignment" ReturnType="Collection(Int32)">
+          <Parameter Name="assignment_id" Mode="In" Type="Int64" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetEmployeeBySecuritylevel_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
@@ -511,6 +517,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UpdateProjectStatus" FunctionName="TimeTrackingModel.Store.UpdateProjectStatus" />
+          <FunctionImportMapping FunctionImportName="GetHoursByAssignment" FunctionName="TimeTrackingModel.Store.GetHoursByAssignment" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

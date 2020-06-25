@@ -35,9 +35,9 @@ namespace Repository.Repositories.Assignment
                     return new ReturnAPI("Success", 200);
                 }
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                return new ReturnAPI("Fail", 400);
+                return new ReturnAPI(e.Message, 400);
             }
         }
 
@@ -62,9 +62,9 @@ namespace Repository.Repositories.Assignment
                     return new ReturnAPI<List<AssignmentTimeDTO>>("Success", 200, loggedHoursByAssignment);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return new ReturnAPI<List<AssignmentTimeDTO>>("Failed", 400, null); ;
+                return new ReturnAPI<List<AssignmentTimeDTO>>(e.Message, 400, null); ;
             }
         }
 
@@ -89,9 +89,9 @@ namespace Repository.Repositories.Assignment
                     return new ReturnAPI<AssignmentDTO>("Success", 200, assignmentDTO);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return new ReturnAPI<AssignmentDTO>("Fail", 400, null);
+                return new ReturnAPI<AssignmentDTO>(e.Message, 400, null);
             }
         }
     }

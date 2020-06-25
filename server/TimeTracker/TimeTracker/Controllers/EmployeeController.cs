@@ -1,6 +1,6 @@
 ﻿using DataContracts.Models;
+using Repository.APIReturnObjects;
 using Repository.Repositories.Employee;
-using Repository.ReturnAPI;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -41,11 +41,7 @@ namespace TimeTracker.Controllers
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
-<<<<<<< HEAD
         public async Task<ReturnAPI> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
-=======
-        public async Task<int> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
->>>>>>> ec2e41b0d0d2dc489c35fc27159d3f2beec77251
         {
             return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
@@ -55,6 +51,13 @@ namespace TimeTracker.Controllers
         public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployeeHeirarchy(long id)
         {
             return await employeeRepository.GetEmployeeHierarchy(id);
+        }
+
+        [Route("GetEmployeeHoursByAssignment/{assignment_id:long}")]
+        [HttpGet()]
+        public ReturnAPI<int?> GetEmployeeHoursByAssignment(int assignment_id)
+        {
+            return  employeeRepository.GetEmployeeHoursByAssignment(assignment_id);
         }
     }
 }

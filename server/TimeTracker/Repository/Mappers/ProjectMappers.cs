@@ -9,7 +9,6 @@ namespace TimeTracker.Mappers
 {
     public class ProjectMappers
     {
-        
         public static ProjectDTO mapToProjectDTO(project project, ProjectDTO projectDTO)
         {
             projectDTO.project_id = project.project_id;
@@ -22,7 +21,6 @@ namespace TimeTracker.Mappers
             projectDTO.is_active = project.is_active;
 
             return projectDTO;
-
         }
     }
 }

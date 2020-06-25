@@ -128,12 +128,29 @@ namespace Repository.Repositories.Employee
                     {
                         return new ReturnAPI("Success", 200);
                     }
-                    throw new DataException("Failed to insert");
+                    throw new DataException("Failed to insert assignment in database");
                 }
             }
             catch (Exception e)
             {
                 return new ReturnAPI(e.Message, 400);
+            }
+        }
+
+        public ReturnAPI<int?> GetEmployeeHoursByAssignment(int assignment_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                { 
+                    var hoursByAssignment = context.GetHoursByAssignment(assignment_id).FirstOrDefault();
+
+                    return new ReturnAPI<int?>("Success", 200, hoursByAssignment);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<int?>(e.Message, 400, null);
             }
         }
     }

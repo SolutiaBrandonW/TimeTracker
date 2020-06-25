@@ -99,5 +99,14 @@ namespace DataContracts.EntityFramework
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateProjectStatus", project_idParameter, status_nameParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> GetHoursByAssignment(Nullable<long> assignment_id)
+        {
+            var assignment_idParameter = assignment_id.HasValue ?
+                new ObjectParameter("assignment_id", assignment_id) :
+                new ObjectParameter("assignment_id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("GetHoursByAssignment", assignment_idParameter);
+        }
     }
 }
