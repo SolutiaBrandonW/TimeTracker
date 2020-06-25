@@ -1,5 +1,6 @@
 ﻿using DataContracts.Models;
 using Repository.Repositories.Employee;
+using Repository.ReturnAPI;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -26,28 +27,28 @@ namespace TimeTracker.Controllers
 
         [Route("getProjectsByEmployee/{id:long}")]
         [HttpGet()] 
-        public async Task<List<ProjectDTO>> GetProjectsByEmployee(long id)
+        public async Task<ReturnAPI<List<ProjectDTO>>> GetProjectsByEmployee(long id)
         {
             return await employeeRepository.GetProjectsByEmployee(id);
         }
 
         [Route("getAssignmentTimesByEmployee/{id:long}")]
         [HttpGet()]
-        public async Task<List<AssignmentTimeDTO>> GetAssignmentTimesByEmployee(long id)
+        public async Task<ReturnAPI<List<AssignmentTimeDTO>>> GetAssignmentTimesByEmployee(long id)
         {
             return await employeeRepository.GetAssignmentTimesByEmployee(id);
         }
 
         [Route("CreateEmployeeAssignment")]
         [HttpPost()]
-        public async Task<int> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+        public async Task<ReturnAPI> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
         {
             return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
         }
 
         [Route("GetEmployeeHeirarchy/{id:long}")]
         [HttpGet()]
-        public async Task<List<EmployeeDTO>> getemployeeHeirarchy(long id)
+        public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployeeHeirarchy(long id)
         {
             return await employeeRepository.GetEmployeeHierarchy(id);
         }
