@@ -12,6 +12,8 @@ using Repository.APIReturnObjects;
 
 namespace Repository.Repositories.Assignment
 {
+
+
     public class AssignmentRepository
     {
 
@@ -94,5 +96,39 @@ namespace Repository.Repositories.Assignment
                 return new ReturnAPI<AssignmentDTO>(e.Message, 400, null);
             }
         }
+
+        /*public async Task<ReturnAPI<List<ProjectReturn>>> getProjectStuff(long employee_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var assignments = context.assignments;
+                    var query = assignments.Where(a => a.employee_id == employee_id).Select(a => a.project_id);
+
+                    *//*var pageObject = from p in context.projects
+                                     join a in context.assignments on p.project_id equals a.project_id into test
+                                     from td in test.DefaultIfEmpty()
+                                     join at in context.assignment_time on td.assignment_id equals at.assignment_id into tesd
+                                     from ts in tesd.DefaultIfEmpty()
+                                     where td.employee_id == employee_id
+                                     group p by new {ts.assignment_id, t.project_id, AttributeUsageAttribute .employee_id, p.name} into grp
+                                     select new ProjectReturn(){ assignment_id = grp.Key.assignment_id, project_id = grp.Key.project_id, employee_id = grp.Key.employee_id, name = grp.Key.name};*//*
+                    //var list = pageObject.ToList();
+
+
+
+             
+
+                    return new ReturnAPI<List<ProjectReturn>>("Pass", 200, list);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<List<ProjectReturn>>("Fail", 200, null);
+            }
+        }*/
     }
 }

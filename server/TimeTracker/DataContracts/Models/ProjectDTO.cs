@@ -5,6 +5,18 @@ using System.Web;
 
 namespace DataContracts.Models
 {
+
+    public class ProjectReturn
+    {
+        public long project_id { get; set; }
+        public long assignment_id { get; set; }
+        public long employee_id { get; set; }
+        public string name { get; set; }
+        public int hoursworked { get; set; }
+    }
+
+
+
     public class ProjectDTO
     {
         public string name;

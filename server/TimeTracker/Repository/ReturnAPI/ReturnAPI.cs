@@ -30,5 +30,10 @@ namespace Repository.APIReturnObjects
             Message = message;
             Code = code;
         }
+        public ReturnAPI(int code)
+        {
+            Message = null;
+            Code = code;
+        }
     }
 }

@@ -44,5 +44,12 @@ namespace TimeTracker.Controllers
             return await assignmentRepository.getAssignmentByProjectAndEmployee(project_id, employee_id);
         }
 
+        /*[Route("getProjectTest")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<ProjectReturn>>> getProjectTest(long employee_id)
+        {
+            return await assignmentRepository.getProjectStuff(employee_id);
+        }*/
+
     }
 }
