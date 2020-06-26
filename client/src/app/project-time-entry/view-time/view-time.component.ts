@@ -18,9 +18,8 @@ export class ViewTimeComponent implements OnInit {
 
   displayedColumns: string[] = ['start_time', 'end_time', 'description','actions'];
   assignmentTimes: AssignmentTimeEntry[] = [];
-  projectId: number;
   employeeId: number = 3;
-  assignmentId: number = 16;
+  assignmentId: number;
   projectName: string;
 
   constructor(private assiTimeServ:AssignmentTimeService,
@@ -32,7 +31,7 @@ export class ViewTimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.projectId = this.route.snapshot.params['projectId'];
+    this.assignmentId = this.route.snapshot.params['assignmentId'];
     this.projectName = this.route.snapshot.params['projectName'];
 
     // this.assiTimeServ.getAssignmentTimeEntries(this.employeeId).subscribe( assignmentTimes => {
@@ -44,7 +43,6 @@ export class ViewTimeComponent implements OnInit {
       this.assignmentTimes = assignmentTimes.Data 
       console.log(assignmentTimes)
     })
-
   }
 
   editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
@@ -117,8 +115,6 @@ export class ViewTimeComponent implements OnInit {
       projectName: `Project Name`,
       description: undefined
     }
-
-    console.log(dialogConfig.data)
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
 

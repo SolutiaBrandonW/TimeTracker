@@ -4,3 +4,41 @@ mat-toolbar a {
     text-decoration: none;
     color: inherit;
 }
+
+mat-card {
+    margin: 20px auto 0px;
+    width: 95%;
+    padding-bottom: 70px;
+}
+
+/deep/ mat-dialog-container {
+    min-width: 300px;
+}
+
+/deep/ mat-form-field {
+    width: 100%;
+}
+
+/deep/ mat-dialog-actions button.mat-raised-button {
+    margin: 0px 10px 0px 0px;
+}
+
+/deep/ mat-card-title {
+    text-align: center;
+}
+
+/deep/ .spinnyContain {
+    padding-top: 50px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative
+}
+
+/deep/ .spinnyContain * {
+    margin: 0 auto;
+}
+
+/deep/ .spinnyContain span{
+    position: relative;
+    top: 10px;
+}

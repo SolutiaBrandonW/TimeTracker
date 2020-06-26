@@ -10,14 +10,19 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
-  getProjectTimeEntries(employee_id) : Observable<ProjectTimeReturn> {
-    return this.http.get<ProjectTimeReturn>(`https://localhost:44342/api/Employee/GetProjectsByEmployee/${employee_id}`)
+  getProjectTimeEntries(employee_id: number) : Observable<ProjectTimeReturn<ProjectTimeEntry[]>> {
+    return this.http.get<ProjectTimeReturn<ProjectTimeEntry[]>>(`https://localhost:44342/api/Employee/GetProjectsByEmployee/${employee_id}`)
   }
 
-  getEmployeeProjectHours(employee_id: number, project_id: number) : Observable<number> {
-    return this.http.get<number>(`https://localhost:44342/api/Employee/GetEmployeeProjectTime?employee_id=${employee_id}&project_id=${project_id}`)
+  getEmployeeProjectHours(assignment_id: number) : Observable<ProjectTimeReturn<number>> {
+    return this.http.get<ProjectTimeReturn<number>>(`https://localhost:44342/api/Employee/GetEmployeeHoursByAssignment/${assignment_id}`)
   }
+}
 
+export class ProjectTimeReturn<T> {
+  Message:string;
+  Code: number;
+  Data: T;
 }
 
 export class ProjectTime{
@@ -28,17 +33,12 @@ export class ProjectTime{
   projectStatus: string;
 }
 
-
-export class ProjectTimeReturn {
-  Message: string;
-  Code: number
-  Data: [
-    {
-      projectId: number;
-      projectName: string;
-      projectHours: number;
-      projectDescription: string;
-      projectStatus: string;
-    }
-  ]
+export class ProjectTimeEntry {
+  project_id: number;
+  projectAssignmentId: number;
+  name: string;
+  projectHours: number;
+  projectDescription: string;
+  projectStatus: string;
+  projectIsActive: boolean;
 }

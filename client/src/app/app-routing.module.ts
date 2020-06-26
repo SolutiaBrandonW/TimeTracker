@@ -7,7 +7,7 @@ import { ViewTimeComponent } from "./project-time-entry/view-time/view-time.comp
 
 const appRoutes: Routes = [
     {path: 'project-time-entry', component: ProjectTimeEntryComponent},
-    {path: 'project-time-entry/view-time/:projectId/:projectName', component: ViewTimeComponent},
+    {path: 'project-time-entry/view-time/:projectName/:assignmentId', component: ViewTimeComponent},
     {path: '**', redirectTo: 'project-time-entry'}
 ];
 
