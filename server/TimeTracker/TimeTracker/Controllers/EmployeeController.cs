@@ -55,9 +55,9 @@ namespace TimeTracker.Controllers
 
         [Route("GetEmployeeHoursByAssignment/{assignment_id:long}")]
         [HttpGet()]
-        public ReturnAPI<int?> GetEmployeeHoursByAssignment(int assignment_id)
+        public async Task<ReturnAPI<int?>> GetEmployeeHoursByAssignment(int assignment_id)
         {
-            return  employeeRepository.GetEmployeeHoursByAssignment(assignment_id);
+            return await employeeRepository.GetEmployeeHoursByAssignment(assignment_id);
         }
     }
 }
