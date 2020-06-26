@@ -15,8 +15,8 @@ export class AssignmentTimeService {
   //  get assignment time entries for an employee for a specific project
   //  need employee id and project id?
   //  return an observable to then subscribe to by the component
-  getAssignmentTimeEntries(employee_id:number) : Observable<AssignmentTimeEntry[]>{
-    return this.http.get<AssignmentTimeEntry[]>(`https://localhost:44342/api/Employee/GetAssignmentTimesByEmployee/${employee_id}`)
+  getAssignmentTimeEntries(assignment_id:number) : Observable<AssignmentTimeEntry[]>{
+    return this.http.get<AssignmentTimeEntry[]>(`https://localhost:44342/api/Assignment/GetLoggedHoursByAssignment/${assignment_id}`)
   }
 
   setSelectedAssignmentTimeEntry(selectedAssignmentTime:AssignmentTimeEntry){
@@ -28,6 +28,11 @@ export class AssignmentTimeService {
     return this.selectedAssignmentTime
   }
 
+  getLoggedHoursByAssignment(assignment_id:number) : Observable<AssignmentTimeReturn> {
+    return this.http.get<AssignmentTimeReturn>(`https://localhost:44342/api/Assignment/GetLoggedHoursByAssignment/${assignment_id}`)
+  }
+
+
 }
 
 export class AssignmentTimeEntry{
@@ -35,4 +40,15 @@ export class AssignmentTimeEntry{
   assignment_id: number
   start_time: Date
   end_time:Date
+}
+
+export class AssignmentTimeReturn{
+  Message:string;
+  Code: number;
+  Data: [{
+    assignment_time_id: number,
+    assignment_id: number,
+    start_time: Date,
+    end_time:Date,
+  }]
 }

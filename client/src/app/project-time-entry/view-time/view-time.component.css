@@ -14,3 +14,9 @@ button {
     text-align: center; 
     margin-right: 55px; /*width from the left to the far right of the button */   
  }  
+
+ .btnAdd{
+     float: right;
+     margin-right: 50px;
+     margin-top: 25px;
+ }

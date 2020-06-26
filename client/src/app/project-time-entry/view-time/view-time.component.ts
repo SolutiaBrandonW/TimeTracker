@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AssignmentTimeEntry, AssignmentTimeService} from "../../assignment-time.service"
+import { AssignmentService, AssignmentReturn } from "../../assignment.service";
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";
@@ -18,9 +19,12 @@ export class ViewTimeComponent implements OnInit {
   displayedColumns: string[] = ['start_date', 'end_date', 'description','actions'];
   assignmentTimes: AssignmentTimeEntry[] = [];
   projectId: number;
+  employeeId: number = 3;
+  assignmentId: number = 16;
   projectName: string;
 
-  constructor(private assiSvc:AssignmentTimeService,
+  constructor(private assiTimeServ:AssignmentTimeService,
+              private assiServ:AssignmentService,
               private route:ActivatedRoute,
               private router:Router,
               public dialog: MatDialog,
@@ -31,21 +35,27 @@ export class ViewTimeComponent implements OnInit {
     this.projectId = this.route.snapshot.params['projectId'];
     this.projectName = this.route.snapshot.params['projectName'];
 
-    this.assiSvc.getAssignmentTimeEntries(this.projectId).subscribe( assignmentTimes => {
-      this.assignmentTimes = assignmentTimes
+    // this.assiTimeServ.getAssignmentTimeEntries(this.employeeId).subscribe( assignmentTimes => {
+    //   this.assignmentTimes = assignmentTimes
+    //   console.log(assignmentTimes)
+    // })
+
+    this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
+      this.assignmentTimes = assignmentTimes.Data
       console.log(assignmentTimes)
     })
+
   }
 
   editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Edit time: ${assignmentTime.assignment_time_id}`)
-    this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    this.assiTimeServ.setSelectedAssignmentTimeEntry(assignmentTime)
     this.router.navigate(['/project-time-entry/edit-time/', assignmentTime.assignment_time_id]);
   }
 
   deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
-    this.assiSvc.setSelectedAssignmentTimeEntry(assignmentTime)
+    this.assiTimeServ.setSelectedAssignmentTimeEntry(assignmentTime)
   }
 
   addAssignmentTimeEntry(projectName: string) {
