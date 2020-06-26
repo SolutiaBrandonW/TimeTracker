@@ -7,7 +7,10 @@
 
     <ng-container matColumnDef="hours">
         <th mat-header-cell *matHeaderCellDef> Hours </th>
-        <td mat-cell *matCellDef="let element"> {{element.projectHours}} </td>
+        <td mat-cell *matCellDef="let element" >
+            <span *ngIf="element.projectHours; else nullBlock"> {{element.projectHours}} </span>
+            <ng-template #nullBlock> 0 </ng-template>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
