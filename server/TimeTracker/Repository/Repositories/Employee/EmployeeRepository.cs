@@ -19,7 +19,6 @@ namespace Repository.Repositories.Employee
     {
         public async Task<ReturnAPI<List<ProjectDTO>>> GetProjectsByEmployee(long id)
         {
-
             try
             {
                 using (var context = new TimeTrackingEntities())
@@ -83,7 +82,6 @@ namespace Repository.Repositories.Employee
         {
             try
             {
-
                 using (var context = new TimeTrackingEntities())
                 {
                     var employee = context.employees;
@@ -137,13 +135,17 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public ReturnAPI<int?> GetEmployeeHoursByAssignment(int assignment_id)
+        public async Task<ReturnAPI<int?>> GetEmployeeHoursByAssignment(int assignment_id)
         {
             try
             {
                 using (var context = new TimeTrackingEntities())
-                { 
-                    var hoursByAssignment = context.GetHoursByAssignment(assignment_id).FirstOrDefault();
+                {
+                    var hoursByAssignment = await context.assignment_time
+                                                    .Where(at => at.assignment_id == assignment_id)
+                                                    .GroupBy(at => at.assignment_id)
+                                                    .Select(group => group.Sum(d => DbFunctions.DiffHours(d.start_time, d.end_time)))
+                                                    .FirstOrDefaultAsync();
 
                     return new ReturnAPI<int?>("Success", 200, hoursByAssignment);
                 }
