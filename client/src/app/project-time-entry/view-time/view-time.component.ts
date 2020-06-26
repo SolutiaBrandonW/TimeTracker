@@ -112,7 +112,7 @@ export class ViewTimeComponent implements OnInit {
       assignment_id: this.assignmentId,
       start_time: undefined,
       end_time: undefined,
-      projectName: `Project Name`,
+      projectName: this.projectName,
       description: undefined
     }
 
