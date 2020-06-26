@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { ProjectService, ProjectTimeEntry } from '../project.service';
+import { ProjectService, ProjectTime, ProjectTimeReturn} from '../project.service';
 import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.
 })
 export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
-  currProjectTimeEntries : ProjectTimeEntry[];
+  currProjectTimeEntries : ProjectTime[];
   employee_id = 3;
 
   constructor(private pte: ProjectService, 
@@ -23,17 +23,18 @@ export class ProjectTimeEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.pte.getProjectTimeEntries(this.employee_id).subscribe(projectEntries => {
-      this.currProjectTimeEntries = projectEntries;
+      console.log(projectEntries.Data)
+      //this.currProjectTimeEntries = projectEntries.;
       //this.getProjectHourEntries(this.employee_id);
     });
   }
 
-  getProjectHourEntries(employee_id: number) {
-    for (let project of this.currProjectTimeEntries)
-    this.pte.getEmployeeProjectHours(this.employee_id, project.projectId).subscribe(projectHours => {
-      project.projectHours = projectHours;
-    });
-  }
+  // getProjectHourEntries(employee_id: number) {
+  //   for (let project of this.currProjectTimeEntries)
+  //   this.pte.getEmployeeProjectHours(this.employee_id, project.projectId).subscribe(projectHours => {
+  //     project.projectHours = projectHours;
+  //   });
+  // }
   
   viewTimeEntry(projectId: number, projectName: string) {
     this.router.navigate(['view-time', projectId, projectName], {relativeTo: this.route});

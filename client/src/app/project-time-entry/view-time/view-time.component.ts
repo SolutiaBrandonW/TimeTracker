@@ -16,7 +16,7 @@ import {Location} from '@angular/common';
 })
 export class ViewTimeComponent implements OnInit {
 
-  displayedColumns: string[] = ['start_date', 'end_date', 'description','actions'];
+  displayedColumns: string[] = ['start_time', 'end_time', 'description','actions'];
   assignmentTimes: AssignmentTimeEntry[] = [];
   projectId: number;
   employeeId: number = 3;
@@ -41,7 +41,7 @@ export class ViewTimeComponent implements OnInit {
     // })
 
     this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
-      this.assignmentTimes = assignmentTimes.Data
+      this.assignmentTimes = assignmentTimes.Data 
       console.log(assignmentTimes)
     })
 
@@ -55,7 +55,13 @@ export class ViewTimeComponent implements OnInit {
 
   deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
-    this.assiTimeServ.setSelectedAssignmentTimeEntry(assignmentTime)
+    this.assiTimeServ.deleteAssignmentTime(assignmentTime.assignment_time_id).subscribe(result =>{
+      console.log(result)
+      this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
+        this.assignmentTimes = assignmentTimes.Data 
+        console.log(assignmentTimes)
+      })
+    })
   }
 
   addAssignmentTimeEntry(projectName: string) {
@@ -70,18 +76,30 @@ export class ViewTimeComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.closeOnNavigation = true;
     dialogConfig.data = {
-      start_date: assignmentTimeEntry.start_time,
-      end_date: assignmentTimeEntry.end_time,
+      assignment_time_id: assignmentTimeEntry.assignment_time_id,
+      assignment_id: assignmentTimeEntry.assignment_id,
+      start_time: assignmentTimeEntry.start_time,
+      end_time: assignmentTimeEntry.end_time,
       projectName: `Project ${assignmentTimeEntry.assignment_time_id}`,
-      description: "test Description"
+      description: assignmentTimeEntry.description
     }
 
-    console.log(dialogConfig.data)
-
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
+        this.assiTimeServ.setSelectedAssignmentTimeEntry(data).subscribe(result => {
+          console.log(result)
+          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
+            this.assignmentTimes = assignmentTimes.Data 
+            console.log(assignmentTimes)
+          })
+        })
+      }
+    })
 
-    dialogRef.afterClosed().subscribe( data => console.log("Dialog output: ", data))
+  
 
+    console.log(this.assignmentTimes)
 
   }
 
@@ -93,8 +111,9 @@ export class ViewTimeComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.closeOnNavigation = true;
     dialogConfig.data = {
-      start_date: undefined,
-      end_date: undefined,
+      assignment_id: this.assignmentId,
+      start_time: undefined,
+      end_time: undefined,
       projectName: `Project Name`,
       description: undefined
     }
@@ -103,7 +122,17 @@ export class ViewTimeComponent implements OnInit {
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
 
-    dialogRef.afterClosed().subscribe( data => console.log("Dialog output: ", data))
+    dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
+        this.assiTimeServ.addAssignmentTime(data).subscribe(result => {
+          console.log(result)
+          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
+            this.assignmentTimes = assignmentTimes.Data 
+            console.log(assignmentTimes)
+          })
+        })
+      }
+    })
   }
 
   backClicked() {

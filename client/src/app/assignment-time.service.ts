@@ -20,17 +20,32 @@ export class AssignmentTimeService {
   }
 
   setSelectedAssignmentTimeEntry(selectedAssignmentTime:AssignmentTimeEntry){
-    console.log("Set Assignment")
-    this.selectedAssignmentTime = selectedAssignmentTime
+    // = "https://localhost:44342/api/Assignment/GetLoggedHoursByAssignment"
+    //console.log(selectedAssignmentTime)
+    return this.http.post<ReturnBool>("https://localhost:44342/api/AssignmentTime/UpdateAssignmentTime", selectedAssignmentTime)
   }
   
   getSelectedAssignmentTimeEntry():AssignmentTimeEntry{
     return this.selectedAssignmentTime
   }
 
+  deleteAssignmentTime(assignment_time_id:number){
+    // = "https://localhost:44342/api/Assignment/GetLoggedHoursByAssignment"
+    //console.log(selectedAssignmentTime)
+    return this.http.get<AssignmentTimeEntry[]>(`https://localhost:44342/api/AssignmentTime/DeleteAssignmentTime/${assignment_time_id}`)
+  }
+
   getLoggedHoursByAssignment(assignment_id:number) : Observable<AssignmentTimeReturn> {
     return this.http.get<AssignmentTimeReturn>(`https://localhost:44342/api/Assignment/GetLoggedHoursByAssignment/${assignment_id}`)
   }
+
+  addAssignmentTime(assignmentTime:AssignmentTimeEntry){
+    console.log("insert")
+    console.log(assignmentTime)
+    assignmentTime.assignment_time_id = null;
+    return this.http.post<ReturnBool>("https://localhost:44342/api/AssignmentTime/AddAssignmentTime", assignmentTime)
+  }
+
 
 
 }
@@ -40,6 +55,7 @@ export class AssignmentTimeEntry{
   assignment_id: number
   start_time: Date
   end_time:Date
+  description:string
 }
 
 export class AssignmentTimeReturn{
@@ -50,5 +66,11 @@ export class AssignmentTimeReturn{
     assignment_id: number,
     start_time: Date,
     end_time:Date,
+    description:string
   }]
+}
+
+export class ReturnBool{
+  Message:string;
+  Code: number;
 }

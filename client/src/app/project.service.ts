@@ -10,8 +10,8 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
-  getProjectTimeEntries(employee_id) : Observable<ProjectTimeEntry[]> {
-    return this.http.get<ProjectTimeEntry[]>(`https://localhost:44342/api/Employee/GetProjectsByEmployee/${employee_id}`)
+  getProjectTimeEntries(employee_id) : Observable<ProjectTimeReturn> {
+    return this.http.get<ProjectTimeReturn>(`https://localhost:44342/api/Employee/GetProjectsByEmployee/${employee_id}`)
   }
 
   getEmployeeProjectHours(employee_id: number, project_id: number) : Observable<number> {
@@ -20,10 +20,25 @@ export class ProjectService {
 
 }
 
-export class ProjectTimeEntry {
+export class ProjectTime{
   projectId: number;
   projectName: string;
   projectHours: number;
   projectDescription: string;
   projectStatus: string;
+}
+
+
+export class ProjectTimeReturn {
+  Message: string;
+  Code: number
+  Data: [
+    {
+      projectId: number;
+      projectName: string;
+      projectHours: number;
+      projectDescription: string;
+      projectStatus: string;
+    }
+  ]
 }
