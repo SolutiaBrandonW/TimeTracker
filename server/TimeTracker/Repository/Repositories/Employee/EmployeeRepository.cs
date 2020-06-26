@@ -27,13 +27,13 @@ namespace Repository.Repositories.Employee
                     var project = context.projects;
 
                     var projectsByEmployee = await project
-                        .Where(p => p.assignments.Any(a => a.employee_id == id))
-                        .ToListAsync();
+                                                .Where(p => p.assignments.Any(a => a.employee_id == id)).ToListAsync();
 
                     List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
 
                     foreach (project p in projectsByEmployee)
                     {
+
                         ProjectDTO projectDTO = new ProjectDTO();
                         projectDTO = ProjectMappers.mapToProjectDTO(p, projectDTO);
                         projectDTOs.Add(projectDTO);

@@ -19,7 +19,6 @@ namespace TimeTracker.Mappers
             projectDTO.status_id = project.status_id;
             projectDTO.status_name = project.status.status_name;
             projectDTO.is_active = project.is_active;
-
             return projectDTO;
         }
     }
