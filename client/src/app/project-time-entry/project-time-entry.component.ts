@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../project.service';
 import { AssignmentService } from '../assignment.service';
@@ -15,6 +15,8 @@ import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.
 export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries : ProjectTimeEntry[];
+  loading: boolean = true;
+  loaded: boolean = false;
   employee_id = 3;
 
   constructor(private pte: ProjectService,
@@ -23,24 +25,29 @@ export class ProjectTimeEntryComponent implements OnInit {
               private router: Router,
               public dialog: MatDialog) {}
 
-  ngOnInit(): void {
-    this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
-      this.currProjectTimeEntries = project_return.Data;
-      this.currProjectTimeEntries.forEach(cpte => {
-        this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-          // Get Assignment ID
-          cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-          this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-            // Get Assignment Hours
-            cpte.projectHours = projectHours_return.Data;
+  async ngOnInit() {
+    try {
+      await this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
+        this.currProjectTimeEntries = project_return.Data;
+        this.currProjectTimeEntries.forEach(cpte => {
+          this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+            // Get Assignment ID
+            cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+            this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+              // Get Assignment Hours
+              cpte.projectHours = projectHours_return.Data;
+            });
           });
         });
+        this.loading = false;
       });
-    });
+    } catch (e) {
+      console.log("Error: " + e);
+    }
   }
   
-  viewTimeEntry(projectId: number, projectName: string) {
-    this.router.navigate(['view-time', projectId, projectName], {relativeTo: this.route});
+  viewTimeEntry(assignmentId: number) {
+    this.router.navigate(['view-time', assignmentId], {relativeTo: this.route});
   }
 
   openTimeEntryDialog(projectName: string) {

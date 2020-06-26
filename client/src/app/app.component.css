@@ -4,3 +4,28 @@ mat-toolbar a {
     text-decoration: none;
     color: inherit;
 }
+
+mat-card {
+    margin: 20px auto 0px;
+    width: 95%;
+}
+
+/deep/ mat-card-title {
+    text-align: center;
+}
+
+/deep/ .spinnyContain {
+    padding-top: 30px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative
+}
+
+/deep/ .spinnyContain * {
+    margin: 0 auto;
+}
+
+/deep/ .spinnyContain span{
+    position: relative;
+    top: 10px;
+}
