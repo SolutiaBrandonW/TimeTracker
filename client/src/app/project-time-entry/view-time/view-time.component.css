@@ -13,7 +13,7 @@ button {
  .center {
     text-align: center; 
     margin-right: 55px; /*width from the left to the far right of the button */   
- }  
+ }
 
  .btnAdd{
      float: right;

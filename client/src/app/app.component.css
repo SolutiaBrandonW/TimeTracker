@@ -8,6 +8,19 @@ mat-toolbar a {
 mat-card {
     margin: 20px auto 0px;
     width: 95%;
+    padding-bottom: 70px;
+}
+
+/deep/ mat-dialog-container {
+    min-width: 300px;
+}
+
+/deep/ mat-form-field {
+    width: 100%;
+}
+
+/deep/ mat-dialog-actions button.mat-raised-button {
+    margin: 0px 10px 0px 0px;
 }
 
 /deep/ mat-card-title {
@@ -15,7 +28,7 @@ mat-card {
 }
 
 /deep/ .spinnyContain {
-    padding-top: 30px;
+    padding-top: 50px;
     margin: 0 auto;
     text-align: center;
     position: relative

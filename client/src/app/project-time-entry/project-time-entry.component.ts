@@ -16,7 +16,6 @@ export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries : ProjectTimeEntry[];
   loading: boolean = true;
-  loaded: boolean = false;
   employee_id = 3;
 
   constructor(private pte: ProjectService,
@@ -46,8 +45,8 @@ export class ProjectTimeEntryComponent implements OnInit {
     }
   }
   
-  viewTimeEntry(assignmentId: number) {
-    this.router.navigate(['view-time', assignmentId], {relativeTo: this.route});
+  viewTimeEntry(projectName: string, assignmentId: number) {
+    this.router.navigate(['view-time', projectName, assignmentId], {relativeTo: this.route});
   }
 
   openTimeEntryDialog(projectName: string) {
