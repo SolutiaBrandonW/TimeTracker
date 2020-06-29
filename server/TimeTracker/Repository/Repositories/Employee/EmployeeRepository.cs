@@ -11,7 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Repository.APIReturnObjects;
 using TimeTracker.Mappers;
-
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Repository.Repositories.Employee
 {
@@ -153,6 +154,31 @@ namespace Repository.Repositories.Employee
             catch (Exception e)
             {
                 return new ReturnAPI<int?>(e.Message, 400, null);
+            }
+        }
+
+        public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployees()
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var emp = await context.employees.Select(row => row).ToListAsync();
+
+                    List<EmployeeDTO> employeeDTOs = new List<EmployeeDTO>();
+
+                    foreach (employee e in emp)
+                    {
+                        EmployeeDTO employeeDTO = new EmployeeDTO();
+                        employeeDTO = EmployeeMapper.mapToEmployeeDTO(e, employeeDTO);
+                        employeeDTOs.Add(employeeDTO);
+                    }
+                    return new ReturnAPI<List<EmployeeDTO>>("Success", 200, employeeDTOs);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<List<EmployeeDTO>>(e.Message, 400, null);
             }
         }
     }

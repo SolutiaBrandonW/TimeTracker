@@ -20,7 +20,6 @@ namespace Repository.Mappers
             employeeDTO.security_level_id = employee.security_level_id;
             employeeDTO.is_active = employee.is_active;
 
-
             return employeeDTO;
         }
     }

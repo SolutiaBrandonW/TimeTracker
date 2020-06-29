@@ -59,5 +59,12 @@ namespace TimeTracker.Controllers
         {
             return await employeeRepository.GetEmployeeHoursByAssignment(assignment_id);
         }
+
+        [Route("GetEmployees")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployees()
+        {
+            return await employeeRepository.GetEmployees();
+        }
     }
 }
