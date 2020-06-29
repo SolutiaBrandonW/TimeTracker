@@ -10,11 +10,11 @@ import { ProjectEntryDialogComponent } from './project-entry-dialog/project-entr
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
-import { AddAssignmentDialogComponent } from './add-assignment-dialog/add-assignment-dialog.component';
+import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assignment-entry-dialog.component';
 
 
 @NgModule({
-  declarations: [ProjectTimeEntryComponent, ProjectEntryDialogComponent, EmployeeListComponent, ViewProjectComponent, ViewAssignmentComponent, AddAssignmentDialogComponent],
+  declarations: [ProjectTimeEntryComponent, ProjectEntryDialogComponent, EmployeeListComponent, ViewProjectComponent, ViewAssignmentComponent,AssignmentEntryDialogComponent],
   imports: [
     CommonModule,
     ManagerRoutingModule,
