@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatCardModule, MatCard } from "@angular/material/card";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatTableModule } from "@angular/material/table";
+
+
 
 import { ManagerRoutingModule } from './manager-routing.module';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
@@ -14,7 +19,14 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
 
 
 @NgModule({
-  declarations: [ProjectTimeEntryComponent, ProjectEntryDialogComponent, EmployeeListComponent, ViewProjectComponent, ViewAssignmentComponent,AssignmentEntryDialogComponent],
+  declarations: [
+    ProjectTimeEntryComponent, 
+    ProjectEntryDialogComponent, 
+    EmployeeListComponent, 
+    ViewProjectComponent, 
+    ViewAssignmentComponent,
+    AssignmentEntryDialogComponent,
+  ],
   imports: [
     CommonModule,
     ManagerRoutingModule,
@@ -22,6 +34,10 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatTableModule
+    
   ]
 })
 export class ManagerModule { }

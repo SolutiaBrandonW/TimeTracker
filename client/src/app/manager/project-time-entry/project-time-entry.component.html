@@ -1,1 +1,47 @@
-<p>project-time-entry works!</p>
+<mat-card>Project Time Entry</mat-card>
+<mat-card-content>
+    <div *ngIf="loading" class="spinnyContain">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <span>Loading...</span>
+    </div>
+    <table *ngIf="!loading" mat-table [dataSource]="currProjectTimeEntries">
+        <ng-container matColumnDef="project">
+            <th mat-header-cell *matHeaderCellDef> Project </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="hours">
+            <th mat-header-cell *matHeaderCellDef> Hours </th>
+            <td mat-cell *matCellDef="let element" >
+                <span *ngIf="element.projectHours; else nullBlock"> {{element.projectHours}} </span>
+                <ng-template #nullBlock> 0 </ng-template>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-raised-button color="accent" (click)="openTimeEntryDialog(row.name,row.projectAssignmentId)" >
+                    Add
+                </button>
+                <button mat-raised-button color="warn" (click)="viewTimeEntry(row.name, row.projectAssignmentId)" >
+                    View
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+    </table>
+</mat-card-content>
