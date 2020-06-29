@@ -22,6 +22,7 @@ import { AppComponent } from './app.component';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
 import { ViewTimeComponent } from './project-time-entry/view-time/view-time.component';
 import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog/time-entry-dialog.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog
     ProjectTimeEntryComponent,
     ViewTimeComponent,
     TimeEntryDialogComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
