@@ -6,6 +6,9 @@ import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog
 import { ViewTimeComponent } from "./project-time-entry/view-time/view-time.component";
 
 const appRoutes: Routes = [
+    {path: 'manager',
+            loadChildren: ()=>import('./manager/manager.module')
+                                        .then(m => m.ManagerModule)},
     {path: 'project-time-entry', component: ProjectTimeEntryComponent},
     {path: 'project-time-entry/view-time/:projectName/:assignmentId', component: ViewTimeComponent},
     {path: '**', redirectTo: 'project-time-entry'}
