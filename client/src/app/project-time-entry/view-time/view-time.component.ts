@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AssignmentTimeEntry, AssignmentTimeService} from "../../assignment-time.service"
-import { AssignmentService, AssignmentReturn } from "../../assignment.service";
+import { AssignmentTime, AssignmentTimeService} from "../../assignment-time.service"
+import { AssignmentService, Assignment } from "../../assignment.service";
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";
@@ -15,9 +15,8 @@ import {Location} from '@angular/common';
   styleUrls: ['./view-time.component.css']
 })
 export class ViewTimeComponent implements OnInit {
-
   displayedColumns: string[] = ['start_time', 'end_time', 'description','actions'];
-  assignmentTimes: AssignmentTimeEntry[] = [];
+  assignmentTimes: AssignmentTime[] = [];
   employeeId: number = 3;
   assignmentId: number;
   projectName: string;
@@ -30,34 +29,25 @@ export class ViewTimeComponent implements OnInit {
               private _location: Location) { }
 
   ngOnInit(): void {
-
     this.assignmentId = this.route.snapshot.params['assignmentId'];
     this.projectName = this.route.snapshot.params['projectName'];
 
-    // this.assiTimeServ.getAssignmentTimeEntries(this.employeeId).subscribe( assignmentTimes => {
-    //   this.assignmentTimes = assignmentTimes
-    //   console.log(assignmentTimes)
-    // })
-
     this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
-      this.assignmentTimes = assignmentTimes.Data 
-      console.log(assignmentTimes)
-    })
+      this.assignmentTimes = assignmentTimes.Data;
+    });
   }
 
-  editAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
-    console.log(`Edit time: ${assignmentTime.assignment_time_id}`)
-    this.assiTimeServ.setSelectedAssignmentTimeEntry(assignmentTime)
+  editAssignmentTimeEntry(assignmentTime: AssignmentTime){
+    console.log(`Edit time: ${assignmentTime.assignment_time_id}`);
+    this.assiTimeServ.setSelectedAssignmentTimeEntry(assignmentTime);
     this.router.navigate(['/project-time-entry/edit-time/', assignmentTime.assignment_time_id]);
   }
 
-  deleteAssignmentTimeEntry(assignmentTime: AssignmentTimeEntry){
+  deleteAssignmentTimeEntry(assignmentTime: AssignmentTime){
     console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
     this.assiTimeServ.deleteAssignmentTime(assignmentTime.assignment_time_id).subscribe(result =>{
-      console.log(result)
-      this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
-        this.assignmentTimes = assignmentTimes.Data 
-        console.log(assignmentTimes)
+      this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
+        this.assignmentTimes = assignmentTime_return.Data;
       })
     })
   }
@@ -66,7 +56,7 @@ export class ViewTimeComponent implements OnInit {
     this.router.navigate(['/project-time-entry/add-time/', this.projectName]);
   }
 
-  openDialogEdit(assignmentTimeEntry: AssignmentTimeEntry) {
+  openDialogEdit(assignmentTimeEntry: AssignmentTime) {
 
     const dialogConfig = new MatDialogConfig();
 
@@ -86,19 +76,12 @@ export class ViewTimeComponent implements OnInit {
     dialogRef.afterClosed().subscribe( data => {
       if(data != null){
         this.assiTimeServ.setSelectedAssignmentTimeEntry(data).subscribe(result => {
-          console.log(result)
-          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
-            this.assignmentTimes = assignmentTimes.Data 
-            console.log(assignmentTimes)
+          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
+            this.assignmentTimes = assignmentTime_return.Data;
           })
         })
       }
     })
-
-  
-
-    console.log(this.assignmentTimes)
-
   }
 
   openDialogAdd() {
@@ -122,9 +105,8 @@ export class ViewTimeComponent implements OnInit {
       if(data != null){
         this.assiTimeServ.addAssignmentTime(data).subscribe(result => {
           console.log(result)
-          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTimes => {
-            this.assignmentTimes = assignmentTimes.Data 
-            console.log(assignmentTimes)
+          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
+            this.assignmentTimes = assignmentTime_return.Data;
           })
         })
       }
@@ -134,4 +116,5 @@ export class ViewTimeComponent implements OnInit {
   backClicked() {
     this._location.back();
   }
+
 }

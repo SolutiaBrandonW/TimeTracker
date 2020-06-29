@@ -29,20 +29,20 @@ export class ProjectTimeEntryComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.pte.getAllProjects().subscribe(project_return => {
-        this.currProjectTimeEntries = project_return.Data;
-        this.currProjectTimeEntries.forEach(cpte => {
-          // this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-          //   // Get Assignment ID
-          //   cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-          //   this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-          //     // Get Assignment Hours
-          //     cpte.projectHours = projectHours_return.Data;
-          //   });
-          // });
-        });
-        this.loading = false;
-      });
+      // await this.pte.getAllProjects().subscribe(project_return => {
+      //   this.currProjectTimeEntries = project_return.Data;
+      //   this.currProjectTimeEntries.forEach(cpte => {
+      //     // this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+      //     //   // Get Assignment ID
+      //     //   cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+      //     //   this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+      //     //     // Get Assignment Hours
+      //     //     cpte.projectHours = projectHours_return.Data;
+      //     //   });
+      //     // });
+      //   });
+      //   this.loading = false;
+      // });
     } catch (e) {
       console.log("Error: " + e);
     }
