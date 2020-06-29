@@ -8,6 +8,9 @@ import { LoginComponent } from "./login/login.component";
 
 const appRoutes: Routes = [
     {path: 'login', component: LoginComponent},
+    {path: 'manager',
+            loadChildren: ()=>import('./manager/manager.module')
+                                        .then(m => m.ManagerModule)},
     {path: 'project-time-entry', component: ProjectTimeEntryComponent},
     {path: 'project-time-entry/view-time/:projectName/:assignmentId', component: ViewTimeComponent},
     {path: '**', redirectTo: 'project-time-entry'}
