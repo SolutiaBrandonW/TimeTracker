@@ -55,6 +55,7 @@
     <Compile Include="Repositories\AssignmentTime\AssignmentTimeRepository.cs" />
     <Compile Include="Repositories\Assignment\AssignmentRepository.cs" />
     <Compile Include="Repositories\Employee\EmployeeRepository.cs" />
+    <Compile Include="Repositories\Project\ProjectRepository.cs" />
     <Compile Include="ReturnAPI\ReturnAPI.cs" />
   </ItemGroup>
   <ItemGroup>
