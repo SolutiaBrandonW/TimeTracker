@@ -14,7 +14,7 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
 
 
 @NgModule({
-  declarations: [ProjectTimeEntryComponent, ProjectEntryDialogComponent, EmployeeListComponent, ViewProjectComponent, ViewAssignmentComponent, AddAssignmentDialogComponent, AssignmentEntryDialogComponent],
+  declarations: [ProjectTimeEntryComponent, ProjectEntryDialogComponent, EmployeeListComponent, ViewProjectComponent, ViewAssignmentComponent,AssignmentEntryDialogComponent],
   imports: [
     CommonModule,
     ManagerRoutingModule,
