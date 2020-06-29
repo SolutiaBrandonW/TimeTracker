@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { ThrowStmt } from '@angular/compiler';
-
 @Component({
   selector: 'app-time-entry-dialog',
   templateUrl: './time-entry-dialog.component.html',
@@ -34,7 +32,6 @@ export class TimeEntryDialogComponent implements OnInit {
       this.description = data.description;
       this.editing = true;
     }
-      
   }
 
   ngOnInit(): void {
