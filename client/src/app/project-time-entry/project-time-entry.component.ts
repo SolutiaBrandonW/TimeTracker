@@ -46,6 +46,8 @@ export class ProjectTimeEntryComponent implements OnInit {
       console.log("Error: " + e);
     }
   }
+
+
   
   viewTimeEntry(projectName: string, assignmentId: number) {
     this.router.navigate(['view-time', projectName, assignmentId], {relativeTo: this.route});
@@ -65,7 +67,10 @@ export class ProjectTimeEntryComponent implements OnInit {
       if(data != null){
         data.assignment_id = assignment_id
         this.atServ.addAssignmentTime(data).subscribe(result => {
-          console.log(result);
+          this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {
+            let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
+            project.projectHours = projectHours_return.Data;
+          });
         })
       }
     })
