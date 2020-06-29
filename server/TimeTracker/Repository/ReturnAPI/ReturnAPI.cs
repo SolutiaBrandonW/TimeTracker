@@ -18,6 +18,13 @@ namespace Repository.APIReturnObjects
             Code = code;
             Data = data;
         }
+
+        public ReturnAPI( int code, T data)
+        {
+            Message = null;
+            Code = code;
+            Data = data;
+        }
     }
 
     public class ReturnAPI
