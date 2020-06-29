@@ -5,7 +5,6 @@ import { ProjectTimeEntryComponent } from './project-time-entry/project-time-ent
 
 const routes: Routes = [
   {path: 'project-time-entry', component: ProjectTimeEntryComponent},
-
 ];
 
 @NgModule({
