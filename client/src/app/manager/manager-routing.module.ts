@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'project-time-entry', component: ProjectTimeEntryComponent},
   {path: 'view-employees', component: EmployeeListComponent},
   {path: 'project-time-entry/view-project/:projectName/:project_id', component: ViewProjectComponent},
+  {path: '**', redirectTo: 'project-time-entry'}
 ];
 
 @NgModule({

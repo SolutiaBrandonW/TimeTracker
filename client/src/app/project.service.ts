@@ -28,14 +28,6 @@ export class ProjectService {
   }
 }
 
-export class ProjectTime{
-  projectId: number;
-  projectName: string;
-  projectHours: number;
-  projectDescription: string;
-  projectStatus: string;
-}
-
 export class ProjectTimeEntry {
   project_id: number;
   projectAssignmentId: number;
