@@ -12,7 +12,7 @@ export class ProjectService {
   constructor(private http: HttpClient) { }
 
   getProjects() : Observable<APIReturn<ProjectTimeEntry[]>> {
-    return this.http.get<APIReturn<ProjectTimeEntry[]>>(`https://localhost:44342/api/Employee/GetProjects`)
+    return this.http.get<APIReturn<ProjectTimeEntry[]>>(`https://localhost:44342/api/Project/GetProjects`)
   }
 
   getProjectTimeEntries(employee_id: number) : Observable<APIReturn<ProjectTimeEntry[]>> {
