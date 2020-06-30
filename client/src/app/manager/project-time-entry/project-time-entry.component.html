@@ -1,4 +1,4 @@
-<mat-card>Project Time Entry</mat-card>
+<mat-card-title>Project Time Entry</mat-card-title>
 <mat-card-content>
     <div *ngIf="loading" class="spinnyContain">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
@@ -34,7 +34,7 @@
                 <button mat-raised-button color="accent" (click)="openTimeEntryDialog(row.name,row.projectAssignmentId)" >
                     Add
                 </button>
-                <button mat-raised-button color="warn" (click)="viewTimeEntry(row.name, row.projectAssignmentId)" >
+                <button mat-raised-button color="warn" (click)="viewProject(row.name, row.project_id)" >
                     View
                 </button>
             </td>
@@ -42,6 +42,7 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
     </table>
+    <button mat-raised-button color="primary" class="btnAdd" (click)="openDialogAddProject()">Add Project</button>
+    <button mat-raised-button color="primary" class="btnAddCenter" (click)="viewEmployees()">View Employees</button>
 </mat-card-content>

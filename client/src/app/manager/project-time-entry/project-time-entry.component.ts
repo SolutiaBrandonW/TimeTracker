@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core'
+
 import { ProjectService, ProjectTimeEntry } from '../../project.service';
 import { AssignmentService } from '../../assignment.service';
+import { TimeEntryDialogComponent } from '../../project-time-entry/time-entry-dialog/time-entry-dialog.component';
 import { AssignmentTimeService } from "../../assignment-time.service";
-import { MatCard } from "@angular/material/card";
-
+import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
 
 @Component({
   selector: 'app-project-time-entry',
@@ -17,7 +18,6 @@ export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries : ProjectTimeEntry[];
   loading: boolean = true;
-  //Change to get all time entry components instead of just one from an employee id 
   employee_id = 3;
 
   constructor(private pte: ProjectService,
@@ -29,52 +29,72 @@ export class ProjectTimeEntryComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      // await this.pte.getAllProjects().subscribe(project_return => {
-      //   this.currProjectTimeEntries = project_return.Data;
-      //   this.currProjectTimeEntries.forEach(cpte => {
-      //     // this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-      //     //   // Get Assignment ID
-      //     //   cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-      //     //   this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-      //     //     // Get Assignment Hours
-      //     //     cpte.projectHours = projectHours_return.Data;
-      //     //   });
-      //     // });
-      //   });
-      //   this.loading = false;
-      // });
+      await this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
+        this.currProjectTimeEntries = project_return.Data;
+        this.currProjectTimeEntries.forEach(cpte => {
+          this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+            // Get Assignment ID
+            cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+            this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+              // Get Assignment Hours
+              cpte.projectHours = projectHours_return.Data;
+            });
+          });
+        });
+        this.loading = false;
+      });
     } catch (e) {
       console.log("Error: " + e);
     }
   }
 
-
-  
-  viewTimeEntry(projectName: string, assignmentId: number) {
-    // this.router.navigate(['view-time', projectName, assignmentId], {relativeTo: this.route});
+  viewProject(projectName: string, project_id: number) {
+    this.router.navigate(['view-project', projectName, project_id], {relativeTo: this.route});
   }
+
+  viewEmployees(){
+    this.router.navigate(['view-employees'], {relativeTo: this.route.parent});
+  }
+
+  openDialogAddProject(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+    }
+
+    const dialogRef = this.dialog.open(ProjectEntryDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
+        console.log(data)
+        this.pte.addProject(data).subscribe(result => {
+          console.log(result)
+        })
+      }
+    })
+  }
+
 
   openTimeEntryDialog(projectName: string, assignment_id: number) {
 
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.data = {
-    //   projectName: projectName
-    // }
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      projectName: projectName
+    }
 
-    // const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe( data => {
-    //   if(data != null){
-    //     data.assignment_id = assignment_id
-    //     this.atServ.addAssignmentTime(data).subscribe(result => {
-    //       this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {
-    //         let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
-    //         project.projectHours = projectHours_return.Data;
-    //       });
-    //     })
-    //   }
-    // })
+    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
+        data.assignment_id = assignment_id
+        this.atServ.addAssignmentTime(data).subscribe(result => {
+          this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {
+            let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
+            project.projectHours = projectHours_return.Data;
+          });
+        })
+      }
+    })
   }
-
 }

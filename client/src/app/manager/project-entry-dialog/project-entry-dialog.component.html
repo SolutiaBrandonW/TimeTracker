@@ -8,7 +8,7 @@
 <div mat-dialog-content [formGroup]="form">
     <mat-form-field appearance="fill">
         <mat-label>Project Name</mat-label>
-        <input matInput formControlName="project_name">
+        <input matInput required formControlName="name">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -28,7 +28,7 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Status</mat-label>
-        <select matNativeControl required formControlName="status">
+        <select matNativeControl required formControlName="status_id">
             <option value="1">Not Started</option>
             <option value="2">In Progress</option>
             <option value="3">Completed</option>

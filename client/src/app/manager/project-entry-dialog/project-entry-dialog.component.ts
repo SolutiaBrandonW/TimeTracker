@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { ProjectTimeEntryComponent } from 'src/app/project-time-entry/project-time-entry.component';
 
 @Component({
   selector: 'app-project-entry-dialog',
@@ -12,7 +11,7 @@ export class ProjectEntryDialogComponent implements OnInit {
 
   form: FormGroup;
   project_id:number
-  project_name:number
+  name:number
   start_date:Date
   end_date:Date
   description:string
@@ -24,18 +23,18 @@ export class ProjectEntryDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<ProjectEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
     this.project_id = data.project_id;
-    this.project_name = data.project_name;
+    this.name = data.name;
     this.start_date = data.start_date;
     this.end_date = data.end_date;
     this.description = data.description;
     this.status_id = data.status_id;
-    this.editing = true;
+    this.editing = false;
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       project_id:new FormControl,
-      project_name:new FormControl,
+      name:new FormControl,
       start_date:new FormControl,
       end_date:new FormControl,
       status_id:new FormControl,
@@ -44,7 +43,7 @@ export class ProjectEntryDialogComponent implements OnInit {
 
     this.form.patchValue({
       project_id: this.project_id,
-      project_name: this.project_name,
+      name: this.name,
       start_date: this.start_date,
       end_date: this.end_date,
       description: this.description,
