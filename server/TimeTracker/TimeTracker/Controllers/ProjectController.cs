@@ -49,5 +49,12 @@ namespace TimeTracker.Controllers
         {
             return await projectRepository.GetHoursByProject(project_id);
         }
+
+        [Route("GetAllAssignmentTimesByProject/{project_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<ProjectAssignmentTimeDTO>>> GetAllAssignmentTimesByProject(long project_id)
+        {
+            return await projectRepository.GetAllAssignmentTimesByProject(project_id);
+        }
     }
 }

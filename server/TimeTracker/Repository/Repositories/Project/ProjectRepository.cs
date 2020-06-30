@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -168,6 +169,35 @@ namespace Repository.Repositories.Project
                 return new ReturnAPI<int?>(e.Message, 400, null);
             }
        }
+
+        public async Task<ReturnAPI<List<ProjectAssignmentTimeDTO>>> GetAllAssignmentTimesByProject(long project_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var query = from at in context.assignment_time
+                                join e in context.employees
+                                on at.assignment.employee_id equals e.employee_id
+                                where at.assignment.project_id == project_id
+                                select new ProjectAssignmentTimeDTO { 
+                                    assignment_id = at.assignment_id, 
+                                    assignment_time_id = at.assignment_time_id, 
+                                    employee_id = e.employee_id, 
+                                    description = at.description, 
+                                    employee_name = e.first_name + " " + e.last_name, 
+                                    start_time = at.start_time, 
+                                    end_time = at.end_time 
+                                };
+                    List<ProjectAssignmentTimeDTO> assignmentTImes = await query.ToListAsync();
+                    return new ReturnAPI<List<ProjectAssignmentTimeDTO>>(null, 200, assignmentTImes);
+                }
+            }
+            catch(Exception e)
+            {
+                return new ReturnAPI<List<ProjectAssignmentTimeDTO>>(e.Message, 200, null); ;
+            }
+        }
 
     }
 }
