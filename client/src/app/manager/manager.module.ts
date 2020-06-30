@@ -9,8 +9,6 @@ import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule, MatButton } from "@angular/material/button";
 import {MatInputModule} from '@angular/material/input';
 
-
-
 import { ManagerRoutingModule } from './manager-routing.module';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
 import { ProjectEntryDialogComponent } from './project-entry-dialog/project-entry-dialog.component';
@@ -19,7 +17,6 @@ import { ViewProjectComponent } from './view-project/view-project.component';
 import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
 import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assignment-entry-dialog.component';
 import { MatIconModule } from "@angular/material/icon";
-
 
 @NgModule({
   declarations: [

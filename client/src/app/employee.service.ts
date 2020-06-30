@@ -8,13 +8,17 @@ import { APIReturn } from '../app/api.service';
   providedIn: 'root'
 })
 export class EmployeeService {
-
   constructor(private http: HttpClient) { }
-
   getEmployees () : Observable<APIReturn<Employee[]>> {
     return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetEmployees`)
   }
-  
+  getManagerNameByManagerId (manager_id: number) : Observable<APIReturn<string>> {
+    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetManagerNameByManagerId/${manager_id}`)
+  }
+  // TODO - change endpoint name
+  getSecurityLevelByEmployeeId (employee_id: number) : Observable<APIReturn<string>> {
+    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetSecurityNameByEmployeeId/${employee_id}`)
+  }
 }
 
 export class Employee {
