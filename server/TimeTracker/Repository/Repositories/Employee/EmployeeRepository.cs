@@ -13,6 +13,7 @@ using Repository.APIReturnObjects;
 using TimeTracker.Mappers;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Repository.Repositories.Employee
 {
@@ -180,6 +181,49 @@ namespace Repository.Repositories.Employee
             {
                 return new ReturnAPI<List<EmployeeDTO>>(e.Message, 400, null);
             }
+        }
+
+        public async Task<ReturnAPI<string>> GetManagerNameByManagerId(long manager_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var manager = await context.employees
+                                            .Where(man => man.employee_id == manager_id)
+                                            .Select(man => new { man.first_name, man.last_name })
+                                            .FirstOrDefaultAsync();
+
+                    return new ReturnAPI<string>("Success", 200, manager.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<string>(e.Message, 400, null);
+            }
+
+        }
+        public async Task<ReturnAPI<string>> GetSecurityNameByEmployeeId(long employee_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var security_level = context.security_level;
+
+                    var security_id = await context.employees
+                                                .Where(emp => emp.employee_id == employee_id)
+                                                .Select(emp => emp.security_level_id).FirstOrDefaultAsync();
+
+                    var security_name = await security_level.Where(sec => sec.security_level_id == security_id).Select(sec => sec.secrity_level).FirstOrDefaultAsync();
+
+                    return new ReturnAPI<string>("Success", 200, security_name);
+
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<string>(e.Message, 400, null); }
         }
     }
 }

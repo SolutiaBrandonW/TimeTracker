@@ -66,5 +66,19 @@ namespace TimeTracker.Controllers
         {
             return await employeeRepository.GetEmployees();
         }
+
+        [Route("GetManagerNameByManagerId/{manager_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<string>> GetManagerNameByManagerId(long manager_id)
+        {
+            return await employeeRepository.GetManagerNameByManagerId(manager_id);
+        }
+
+        [Route("GetSecurityNameByEmployeeId/{employee_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<string>> GetSecurityNameByEmployeeId(long employee_id)
+        {
+            return await employeeRepository.GetSecurityNameByEmployeeId(employee_id);
+        }
     }
 }
