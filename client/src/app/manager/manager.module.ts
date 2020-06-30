@@ -18,6 +18,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
 import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assignment-entry-dialog.component';
+import { MatIconModule } from "@angular/material/icon";
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
     MatProgressSpinnerModule,
     MatTableModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
     
   ],
   entryComponents:[ProjectEntryDialogComponent]

@@ -35,6 +35,10 @@ export class AssignmentTimeService {
     assignmentTime.assignment_time_id = null;
     return this.http.post<APIMetaReturn>("https://localhost:44342/api/AssignmentTime/AddAssignmentTime", assignmentTime)
   }
+
+  getAllAssignmentTimeByProject(project_id:number){
+    return this.http.get<APIReturn<ProjectAssignmentTime>>(`https://localhost:44342/api/Project/GetAllAssignmentTimesByProject/${project_id}`)
+  }
 }
 
 export class AssignmentTime {
@@ -43,4 +47,14 @@ export class AssignmentTime {
   start_time: Date
   end_time:Date
   description:string
+}
+ 
+export class ProjectAssignmentTime{
+  assignment_time_id: number
+  assignment_id: number
+  employee_id:number
+  start_time: Date
+  end_time:Date
+  description:string
+  employee_name:string
 }
