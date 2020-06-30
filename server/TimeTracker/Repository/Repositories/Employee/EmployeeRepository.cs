@@ -79,7 +79,6 @@ namespace Repository.Repositories.Employee
             }
         }
 
-
         public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployeeHierarchy(long id)
         {
             try
@@ -203,9 +202,9 @@ namespace Repository.Repositories.Employee
             {
                 return new ReturnAPI<string>(e.Message, 400, null);
             }
-
         }
-        public async Task<ReturnAPI<string>> GetSecurityNameByEmployeeId(long employee_id)
+
+        public async Task<ReturnAPI<string>> GetSecurityLevelByEmployeeId(long employee_id)
         {
             try
             {
@@ -220,7 +219,6 @@ namespace Repository.Repositories.Employee
                     var security_name = await security_level.Where(sec => sec.security_level_id == security_id).Select(sec => sec.secrity_level).FirstOrDefaultAsync();
 
                     return new ReturnAPI<string>("Success", 200, security_name);
-
                 }
             }
             catch (Exception e)
