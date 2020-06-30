@@ -148,5 +148,26 @@ namespace Repository.Repositories.Project
             }
         }
 
+       public async Task<ReturnAPI<int?>> GetHoursByProject(long project_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var hoursByAssignment = await context.assignment_time
+                                                    .Where(at => at.assignment.project_id == project_id)
+                                                    .GroupBy(at => at.assignment.project_id)
+                                                    .Select(group => group.Sum(d => DbFunctions.DiffHours(d.start_time, d.end_time)))
+                                                    .FirstOrDefaultAsync();
+
+                    return new ReturnAPI<int?>("Success", 200, hoursByAssignment);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<int?>(e.Message, 400, null);
+            }
+       }
+
     }
 }
