@@ -28,5 +28,18 @@ namespace TimeTracker.Controllers
             return await projectRepository.GetProjects();
         }
 
+        [Route("addProject")]
+        [HttpPost()]
+        public async Task<ReturnAPI> addProject([FromBody] ProjectDTO projectDTO)
+        {
+            return await projectRepository.addProject(projectDTO);
+        }
+
+        [Route("updateProject")]
+        [HttpPost()]
+        public async Task<ReturnAPI> updateProject([FromBody] ProjectDTO projectDTO)
+        {
+            return await projectRepository.updateProject(projectDTO);
+        }
     }
 }
