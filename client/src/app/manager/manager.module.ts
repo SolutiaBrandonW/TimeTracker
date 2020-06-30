@@ -7,6 +7,7 @@ import { MatCardModule, MatCard } from "@angular/material/card";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule, MatButton } from "@angular/material/button";
+import {MatInputModule} from '@angular/material/input';
 
 
 
@@ -38,7 +39,8 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
     MatCardModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule
     
   ],
   entryComponents:[ProjectEntryDialogComponent]

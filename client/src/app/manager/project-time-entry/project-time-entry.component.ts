@@ -65,7 +65,12 @@ export class ProjectTimeEntryComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ProjectEntryDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( data => {
-      console.log(data)
+      if(data != null){
+        console.log(data)
+        this.pte.addProject(data).subscribe(result => {
+          console.log(result)
+        })
+      }
     })
   }
 
