@@ -194,7 +194,9 @@ namespace Repository.Repositories.Employee
                                             .Select(man => new { man.first_name, man.last_name })
                                             .FirstOrDefaultAsync();
 
-                    return new ReturnAPI<string>("Success", 200, manager.ToString());
+                    var manager_name = manager.first_name + " " + manager.last_name;
+
+                    return new ReturnAPI<string>("Success", 200, manager_name);
                 }
             }
             catch (Exception e)
