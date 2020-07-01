@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import {Component, OnInit} from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../../project.service';
 import { AssignmentService } from '../../assignment.service';
@@ -16,16 +16,16 @@ import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-ent
 export class ProjectTimeEntryComponent implements OnInit {
 
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
-  currProjectTimeEntries : ProjectTimeEntry[];
+  currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
   employee_id = 3;
 
   constructor(private pte: ProjectService,
-              private ate: AssignmentService, 
-              private atServ: AssignmentTimeService,
-              private route: ActivatedRoute,
-              private router: Router,
-              public dialog: MatDialog) {}
+    private ate: AssignmentService,
+    private atServ: AssignmentTimeService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
     try {
@@ -34,15 +34,15 @@ export class ProjectTimeEntryComponent implements OnInit {
         this.currProjectTimeEntries.forEach(cpte => {
           this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
             // Get Assignment ID
-            if( assignment_return.Data != null){
+            if (assignment_return.Data != null) {
               // if the project has an assignment associated with this manager,
               cpte.hasRecord = true;
               cpte.projectAssignmentId = assignment_return.Data.assignment_id;
               this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-              // Get Assignment Hours
-              cpte.projectHours = projectHours_return.Data;
-            });
-            }else{
+                // Get Assignment Hours
+                cpte.projectHours = projectHours_return.Data;
+              });
+            } else {
               cpte.hasRecord = false;
             }
           });
@@ -55,14 +55,14 @@ export class ProjectTimeEntryComponent implements OnInit {
   }
 
   viewProject(projectName: string, project_id: number) {
-    this.router.navigate(['view-project', projectName, project_id], {relativeTo: this.route});
+    this.router.navigate(['view-project', projectName, project_id], { relativeTo: this.route });
   }
 
-  viewEmployees(){
-    this.router.navigate(['view-employees'], {relativeTo: this.route.parent});
+  viewEmployees() {
+    this.router.navigate(['view-employees'], { relativeTo: this.route.parent });
   }
 
-  openDialogAddProject(){
+  openDialogAddProject() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -70,15 +70,31 @@ export class ProjectTimeEntryComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(ProjectEntryDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( data => {
-      if(data != null){
+    dialogRef.afterClosed().subscribe(data => {
+      if (data != null) {
         console.log(data)
         this.pte.addProject(data).subscribe(result => {
           console.log(result)
           //reload projects window 
-          this.pte.getProjects().subscribe(result => {
-            this.currProjectTimeEntries = result.Data
-          })
+          this.pte.getProjects().subscribe(project_return => {
+            this.currProjectTimeEntries = project_return.Data;
+            this.currProjectTimeEntries.forEach(cpte => {
+              this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+                // Get Assignment ID
+                if (assignment_return.Data != null) {
+                  // if the project has an assignment associated with this manager,
+                  cpte.hasRecord = true;
+                  cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+                  this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+                    // Get Assignment Hours
+                    cpte.projectHours = projectHours_return.Data;
+                  });
+                } else {
+                  cpte.hasRecord = false;
+                }
+              });
+            });
+          });
         })
       }
     })
@@ -95,8 +111,8 @@ export class ProjectTimeEntryComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( data => {
-      if(data != null){
+    dialogRef.afterClosed().subscribe(data => {
+      if (data != null) {
         data.assignment_id = assignment_id
         this.atServ.addAssignmentTime(data).subscribe(result => {
           this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {

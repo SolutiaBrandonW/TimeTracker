@@ -42,6 +42,6 @@ import { MatIconModule } from "@angular/material/icon";
     MatIconModule
     
   ],
-  entryComponents:[ProjectEntryDialogComponent]
+  entryComponents:[ProjectEntryDialogComponent, AssignmentEntryDialogComponent]
 })
 export class ManagerModule { }

@@ -39,4 +39,5 @@
     </table>
 
     <div *ngIf="assignmentTimes != null && assignmentTimes.length == 0" >No Logged Hours.</div>
+    <button mat-raised-button color="primary" class="btnAdd" (click)="openAssignmentDialog()">Add Employee Assignment</button>
 </mat-card-content>

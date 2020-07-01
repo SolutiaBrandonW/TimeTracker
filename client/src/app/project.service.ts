@@ -30,12 +30,20 @@ export class ProjectService {
   addProject(project:Project):Observable<APIMetaReturn>{
     return this.http.post<APIMetaReturn>("https://localhost:44342/api/Project/addProject", project)
   }
+
+  updateProject(project:Project):Observable<APIMetaReturn>{
+    return this.http.post<APIMetaReturn>("https://localhost:44342/api/Project/updateProject", project)
+  }
   deleteProject(project_id:number):Observable<APIMetaReturn>{
     return this.http.get<APIMetaReturn>(`https://localhost:44342/api/Project/DeleteProject/${project_id}`)
   }
   
   getStatusName(status_id):Observable<APIReturn<string>>{
     return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Project/GetStatusName/${status_id}`)
+  }
+
+  getAllStatuses():Observable<APIReturn<Status[]>>{
+    return this.http.get<APIReturn<Status[]>>(`https://localhost:44342/api/Project/GetAllStatuses`)
   }
 }
 
@@ -57,4 +65,9 @@ export class Project{
   end_date:Date
   description:string
   status_id:string
+}
+
+export class Status{
+  status_id:number
+  status_name:string
 }

@@ -4,6 +4,10 @@ import { ProjectAssignmentTime, AssignmentTimeService } from "../../assignment-t
 import { ProjectService, Project } from "../../project.service";
 import { AssignmentService, DetailedAssignment } from "../../assignment.service";
 import {Location} from '@angular/common';
+import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
+
 
 
 
@@ -27,7 +31,8 @@ export class ViewProjectComponent implements OnInit {
               private ats:AssignmentTimeService,
               private ps:ProjectService,
               private as:AssignmentService,
-              private _location: Location) { }
+              private _location: Location,
+              public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.projectName = this.route.snapshot.params['projectName'];
@@ -61,7 +66,63 @@ export class ViewProjectComponent implements OnInit {
   }
 
   editProject(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      name : this.projectName,
+      project_id:this.project_id,
+      start_date:this.project.start_date,
+      end_date:this.project.end_date,
+      description:this.project.description,
+      status_id:this.project.status_id,
+      editing : true,
+    }
 
+    const dialogRef = this.dialog.open(ProjectEntryDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
+        this.ps.updateProject(data).subscribe(result => {
+          this.ps.getProject(this.project_id).subscribe(result => {
+            console.log(result)
+            if(result.Data != null){
+              this.project = result.Data
+              this.ps.getStatusName(this.project.status_id).subscribe(result => {
+                if(result.Data != null){
+                  this.statusName = result.Data
+                }
+              })
+            }
+          })
+        })
+      }
+    })
+  }
+
+  openAssignmentDialog(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      project_id : this.project_id,
+      projectName: this.projectName
+    }
+
+    const dialogRef = this.dialog.open(AssignmentEntryDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( data => {
+        data.project_id = this.project_id;
+        if(data != null){
+         this.as.addAssignment(data).subscribe(result => {
+           console.log(result)
+           this.as.getAssignmentsByProject(this.project_id).subscribe(result =>{
+            console.log(result)
+            if(result.Data != null){
+              this.assignments = result.Data
+            }
+          })
+         })
+       }
+    })
   }
 
   deleteProject(){

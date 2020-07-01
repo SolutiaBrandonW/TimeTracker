@@ -9,37 +9,31 @@
     <mat-form-field appearance="fill">
         <mat-label>Employee</mat-label>
         <select matNativeControl required formControlName="employee_id">
-            <option value="1">Employee 1</option>
-            <option value="2">Employee 2</option>
-            <option value="3">Employee 3</option>
+            <option *ngFor="let employee of employees" [value]="employee.employee_id">{{employee.first_name + " " + employee.last_name}}</option>
         </select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Project</mat-label>
         <select matNativeControl required formControlName="project_id">
-            <option value="1">Project 1</option>
-            <option value="2">Project 2</option>
-            <option value="3">Project 3</option>
+            <option [value]="project_id">{{projectName}}</option>
         </select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Start Date</mat-label>
-        <input type="datetime-local" matInput formControlName="start_date">
+        <input type="datetime-local" matInput required formControlName="start_date">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>End Date</mat-label>
-        <input type="datetime-local" matInput formControlName="end_date">
+        <input type="datetime-local" matInput required formControlName="end_date">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
-        <mat-label>Project</mat-label>
+        <mat-label>Role</mat-label>
         <select matNativeControl required formControlName="role_id">
-            <option value="1">Role 1</option>
-            <option value="2">Role 2</option>
-            <option value="3">Role 3</option>
+            <option *ngFor="let role of roles" [value]="role.role_id">{{role.role_name}}</option>
         </select>
     </mat-form-field>
 </div>

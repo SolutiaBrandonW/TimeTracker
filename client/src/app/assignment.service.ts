@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
 import { Observable } from 'rxjs';
-import { APIReturn } from '../app/api.service';
+import { APIReturn, APIMetaReturn } from '../app/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,14 @@ export class AssignmentService {
 
   getAssignmentsByProject(project_id:number): Observable<APIReturn<DetailedAssignment[]>>{
     return this.http.get<APIReturn<DetailedAssignment[]>>(`https://localhost:44342/api/Assignment/GetAssignmentsByProject/${project_id}`)
+  }
+
+  getAllRoles():Observable<APIReturn<Role[]>>{
+    return this.http.get<APIReturn<Role[]>>(`https://localhost:44342/api/Assignment/GetAllRoles`)
+  }
+
+  addAssignment(assignment:Assignment):Observable<APIMetaReturn>{
+    return this.http.post<APIMetaReturn>("https://localhost:44342/api/Assignment/CreateEmployeeAssignment", assignment)
   }
 }
 
@@ -38,4 +46,9 @@ export class DetailedAssignment {
   end_date: Date;
   role_id: number;
   role_name: string;
+}
+
+export class Role{
+  role_id:number
+  role_name:string
 }

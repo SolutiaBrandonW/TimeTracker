@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
+import { Status, ProjectService } from 'src/app/project.service';
 
 @Component({
   selector: 'app-project-entry-dialog',
@@ -18,8 +19,11 @@ export class ProjectEntryDialogComponent implements OnInit {
   status_id:string
   editing = false;
 
+  statuses:Status[]
+
   constructor(
     private fb: FormBuilder,
+    private ps: ProjectService,
     private dialogRef: MatDialogRef<ProjectEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
     this.project_id = data.project_id;
@@ -28,7 +32,7 @@ export class ProjectEntryDialogComponent implements OnInit {
     this.end_date = data.end_date;
     this.description = data.description;
     this.status_id = data.status_id;
-    this.editing = false;
+    this.editing = data.editing;
   }
 
   ngOnInit(): void {
@@ -49,7 +53,13 @@ export class ProjectEntryDialogComponent implements OnInit {
       description: this.description,
       status_id: this.status_id
     })
-    
+
+    this.ps.getAllStatuses().subscribe(result=>{
+        if(result.Data != null){
+          this.statuses = result.Data
+        }
+    })
+
   }
 
   save() {

@@ -5,3 +5,10 @@ table {
 button {
     margin: 0px 5px;
 }
+
+
+.btnAdd{
+    float: right;
+    margin-right: 50px;
+    margin-top: 25px;
+}
