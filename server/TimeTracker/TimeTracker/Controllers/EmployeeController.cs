@@ -1,4 +1,5 @@
-﻿using DataContracts.Models;
+﻿using DataContracts.EntityFramework;
+using DataContracts.Models;
 using Repository.APIReturnObjects;
 using Repository.Repositories.Employee;
 using System;
@@ -24,6 +25,21 @@ namespace TimeTracker.Controllers
         {
             this.employeeRepository = new EmployeeRepository();
         }
+
+        [Route("UpdateEmployee")]
+        [HttpPost()]
+        public async Task<ReturnAPI> UpdateEmployee([FromBody] EmployeeDTO employee)
+        {
+            return await employeeRepository.UpdateEmployee(employee);
+        }
+
+        [Route("DeleteEmployeeById/{employee_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI> DeleteEmployee(long employee_id)
+        {
+            return await employeeRepository.DeleteEmployee(employee_id);
+        }
+
 
         [Route("getProjectsByEmployee/{id:long}")]
         [HttpGet()] 
@@ -67,11 +83,11 @@ namespace TimeTracker.Controllers
             return await employeeRepository.GetManagerNameByManagerId(manager_id);
         }
 
-        [Route("GetSecurityNameByEmployeeId/{employee_id:long}")]
+        [Route("GetSecurityLevelByEmployeeId/{employee_id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<string>> GetSecurityNameByEmployeeId(long employee_id)
         {
-            return await employeeRepository.GetSecurityNameByEmployeeId(employee_id);
+            return await employeeRepository.GetSecurityLevelByEmployeeId(employee_id);
         }
     }
 }
