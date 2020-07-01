@@ -14,11 +14,72 @@ using TimeTracker.Mappers;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 
 namespace Repository.Repositories.Employee
 {
     public class EmployeeRepository
     {
+
+        public async Task<ReturnAPI> UpdateEmployee(EmployeeDTO employee)
+        {
+            try
+            {
+                if (EmployeeDTO.EmployeeDTOValidity(employee)) {
+                    using (var context = new TimeTrackingEntities())
+                    {
+                        var dbe = await context.employees.Where(emp => emp.employee_id == employee.employee_id).FirstOrDefaultAsync();
+                        if (dbe != null)
+                        {
+
+                            dbe.first_name = employee.first_name;
+                            dbe.last_name = employee.last_name;
+                            dbe.manager_id = employee.manager_id;
+                            dbe.security_level_id = employee.security_level_id;
+                            dbe.is_active = employee.is_active;
+
+                            if (context.SaveChanges() > 0)
+                            {
+                                return new ReturnAPI("Success", 200);
+                            }
+                        }
+                    }
+                }
+                throw new Exception();    
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
+        public async Task<ReturnAPI> DeleteEmployee(long employee_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var employee = await context.employees
+                        .Where(emp => emp.employee_id == employee_id)
+                        .FirstOrDefaultAsync();
+
+                    if (employee != null)
+                    {
+                        context.employees.Remove(employee);
+                        if (context.SaveChanges() > 0)
+                        {
+                            return new ReturnAPI("Success", 200);
+                        }
+                    }
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
         public async Task<ReturnAPI<List<ProjectDTO>>> GetProjectsByEmployee(long id)
         {
             try
@@ -29,7 +90,8 @@ namespace Repository.Repositories.Employee
                     var project = context.projects;
 
                     var projectsByEmployee = await project
-                                                .Where(p => p.assignments.Any(a => a.employee_id == id)).ToListAsync();
+                                                .Where(p => p.assignments.Any(a => a.employee_id == id))
+                                                .ToListAsync();
 
                     List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
 
