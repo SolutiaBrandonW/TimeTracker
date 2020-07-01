@@ -46,6 +46,6 @@ import { MatOptionModule } from '@angular/material/core';
     MatIconModule,
     MatSelectModule
   ],
-  entryComponents:[ProjectEntryDialogComponent, EmployeeDialogComponent]
+  entryComponents:[ProjectEntryDialogComponent, AssignmentEntryDialogComponent, EmployeeDialogComponent]
 })
 export class ManagerModule { }

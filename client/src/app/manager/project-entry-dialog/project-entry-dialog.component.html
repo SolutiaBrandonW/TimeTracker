@@ -29,14 +29,10 @@
     <mat-form-field appearance="fill">
         <mat-label>Status</mat-label>
         <select matNativeControl required formControlName="status_id">
-            <option value="1">Not Started</option>
-            <option value="2">In Progress</option>
-            <option value="3">Completed</option>
-            <option value="4">Cancelled</option>
+            <option *ngFor="let status of statuses" [value]="status.status_id">{{status.status_name}}</option>
         </select>
     </mat-form-field>
 </div>
-
 <mat-dialog-actions>
     <button class="mat-raised-button"(click)="close()">Close</button>
     <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
