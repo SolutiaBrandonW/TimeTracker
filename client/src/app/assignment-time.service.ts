@@ -37,7 +37,7 @@ export class AssignmentTimeService {
   }
 
   getAllAssignmentTimeByProject(project_id:number){
-    return this.http.get<APIReturn<ProjectAssignmentTime>>(`https://localhost:44342/api/Project/GetAllAssignmentTimesByProject/${project_id}`)
+    return this.http.get<APIReturn<ProjectAssignmentTime[]>>(`https://localhost:44342/api/Project/GetAllAssignmentTimesByProject/${project_id}`)
   }
 }
 
