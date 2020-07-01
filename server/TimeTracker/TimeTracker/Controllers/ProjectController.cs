@@ -1,4 +1,5 @@
-﻿using DataContracts.Models;
+﻿using DataContracts.EntityFramework;
+using DataContracts.Models;
 using Repository.APIReturnObjects;
 using Repository.Repositories.Project;
 using System;
@@ -40,6 +41,20 @@ namespace TimeTracker.Controllers
         public async Task<ReturnAPI> updateProject([FromBody] ProjectDTO projectDTO)
         {
             return await projectRepository.updateProject(projectDTO);
+        }
+
+        [Route("GetHoursByProject/{project_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<int?>> GetHoursByProject(long project_id)
+        {
+            return await projectRepository.GetHoursByProject(project_id);
+        }
+
+        [Route("GetAllAssignmentTimesByProject/{project_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<ProjectAssignmentTimeDTO>>> GetAllAssignmentTimesByProject(long project_id)
+        {
+            return await projectRepository.GetAllAssignmentTimesByProject(project_id);
         }
     }
 }
