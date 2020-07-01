@@ -29,4 +29,10 @@ namespace DataContracts.Models
         public bool? is_active;
 
     }
+
+    public class StatusDTO
+    {
+        public long status_id;
+        public string status_name;
+    }
 }

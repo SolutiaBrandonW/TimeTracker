@@ -39,13 +39,6 @@ namespace TimeTracker.Controllers
             return await employeeRepository.GetAssignmentTimesByEmployee(id);
         }
 
-        [Route("CreateEmployeeAssignment")]
-        [HttpPost()]
-        public async Task<ReturnAPI> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
-        {
-            return await employeeRepository.CreateEmployeeAssignment(createAssignemntDTO);
-        }
-
         [Route("GetEmployeeHeirarchy/{id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<List<EmployeeDTO>>> GetEmployeeHeirarchy(long id)

@@ -42,6 +42,31 @@ namespace Repository.Repositories.Project
             }
         }
 
+        public async Task<ReturnAPI<ProjectDTO>> GetProject(long project_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+
+                    var pro = await context.projects.Where(p => p.project_id == project_id).FirstOrDefaultAsync();
+
+                    if(pro is null)
+                    {
+                        throw new Exception();
+                    }
+                    ProjectDTO projectDTO = new ProjectDTO();
+                    projectDTO = ProjectMappers.mapToProjectDTO(pro, projectDTO);
+                       
+                    return new ReturnAPI<ProjectDTO>("Success", 200, projectDTO);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<ProjectDTO>(e.Message, 400, null);
+            }
+        }
+
         public async Task<ReturnAPI> addProject(ProjectDTO projectDTO)
         {
             try
@@ -195,9 +220,54 @@ namespace Repository.Repositories.Project
             }
             catch(Exception e)
             {
-                return new ReturnAPI<List<ProjectAssignmentTimeDTO>>(e.Message, 200, null); ;
+                return new ReturnAPI<List<ProjectAssignmentTimeDTO>>(e.Message, 400, null); ;
             }
         }
 
+        public async Task<ReturnAPI<string>> GetStausName(long status_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var status_name = await context.status.Where(s => s.status_id == status_id).Select(s => s.status_name).FirstOrDefaultAsync();
+                    if(status_name is null)
+                    {
+                        throw new Exception();
+                    }
+                    return new ReturnAPI<string>(200, status_name);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<string>(e.Message, 400, null); ;
+            }
+        }
+
+        public async Task<ReturnAPI<List<StatusDTO>>> GetAllStatuses()
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var statusList = await (from s in context.status
+                                            select new StatusDTO { 
+                                                status_id = s.status_id,
+                                                status_name = s.status_name
+                                            })
+                                            .ToListAsync();
+                    if (statusList is null)
+                    {
+                        throw new Exception();
+                    }
+
+                    return new ReturnAPI<List<StatusDTO>>(200, statusList);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<List<StatusDTO>>(e.Message, 400, null); ;
+            }
+        }
     }
 }
