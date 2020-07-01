@@ -97,6 +97,7 @@
     <Compile Include="Models\EmployeeDTO.cs" />
     <Compile Include="Models\ProjectAssignmentTimeDTO.cs" />
     <Compile Include="Models\ProjectDTO.cs" />
+    <Compile Include="Models\SecurityDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

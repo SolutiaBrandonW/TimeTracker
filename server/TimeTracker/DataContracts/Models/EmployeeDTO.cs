@@ -27,6 +27,4 @@ namespace DataContracts.Models
             return false;
         }
     }
-
-    
 }

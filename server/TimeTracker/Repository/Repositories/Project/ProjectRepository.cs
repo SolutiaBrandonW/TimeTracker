@@ -150,7 +150,7 @@ namespace Repository.Repositories.Project
         }
 
        public async Task<ReturnAPI<int?>> GetHoursByProject(long project_id)
-        {
+       {
             try
             {
                 using (var context = new TimeTrackingEntities())
@@ -183,7 +183,7 @@ namespace Repository.Repositories.Project
                                 select new ProjectAssignmentTimeDTO { 
                                     assignment_id = at.assignment_id, 
                                     assignment_time_id = at.assignment_time_id, 
-                                    employee_id = e.employee_id, 
+                                    employee_id = e.employee_id,
                                     description = at.description, 
                                     employee_name = e.first_name + " " + e.last_name, 
                                     start_time = at.start_time, 
@@ -198,6 +198,5 @@ namespace Repository.Repositories.Project
                 return new ReturnAPI<List<ProjectAssignmentTimeDTO>>(e.Message, 200, null); ;
             }
         }
-
     }
 }

@@ -31,7 +31,6 @@ namespace Repository.Repositories.Employee
                         var dbe = await context.employees.Where(emp => emp.employee_id == employee.employee_id).FirstOrDefaultAsync();
                         if (dbe != null)
                         {
-
                             dbe.first_name = employee.first_name;
                             dbe.last_name = employee.last_name;
                             dbe.manager_id = employee.manager_id;
@@ -286,6 +285,53 @@ namespace Repository.Repositories.Employee
             catch (Exception e)
             {
                 return new ReturnAPI<string>(e.Message, 400, null); }
+        }
+
+        public async Task<ReturnAPI<List<EmployeeDTO>>> GetAllManagers()
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var employees = context.employees;
+                    var managers = await employees.Where(man => man.security_level_id == 1 || man.security_level_id == 2)
+                                            .Select(m => new EmployeeDTO
+                                            {
+                                                employee_id = m.employee_id,
+                                                first_name = m.first_name,
+                                                last_name = m.last_name,
+                                                security_level_id = m.security_level_id,
+                                                manager_id = m.manager_id,
+                                                is_active = m.is_active
+                                            }).ToListAsync();
+                    return new ReturnAPI<List<EmployeeDTO>>("Success", 200, managers);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<List<EmployeeDTO>>(e.Message, 400, null);
+            }
+        }
+
+        public async Task<ReturnAPI<List<SecurityDTO>>>GetAllSecurityLevels()
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var securities = context.security_level;
+                    var security_levels = await securities.Select(sec => new SecurityDTO
+                    {
+                        security_level = sec.secrity_level,
+                        security_level_id = sec.security_level_id
+                    }).ToListAsync();
+                    return new ReturnAPI<List<SecurityDTO>>("Success", 200, security_levels);
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<List<SecurityDTO>>(e.Message, 400, null);
+            }
         }
     }
 }

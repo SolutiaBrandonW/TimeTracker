@@ -40,7 +40,6 @@ namespace TimeTracker.Controllers
             return await employeeRepository.DeleteEmployee(employee_id);
         }
 
-
         [Route("getProjectsByEmployee/{id:long}")]
         [HttpGet()] 
         public async Task<ReturnAPI<List<ProjectDTO>>> GetProjectsByEmployee(long id)
@@ -48,7 +47,7 @@ namespace TimeTracker.Controllers
             return await employeeRepository.GetProjectsByEmployee(id);
         }
 
-        [Route("getAssignmentTimesByEmployee/{id:long}")]
+        [Route("GetAssignmentTimesByEmployee/{id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<List<AssignmentTimeDTO>>> GetAssignmentTimesByEmployee(long id)
         {
@@ -95,6 +94,20 @@ namespace TimeTracker.Controllers
         public async Task<ReturnAPI<string>> GetSecurityNameByEmployeeId(long employee_id)
         {
             return await employeeRepository.GetSecurityLevelByEmployeeId(employee_id);
+        }
+
+        [Route("GetAllManagers")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<EmployeeDTO>>> GetAllManagers()
+        {
+            return await employeeRepository.GetAllManagers();
+        }
+
+        [Route("GetAllSecurityLevels")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<SecurityDTO>>> GetAllSecurityLevels()
+        {
+            return await employeeRepository.GetAllSecurityLevels();
         }
     }
 }
