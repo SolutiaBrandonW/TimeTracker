@@ -2,22 +2,37 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
 import { Observable } from 'rxjs';
-import { APIReturn } from '../app/api.service';
+import { APIReturn, APIMetaReturn } from '../app/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
+
   constructor(private http: HttpClient) { }
+
   getEmployees () : Observable<APIReturn<Employee[]>> {
-    return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetEmployees`)
+    return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetEmployees`);
   }
+
+  getAllManagers () : Observable<APIReturn<Employee[]>> {
+    return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetAllManagers`);
+  }
+
+  updateEmployee (employee: Employee) : Observable<APIMetaReturn> {
+    return this.http.post<APIMetaReturn>(`https://localhost:44342/api/Employee/UpdateEmployee`, employee);
+  }
+
+  deleteEmployeeById (employee_id: number) : Observable<APIMetaReturn> {
+    return this.http.get<APIMetaReturn>(`https://localhost:44342/api/Employee/DeleteEmployeeById/${employee_id}`);
+  }
+  
   getManagerNameByManagerId (manager_id: number) : Observable<APIReturn<string>> {
-    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetManagerNameByManagerId/${manager_id}`)
+    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetManagerNameByManagerId/${manager_id}`);
   }
-  // TODO - change endpoint name
+
   getSecurityLevelByEmployeeId (employee_id: number) : Observable<APIReturn<string>> {
-    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetSecurityNameByEmployeeId/${employee_id}`)
+    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetSecurityLevelByEmployeeId/${employee_id}`);
   }
 }
 
