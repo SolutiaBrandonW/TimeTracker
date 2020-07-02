@@ -11,6 +11,10 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) { }
 
+  getAllSecurityLevels () : Observable<APIReturn<SecurityLevel[]>> {
+    return this.http.get<APIReturn<SecurityLevel[]>>(`https://localhost:44342/api/Employee/GetAllSecurityLevels`);
+  }
+
   getEmployees () : Observable<APIReturn<Employee[]>> {
     return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetEmployees`);
   }
@@ -43,4 +47,14 @@ export class Employee {
   manager_id: number;
   security_level_id: number;
   is_active: boolean;
+}
+
+export class EmployeeList extends Employee {
+  manager_name?: string;
+  security_level?: string;
+}
+
+export class SecurityLevel {
+  security_level: string;
+  security_level_id: number;
 }

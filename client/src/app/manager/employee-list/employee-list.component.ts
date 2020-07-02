@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { EmployeeService, Employee } from '../../employee.service';
+import { EmployeeService, Employee, EmployeeList } from '../../employee.service';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css']
+  styleUrls: ['./employee-list.component.css'],
+  providers: [EmployeeService]
 })
 export class EmployeeListComponent implements OnInit {
 
@@ -23,14 +24,7 @@ export class EmployeeListComponent implements OnInit {
     this.empServ.getEmployees().subscribe( employees_returned => {
       this.employees = employees_returned.Data;
       this.employees.forEach( emp => {
-        if (emp.manager_id) {
-          this.empServ.getManagerNameByManagerId(emp.manager_id).subscribe(man => {
-            emp.manager_name = man.Data;
-          });
-        }
-        this.empServ.getSecurityLevelByEmployeeId(emp.employee_id).subscribe(sec => {
-          emp.security_level = sec.Data;
-        });
+        this.getEmployeeListData(emp)
       });
     });
   }
@@ -44,9 +38,7 @@ export class EmployeeListComponent implements OnInit {
       employee_id: employee.employee_id,
       first_name: employee.first_name,
       last_name: employee.last_name,
-      manager_name: employee.manager_name,
       manager_id: employee.manager_id,
-      security_level: employee.security_level,
       security_level_id: employee.security_level_id,
       is_active: employee.is_active,
     }
@@ -55,23 +47,16 @@ export class EmployeeListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( data => {
       if(data != null){
-        var tempEmp = new Employee();
-        tempEmp.employee_id = data.employee_id;
-        tempEmp.first_name = data.first_name;
-        tempEmp.last_name = data.last_name;
-        tempEmp.manager_id = data.manager_id;
-        tempEmp.security_level_id = data.security_level_id;
-        tempEmp.is_active = data.is_active;
-        console.log(tempEmp);
-        this.empServ.updateEmployee(tempEmp).subscribe( val => {
+        this.empServ.updateEmployee(data).subscribe( val => {
+
           if (val.Code == 200) {
-            this.employees.map( emps => {
-              if (emps.employee_id === data.employee_id) {
-                emps = tempEmp;
-              }
-            });
-          } else {
-            console.log("Failed");
+            // Update employee data
+            let tempEmp: EmployeeList = data;
+            this.getEmployeeListData(tempEmp);
+            let upEmp = this.employees.find(emp => emp.employee_id == tempEmp.employee_id);
+            console.log(upEmp);
+            upEmp = tempEmp;
+            console.log(upEmp);
           }
         });
       }
@@ -82,17 +67,25 @@ export class EmployeeListComponent implements OnInit {
     this.empServ.deleteEmployeeById(employee_id).subscribe( val => {
       if (val.Code == 200) {
         this.employees = this.employees.filter(emp => emp.employee_id != employee_id);
+      } else {
+        console.log(val.Message);
       }
+    });
+  }
+
+  getEmployeeListData(emp: EmployeeList) {
+    if (emp.manager_id) {
+      this.empServ.getManagerNameByManagerId(emp.manager_id).subscribe(man => {
+        emp.manager_name = man.Data;
+      });
+    }
+    this.empServ.getSecurityLevelByEmployeeId(emp.employee_id).subscribe(sec => {
+      emp.security_level = sec.Data;
     });
   }
 
   backClicked() {
     this._location.back();
   }
-
 }
 
-class EmployeeList extends Employee{
-  manager_name?: string;
-  security_level?: string;
-}

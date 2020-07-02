@@ -12,21 +12,32 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Manager</mat-label>
-        <input matInput formControlName="manager_name">
+        <mat-select formControlName="manager_id">
+            <mat-option>
+                None
+            </mat-option>
+            <mat-option [value]="man.employee_id" *ngFor="let man of managers">
+                {{man.first_name}} {{man.last_name}}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Security Level</mat-label>
-        <input matInput formControlName="security_level">
+        <mat-select formControlName="security_level_id">
+            <mat-option [value]="sec.security_level_id" *ngFor="let sec of security_levels">
+                {{sec.security_level}}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Is Active?</mat-label>
         <mat-select formControlName="is_active">
-            <mat-option value=false>
+            <mat-option [value]="false">
                 False
             </mat-option>
-            <mat-option value=true>
+            <mat-option [value]="true">
                 True
             </mat-option>
         </mat-select>
