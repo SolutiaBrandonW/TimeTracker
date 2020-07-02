@@ -26,6 +26,13 @@ namespace TimeTracker.Controllers
             this.employeeRepository = new EmployeeRepository();
         }
 
+        [Route("AddEmployee")]
+        [HttpPost()]
+        public async Task<ReturnAPI> AddEmployee([FromBody] EmployeeDTO employee)
+        {
+            return await employeeRepository.AddEmployee(employee);
+        }
+
         [Route("UpdateEmployee")]
         [HttpPost()]
         public async Task<ReturnAPI> UpdateEmployee([FromBody] EmployeeDTO employee)
@@ -35,9 +42,9 @@ namespace TimeTracker.Controllers
 
         [Route("DeleteEmployeeById/{employee_id:long}")]
         [HttpGet()]
-        public async Task<ReturnAPI> DeleteEmployee(long employee_id)
+        public async Task<ReturnAPI> DeleteEmployeeById(long employee_id)
         {
-            return await employeeRepository.DeleteEmployee(employee_id);
+            return await employeeRepository.DeleteEmployeeById(employee_id);
         }
 
         [Route("getProjectsByEmployee/{id:long}")]

@@ -17,10 +17,11 @@ namespace DataContracts.Models
 
         public static bool EmployeeDTOValidity(EmployeeDTO employeeDTO)
         {
-            if (employeeDTO.employee_id > 0 &&
+            if (employeeDTO.employee_id >= 0 &&
                 employeeDTO.first_name != null && 
                 employeeDTO.last_name != null && 
-                employeeDTO.security_level_id > 0 )
+                employeeDTO.security_level_id >= 0 &&
+                employeeDTO.is_active == true || employeeDTO.is_active == false)
             {
                 return true;
             }

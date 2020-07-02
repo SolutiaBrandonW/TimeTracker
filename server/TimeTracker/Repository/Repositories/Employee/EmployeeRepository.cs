@@ -21,6 +21,39 @@ namespace Repository.Repositories.Employee
     public class EmployeeRepository
     {
 
+        public async Task<ReturnAPI> AddEmployee(EmployeeDTO employee)
+        {
+            try
+            {
+                // Employee ID will be missing -- 
+                // need to see if the rest of payload is valid
+                employee.employee_id = 0;
+                if (EmployeeDTO.EmployeeDTOValidity(employee)) {
+                    using (var context = new TimeTrackingEntities())
+                    {
+                        context.employees.Add(new employee
+                        {
+                            first_name = employee.first_name,
+                            last_name = employee.last_name,
+                            manager_id = employee.manager_id,
+                            security_level_id = employee.security_level_id,
+                            is_active = employee.is_active
+                        });
+                        int dbReturn = await context.SaveChangesAsync();
+                        if (dbReturn >= 0)
+                        {
+                            return new ReturnAPI("Success", 200);
+                        }
+                    }
+                }
+                throw new Exception();
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
         public async Task<ReturnAPI> UpdateEmployee(EmployeeDTO employee)
         {
             try
@@ -37,7 +70,7 @@ namespace Repository.Repositories.Employee
                             dbe.security_level_id = employee.security_level_id;
                             dbe.is_active = employee.is_active;
 
-                            if (context.SaveChanges() > 0)
+                            if (context.SaveChanges() >= 0)
                             {
                                 return new ReturnAPI("Success", 200);
                             }
@@ -52,7 +85,7 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public async Task<ReturnAPI> DeleteEmployee(long employee_id)
+        public async Task<ReturnAPI> DeleteEmployeeById(long employee_id)
         {
             try
             {
