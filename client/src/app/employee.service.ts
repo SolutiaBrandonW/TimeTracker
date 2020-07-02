@@ -15,6 +15,10 @@ export class EmployeeService {
     return this.http.get<APIReturn<SecurityLevel[]>>(`https://localhost:44342/api/Employee/GetAllSecurityLevels`);
   }
 
+  addEmployee (employee: Employee) : Observable<APIMetaReturn> {
+    return this.http.post<APIMetaReturn>(`https://localhost:44342/api/Employee/AddEmployee`, employee)
+  }
+
   getEmployees () : Observable<APIReturn<Employee[]>> {
     return this.http.get<APIReturn<Employee[]>>(`https://localhost:44342/api/Employee/GetEmployees`);
   }

@@ -1,4 +1,11 @@
-<h2 mat-dialog-title>Edit Employee</h2>
+
+<div *ngIf="editing; else adding">
+    <h2 mat-dialog-title>Edit Employee</h2>
+</div>
+<ng-template #adding>
+    <h2 mat-dialog-title>Add Employee</h2>
+</ng-template>
+
 <div mat-dialog-content [formGroup]="form">
     <mat-form-field appearance="fill">
         <mat-label>First Name</mat-label>
@@ -17,7 +24,7 @@
                 None
             </mat-option>
             <mat-option [value]="man.employee_id" *ngFor="let man of managers">
-                {{man.first_name}} {{man.last_name}}
+                {{man.first_name + " " + man.last_name}}
             </mat-option>
         </mat-select>
     </mat-form-field>

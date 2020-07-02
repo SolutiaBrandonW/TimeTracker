@@ -18,7 +18,7 @@ export class EmployeeDialogComponent implements OnInit {
   manager_id: number;
   security_level_id: number;
   is_active: boolean;
-
+  editing: boolean = false;
   managers: Employee[] = [];
   security_levels: SecurityLevel[] = [];
 
@@ -26,17 +26,21 @@ export class EmployeeDialogComponent implements OnInit {
                private dialogRef: MatDialogRef<EmployeeDialogComponent>,
                private empServ: EmployeeService,
                @Inject(MAT_DIALOG_DATA) data ) {
-    this.employee_id = data.employee_id;
-    this.first_name = data.first_name;
-    this.last_name = data.last_name;
-    this.manager_id = data.manager_id;
-    this.security_level_id = data.security_level_id;
-    this.is_active = data.is_active;
+    if (data) {
+      this.editing = true;
+      this.employee_id = data.employee_id;
+      this.first_name = data.first_name;
+      this.last_name = data.last_name;
+      this.manager_id = data.manager_id;
+      this.security_level_id = data.security_level_id;
+      this.is_active = data.is_active;
+      this.editing = data.editing;
+    }
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      employee_id: new FormControl,
+      employee_id: new FormControl(),
       first_name: new FormControl([Validators.required]),
       last_name: new FormControl([Validators.required]),
       manager_id: new FormControl(),

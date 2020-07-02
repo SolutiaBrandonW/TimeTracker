@@ -29,14 +29,13 @@
                 <button mat-raised-button color="accent" (click)="openEmployeeDialog(row)" >
                     Edit
                 </button>
-                <button mat-raised-button color="warn" (click)="deleteEmployee(row.employee_id)" >
-                    Delete
+                <button mat-icon-button type="button" color="warn" (click)="deleteEmployee(row.employee_id)" >
+                    <mat-icon>delete</mat-icon>
                 </button>
             </td>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
     </table>
+    <button mat-raised-button color="primary" class="btnAdd" (click)="openEmployeeDialog()">Add Employee</button>
 </mat-card-content>
