@@ -4,11 +4,18 @@ import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { EmployeeService } from "./employee.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  profile:Profile
+  auth0_id: string
+  employee_id:number
+
+  employee_id$:Observable<number>
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
@@ -37,7 +44,7 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private es: EmployeeService) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
@@ -123,8 +130,19 @@ export class AuthService {
     });
   }
 
-  getRole(){
-    
+  async getEmployeeId(){
+    return this.employee_id;
   }
 
+ 
+}
+
+export class Profile{
+  email:string
+  email_verified:boolean
+  name:string
+  nickname:string
+  picture:string
+  sub:string
+  updated_at:string
 }

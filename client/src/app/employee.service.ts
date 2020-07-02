@@ -42,6 +42,10 @@ export class EmployeeService {
   getSecurityLevelByEmployeeId (employee_id: number) : Observable<APIReturn<string>> {
     return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Employee/GetSecurityLevelByEmployeeId/${employee_id}`);
   }
+
+  getEmployeeByAuth0Id(auth0_id:string):Observable<APIReturn<Employee>>{
+    return this.http.get<APIReturn<Employee>>(`https://localhost:44342/api/Employee/GetEmployeeByAuth0ID/${auth0_id}`);
+  }
 }
 
 export class Employee {

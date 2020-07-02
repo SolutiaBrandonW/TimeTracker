@@ -1,11 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import {Component, OnInit} from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../project.service';
 import { AssignmentService } from '../assignment.service';
 import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.component';
 import { AssignmentTimeService } from "../assignment-time.service";
+import { AuthService } from '../auth.service';
+import { EmployeeService } from '../employee.service';
 
 @Component({
   selector: 'app-project-time-entry',
@@ -15,40 +17,67 @@ import { AssignmentTimeService } from "../assignment-time.service";
 })
 export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
-  currProjectTimeEntries : ProjectTimeEntry[];
+  currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
-  employee_id = 3;
+  employee_id: number
 
   constructor(private pte: ProjectService,
-              private ate: AssignmentService, 
-              private atServ: AssignmentTimeService,
-              private route: ActivatedRoute,
-              private router: Router,
-              public dialog: MatDialog) {}
+    private ate: AssignmentService,
+    private atServ: AssignmentTimeService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog,
+    private as: AuthService,
+    private es: EmployeeService) { }
 
   async ngOnInit() {
+    this.as.userProfile$.subscribe(res => {
+      if (res != null) {
+        this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
+          this.employee_id = result.Data.employee_id;
+        })
+      }
+    })
     try {
-      await this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
-        this.currProjectTimeEntries = project_return.Data;
-        this.currProjectTimeEntries.forEach(cpte => {
-          this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-            // Get Assignment ID
-            cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-            this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-              // Get Assignment Hours
-              cpte.projectHours = projectHours_return.Data;
+      this.as.userProfile$.subscribe(res => {
+        if (res != null) {
+          this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
+            this.employee_id = result.Data.employee_id;
+
+
+
+            this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
+              this.currProjectTimeEntries = project_return.Data;
+              this.currProjectTimeEntries.forEach(cpte => {
+                this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+                  // Get Assignment ID
+                  cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+                  this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+                    // Get Assignment Hours
+                    cpte.projectHours = projectHours_return.Data;
+                  });
+                });
+              });
+              this.loading = false;
+
+              
             });
-          });
-        });
-        this.loading = false;
-      });
+          })
+        }
+      })
+
+
     } catch (e) {
       console.log("Error: " + e);
     }
   }
 
+  public async initializeData() {
+    this.employee_id = this.as.employee_id;
+  }
+
   viewTimeEntry(projectName: string, assignmentId: number) {
-    this.router.navigate(['view-time', projectName, assignmentId], {relativeTo: this.route});
+    this.router.navigate(['view-time', projectName, assignmentId], { relativeTo: this.route });
   }
 
   openTimeEntryDialog(projectName: string, assignment_id: number) {
@@ -61,8 +90,8 @@ export class ProjectTimeEntryComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( data => {
-      if(data != null){
+    dialogRef.afterClosed().subscribe(data => {
+      if (data != null) {
         data.assignment_id = assignment_id
         this.atServ.addAssignmentTime(data).subscribe(result => {
           this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {

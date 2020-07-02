@@ -7,6 +7,8 @@ import { AssignmentService } from '../../assignment.service';
 import { TimeEntryDialogComponent } from '../../project-time-entry/time-entry-dialog/time-entry-dialog.component';
 import { AssignmentTimeService } from "../../assignment-time.service";
 import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
+import { AuthService } from 'src/app/auth.service';
+import { EmployeeService } from 'src/app/employee.service';
 
 @Component({
   selector: 'app-project-time-entry',
@@ -18,37 +20,47 @@ export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
   currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
-  employee_id = 3;
+  employee_id;
 
   constructor(private pte: ProjectService,
     private ate: AssignmentService,
     private atServ: AssignmentTimeService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    public as: AuthService,
+    public es: EmployeeService) { }
 
   async ngOnInit() {
     try {
-      await this.pte.getProjects().subscribe(project_return => {
-        this.currProjectTimeEntries = project_return.Data;
-        this.currProjectTimeEntries.forEach(cpte => {
-          this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-            // Get Assignment ID
-            if (assignment_return.Data != null) {
-              // if the project has an assignment associated with this manager,
-              cpte.hasRecord = true;
-              cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-              this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-                // Get Assignment Hours
-                cpte.projectHours = projectHours_return.Data;
+      this.as.userProfile$.subscribe(res => {
+        if (res != null) {
+          this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
+            this.employee_id = result.Data.employee_id;
+            this.pte.getProjects().subscribe(project_return => {
+              this.currProjectTimeEntries = project_return.Data;
+              this.currProjectTimeEntries.forEach(cpte => {
+                this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
+                  // Get Assignment ID
+                  if (assignment_return.Data != null) {
+                    // if the project has an assignment associated with this manager,
+                    cpte.hasRecord = true;
+                    cpte.projectAssignmentId = assignment_return.Data.assignment_id;
+                    this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
+                      // Get Assignment Hours
+                      cpte.projectHours = projectHours_return.Data;
+                    });
+                  } else {
+                    cpte.hasRecord = false;
+                  }
+                });
               });
-            } else {
-              cpte.hasRecord = false;
-            }
-          });
-        });
-        this.loading = false;
-      });
+              this.loading = false;
+            });
+
+          })
+        }
+      })
     } catch (e) {
       console.log("Error: " + e);
     }
