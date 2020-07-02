@@ -17,7 +17,6 @@ import {Location} from '@angular/common';
 export class ViewTimeComponent implements OnInit {
   displayedColumns: string[] = ['start_time', 'end_time', 'description','actions'];
   assignmentTimes: AssignmentTime[] = [];
-  employeeId: number = 3;
   assignmentId: number;
   projectName: string;
 

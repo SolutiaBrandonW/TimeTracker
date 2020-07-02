@@ -7,6 +7,8 @@ import {Location} from '@angular/common';
 import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
+import { map, mergeMap } from "rxjs/operators";
+import { forkJoin } from 'rxjs';
 
 
 
@@ -42,22 +44,18 @@ export class ViewProjectComponent implements OnInit {
       console.log(result.Data)
     })
 
-    this.ps.getProject(this.project_id).subscribe(result => {
-      console.log(result)
-      if(result.Data != null){
-        this.project = result.Data
-        this.ps.getStatusName(this.project.status_id).subscribe(result => {
-          if(result.Data != null){
-            this.statusName = result.Data
-          }
-        })
-        this.as.getAssignmentsByProject(this.project_id).subscribe(result =>{
-          console.log(result)
-          if(result.Data != null){
-            this.assignments = result.Data
-          }
-        })
-      }
+    this.ps.getProject(this.project_id).pipe(
+      map(project => {
+        this.project = project.Data
+        return project.Data
+      }),mergeMap(proj => {
+        const statusName = this.ps.getStatusName(proj.status_id);
+        const assignments = this.as.getAssignmentsByProject(proj.project_id);
+        return forkJoin([statusName, assignments])
+      })
+    ).subscribe(result => {
+      this.statusName = result[0].Data;
+      this.assignments = result[1].Data;
     })
   }
 
@@ -83,17 +81,8 @@ export class ViewProjectComponent implements OnInit {
     dialogRef.afterClosed().subscribe( data => {
       if(data != null){
         this.ps.updateProject(data).subscribe(result => {
-          this.ps.getProject(this.project_id).subscribe(result => {
-            console.log(result)
-            if(result.Data != null){
-              this.project = result.Data
-              this.ps.getStatusName(this.project.status_id).subscribe(result => {
-                if(result.Data != null){
-                  this.statusName = result.Data
-                }
-              })
-            }
-          })
+          if(result.Code === 200)
+            this.reloadProjects();
         })
       }
     })
@@ -123,6 +112,17 @@ export class ViewProjectComponent implements OnInit {
          })
        }
     })
+  }
+
+  reloadProjects(){
+    this.ps.getProject(this.project_id).pipe(
+      map(projReturn => {
+        this.project = projReturn.Data
+        return projReturn.Data
+      }),mergeMap(project => this.ps.getStatusName(project.status_id))
+      ).subscribe(result => {
+        this.statusName = result.Data
+      })
   }
 
   deleteProject(){
