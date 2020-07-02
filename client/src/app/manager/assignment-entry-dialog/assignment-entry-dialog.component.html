@@ -8,16 +8,16 @@
 <div mat-dialog-content [formGroup]="form">
     <mat-form-field appearance="fill">
         <mat-label>Employee</mat-label>
-        <select matNativeControl required formControlName="employee_id">
-            <option *ngFor="let employee of employees" [value]="employee.employee_id">{{employee.first_name + " " + employee.last_name}}</option>
-        </select>
+        <mat-select matInput required formControlName="employee_id">
+            <mat-option *ngFor="let employee of employees" [value]="employee.employee_id">{{employee.first_name + " " + employee.last_name}}</mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Project</mat-label>
-        <select matNativeControl required formControlName="project_id">
-            <option [value]="project_id">{{projectName}}</option>
-        </select>
+        <mat-select matInput required formControlName="project_id">
+            <mat-option [value]="project_id">{{projectName}}</mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -32,9 +32,9 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Role</mat-label>
-        <select matNativeControl required formControlName="role_id">
-            <option *ngFor="let role of roles" [value]="role.role_id">{{role.role_name}}</option>
-        </select>
+        <mat-select matInput required formControlName="role_id">
+            <mat-option *ngFor="let role of roles" [value]="role.role_id">{{role.role_name}}</mat-option>
+        </mat-select>
     </mat-form-field>
 </div>
 
