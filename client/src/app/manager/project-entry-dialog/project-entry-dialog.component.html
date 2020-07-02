@@ -28,9 +28,9 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Status</mat-label>
-        <select matNativeControl required formControlName="status_id">
-            <option *ngFor="let status of statuses" [value]="status.status_id">{{status.status_name}}</option>
-        </select>
+        <mat-select  matInput required formControlName="status_id">
+            <mat-option *ngFor="let status of statuses" [value]="status.status_id">{{status.status_name}}</mat-option>
+        </mat-select >
     </mat-form-field>
 </div>
 <mat-dialog-actions>
