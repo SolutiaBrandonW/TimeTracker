@@ -1,1 +1,28 @@
-<p>view-assignment works!</p>
+<mat-card-title>{{project.name + " - " + employee_name}}</mat-card-title>
+<mat-card-content>
+    <button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
+    <div>
+        <label>Role</label> {{employee_role}}<br/>
+        <label>Start Date</label> {{project.start_date}}<br/>
+        <label>End Date</label> {{project.end_date}}<br/>
+    </div>
+    <div *ngIf="assignment_times != null && assignment_times.length == 0; else exists" >No Logged Hours.</div>
+    <ng-template #exists>
+        <table mat-table [dataSource]="assignment_times">
+            <ng-container matColumnDef="start_time">
+                <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                <td mat-cell *matCellDef="let element"> {{(element.start_time | date:'M-d-yyyy h:mm aa')}} </td>
+            </ng-container>
+            <ng-container matColumnDef="end_time">
+                <th mat-header-cell *matHeaderCellDef> End Date </th>
+                <td mat-cell *matCellDef="let element"> {{(element.end_time | date:'M-d-yyyy h:mm aa')}} </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </ng-template>
+</mat-card-content>

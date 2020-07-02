@@ -14,8 +14,16 @@ export class AssignmentService {
     return this.http.get<APIReturn<Assignment>>(`https://localhost:44342/api/Assignment/getAssignmentByProjectAndEmployee?project_id=${project_id}&employee_id=${employee_id}`)
   }
 
+  getAssignmentByAssignmentId(assignment_id: number) : Observable<APIReturn<Assignment>> {
+    return this.http.get<APIReturn<Assignment>>(`https://localhost:44342/api/Assignment/getAssignmentByAssignmentId/${assignment_id}`)
+  }
+
   getAssignmentsByProject(project_id:number): Observable<APIReturn<DetailedAssignment[]>>{
     return this.http.get<APIReturn<DetailedAssignment[]>>(`https://localhost:44342/api/Assignment/GetAssignmentsByProject/${project_id}`)
+  }
+
+  getRoleByRoleId(role_id: number) : Observable<APIReturn<string>> {
+    return this.http.get<APIReturn<string>>(`https://localhost:44342/api/Assignment/GetRoleByRoleId/${role_id}`)
   }
 
   getAllRoles():Observable<APIReturn<Role[]>>{
