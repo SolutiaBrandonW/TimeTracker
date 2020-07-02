@@ -109,5 +109,12 @@ namespace TimeTracker.Controllers
         {
             return await employeeRepository.GetAllSecurityLevels();
         }
+
+        [Route("GetEmployeeByAuth0ID/{auth0_id}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<EmployeeDTO>> GetEmployeeByAuth0ID(string auth0_id)
+        {
+            return await employeeRepository.GetEmployeeByAuth0ID(auth0_id);
+        }
     }
 }

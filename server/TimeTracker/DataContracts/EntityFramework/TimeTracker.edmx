@@ -37,6 +37,7 @@
           <Property Name="manager_id" Type="bigint" />
           <Property Name="security_level_id" Type="bigint" Nullable="false" />
           <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="auth0_id" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="project">
           <Key>
@@ -230,6 +231,7 @@
           <Property Name="is_active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="employee1" Relationship="Self.FK_employee_employee" FromRole="employee" ToRole="employee1" />
           <NavigationProperty Name="employee2" Relationship="Self.FK_employee_employee" FromRole="employee1" ToRole="employee" />
+          <Property Name="auth0_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="project">
           <Key>
@@ -440,6 +442,7 @@
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="TimeTrackingModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="auth0_id" ColumnName="auth0_id" />
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="last_name" ColumnName="last_name" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
