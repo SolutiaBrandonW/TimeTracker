@@ -44,12 +44,25 @@ namespace TimeTracker.Controllers
             return await assignmentRepository.getAssignmentByProjectAndEmployee(project_id, employee_id);
         }
 
-        /*[Route("getProjectTest")]
+        [Route("GetAssignmentsByProject/{project_id:long}")]
         [HttpGet()]
-        public async Task<ReturnAPI<List<ProjectReturn>>> getProjectTest(long employee_id)
+        public async Task<ReturnAPI<List<DetailedAssignmentDTO>>> GetAssignmentsByProject(long project_id)
         {
-            return await assignmentRepository.getProjectStuff(employee_id);
-        }*/
+            return await assignmentRepository.GetAssignmentsByProject(project_id);
+        }
 
+        [Route("GetAllRoles")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<Role>>> GetAllRoles()
+        {
+            return await assignmentRepository.GetAllRoles();
+        }
+
+        [Route("CreateEmployeeAssignment")]
+        [HttpPost()]
+        public async Task<ReturnAPI> CreateEmployeeAssignment([FromBody] AssignmentDTO createAssignemntDTO)
+        {
+            return await assignmentRepository.CreateEmployeeAssignment(createAssignemntDTO);
+        }
     }
 }

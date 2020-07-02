@@ -16,4 +16,22 @@ namespace DataContracts.Models
         public long role_id;
 
     }
+
+    public class DetailedAssignmentDTO
+    {
+        public long assignment_id;
+        public long project_id;
+        public long employee_id;
+        public string employee_name;
+        public DateTime start_date;
+        public DateTime end_date;
+        public long role_id;
+        public string role_name;
+    }
+
+    public class Role
+    {
+        public long role_id;
+        public string role_name;
+    }
 }

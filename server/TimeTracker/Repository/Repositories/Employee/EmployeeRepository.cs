@@ -202,34 +202,6 @@ namespace Repository.Repositories.Employee
             }
         }
 
-        public async Task<ReturnAPI> CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
-        {
-            try
-            {
-                using (var context = new TimeTrackingEntities())
-                {
-                    assignment create_assignment = new assignment();
-                    create_assignment.project_id = createAssignemntDTO.project_id;
-                    create_assignment.employee_id = create_assignment.employee_id;
-                    create_assignment.start_date = create_assignment.start_date;
-                    create_assignment.end_date = create_assignment.end_date;
-                    create_assignment.role_id = create_assignment.role_id;
-                    context.assignments.Add(create_assignment);
-                    var queryReturn = await context.SaveChangesAsync();
-
-                    if (queryReturn.Equals(1))
-                    {
-                        return new ReturnAPI("Success", 200);
-                    }
-                    throw new DataException("Failed to insert assignment in database");
-                }
-            }
-            catch (Exception e)
-            {
-                return new ReturnAPI(e.Message, 400);
-            }
-        }
-
         public async Task<ReturnAPI<int?>> GetEmployeeHoursByAssignment(int assignment_id)
         {
             try

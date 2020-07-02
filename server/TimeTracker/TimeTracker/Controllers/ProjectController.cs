@@ -29,6 +29,13 @@ namespace TimeTracker.Controllers
             return await projectRepository.GetProjects();
         }
 
+        [Route("GetProject/{project_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<ProjectDTO>> GetProject(long project_id)
+        {
+            return await projectRepository.GetProject(project_id);
+        }
+
         [Route("addProject")]
         [HttpPost()]
         public async Task<ReturnAPI> addProject([FromBody] ProjectDTO projectDTO)
@@ -43,6 +50,13 @@ namespace TimeTracker.Controllers
             return await projectRepository.updateProject(projectDTO);
         }
 
+        [Route("DeleteProject/{project_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI> DeleteProject(long project_id)
+        {
+            return await projectRepository.deleteProject(project_id);
+        }
+
         [Route("GetHoursByProject/{project_id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<int?>> GetHoursByProject(long project_id)
@@ -55,6 +69,20 @@ namespace TimeTracker.Controllers
         public async Task<ReturnAPI<List<ProjectAssignmentTimeDTO>>> GetAllAssignmentTimesByProject(long project_id)
         {
             return await projectRepository.GetAllAssignmentTimesByProject(project_id);
+        }
+
+        [Route("GetStatusName/{status_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<string>> GetStatus(long status_id)
+        {
+            return await projectRepository.GetStausName(status_id);
+        }
+
+        [Route("GetAllStatuses")]
+        [HttpGet()]
+        public async Task<ReturnAPI<List<StatusDTO>>> GetAllStatuses()
+        {
+            return await projectRepository.GetAllStatuses();
         }
     }
 }

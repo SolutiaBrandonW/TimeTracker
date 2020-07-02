@@ -9,6 +9,8 @@ using DataContracts.EntityFramework;
 using DataContracts.Models;
 using Repository.Mappers;
 using Repository.APIReturnObjects;
+using System.ComponentModel.Design;
+using System.Data;
 
 namespace Repository.Repositories.Assignment
 {
@@ -79,14 +81,19 @@ namespace Repository.Repositories.Assignment
                 {
                     var assignments = context.assignments;
                     var returnedAssignment = await assignments.Where(a => a.employee_id == employee_id && a.project_id == project_id).FirstOrDefaultAsync();
-
-                    AssignmentDTO assignmentDTO = new AssignmentDTO();
-                    assignmentDTO.assignment_id = returnedAssignment.assignment_id;
-                    assignmentDTO.employee_id = returnedAssignment.employee_id;
-                    assignmentDTO.project_id = returnedAssignment.project_id;
-                    assignmentDTO.start_date = returnedAssignment.start_date;
-                    assignmentDTO.end_date = returnedAssignment.end_date;
-                    assignmentDTO.role_id = returnedAssignment.role_id;
+                    if(returnedAssignment is null)
+                    {
+                        return new ReturnAPI<AssignmentDTO>(400, null);
+                    }
+                    AssignmentDTO assignmentDTO = new AssignmentDTO
+                    {
+                        assignment_id = returnedAssignment.assignment_id,
+                        employee_id = returnedAssignment.employee_id,
+                        project_id = returnedAssignment.project_id,
+                        start_date = returnedAssignment.start_date,
+                        end_date = returnedAssignment.end_date,
+                        role_id = returnedAssignment.role_id
+                    };
 
                     return new ReturnAPI<AssignmentDTO>("Success", 200, assignmentDTO);
                 }
@@ -97,38 +104,101 @@ namespace Repository.Repositories.Assignment
             }
         }
 
-        /*public async Task<ReturnAPI<List<ProjectReturn>>> getProjectStuff(long employee_id)
+        public async Task<ReturnAPI<List<DetailedAssignmentDTO>>> GetAssignmentsByProject(long project_id)
         {
             try
             {
                 using (var context = new TimeTrackingEntities())
                 {
-                    var assignments = context.assignments;
-                    var query = assignments.Where(a => a.employee_id == employee_id).Select(a => a.project_id);
-
-                    *//*var pageObject = from p in context.projects
-                                     join a in context.assignments on p.project_id equals a.project_id into test
-                                     from td in test.DefaultIfEmpty()
-                                     join at in context.assignment_time on td.assignment_id equals at.assignment_id into tesd
-                                     from ts in tesd.DefaultIfEmpty()
-                                     where td.employee_id == employee_id
-                                     group p by new {ts.assignment_id, t.project_id, AttributeUsageAttribute .employee_id, p.name} into grp
-                                     select new ProjectReturn(){ assignment_id = grp.Key.assignment_id, project_id = grp.Key.project_id, employee_id = grp.Key.employee_id, name = grp.Key.name};*//*
-                    //var list = pageObject.ToList();
-
-
-
-             
-
-                    return new ReturnAPI<List<ProjectReturn>>("Pass", 200, list);
+                    var query = from a in context.assignments
+                                join e in context.employees
+                                on a.employee_id equals e.employee_id
+                                where a.project_id == project_id
+                                select new DetailedAssignmentDTO
+                                {
+                                    assignment_id = a.assignment_id,
+                                    employee_id = a.employee_id,
+                                    project_id = a.project_id,
+                                    employee_name = e.first_name + " " + e.last_name,
+                                    start_date = a.start_date,
+                                    end_date = a.end_date,
+                                    role_id = a.role_id,
+                                    role_name = a.role.role_name
+                                };
+                    if (query is null)
+                    {
+                        return new ReturnAPI<List<DetailedAssignmentDTO>>(400, null);
+                    }
+                    List<DetailedAssignmentDTO> assignmentDTOs = await query.ToListAsync();
+                    return new ReturnAPI<List<DetailedAssignmentDTO>>("Success", 200, assignmentDTOs);
                 }
-
-
             }
             catch (Exception e)
             {
-                return new ReturnAPI<List<ProjectReturn>>("Fail", 200, null);
+                return new ReturnAPI<List<DetailedAssignmentDTO>>(e.Message, 400, null);
             }
-        }*/
+        }
+
+        public async Task<ReturnAPI<List<Role>>> GetAllRoles()
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var roleList = await (from r in context.roles
+                                         select new Role
+                                         {
+                                             role_id = r.role_id,
+                                             role_name = r.role_name
+                                         }).ToListAsync();
+
+                    if(roleList is null)
+                    {
+                        throw new Exception();
+                    }
+
+                    return new ReturnAPI<List<Role>>(200, roleList);
+                }
+            }
+            catch(Exception e)
+            {
+                return new ReturnAPI<List<Role>>(e.Message, 400, null);
+            }
+        }
+
+
+        public async Task<ReturnAPI> CreateEmployeeAssignment(AssignmentDTO createAssignemntDTO)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    assignment create_assignment = new assignment
+                    {
+                        project_id = createAssignemntDTO.project_id,
+                        employee_id = createAssignemntDTO.employee_id,
+                        start_date = createAssignemntDTO.start_date,
+                        end_date = createAssignemntDTO.end_date,
+                        role_id = createAssignemntDTO.role_id
+                    };
+                    context.assignments.Add(create_assignment);
+                    var queryReturn = await context.SaveChangesAsync();
+
+                    if (queryReturn.Equals(1))
+                    {
+                        return new ReturnAPI("Success", 200);
+                    }
+                    throw new DataException("Failed to insert assignment in database");
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
+
+
+
     }
 }
