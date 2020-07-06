@@ -66,6 +66,7 @@ export class ViewAssignmentComponent implements OnInit {
     this.assiTimeServ.deleteAssignmentTime(assignment_time_id).subscribe(result => {
       if(result.Code == 200) {
         this.assignment_times = this.assignment_times.filter(ast => ast.assignment_time_id != assignment_time_id);
+        this.refreshTable();
       } else {
         console.log(result.Message);
       }    
