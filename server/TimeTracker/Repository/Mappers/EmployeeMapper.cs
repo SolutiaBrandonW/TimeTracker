@@ -19,6 +19,7 @@ namespace Repository.Mappers
             employeeDTO.manager_id = employee.manager_id;
             employeeDTO.security_level_id = employee.security_level_id;
             employeeDTO.is_active = employee.is_active;
+            employee.auth0_id = employee.auth0_id;
 
             return employeeDTO;
         }

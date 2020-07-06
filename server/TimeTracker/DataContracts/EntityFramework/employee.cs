@@ -26,6 +26,7 @@ namespace DataContracts.EntityFramework
         public Nullable<long> manager_id { get; set; }
         public long security_level_id { get; set; }
         public bool is_active { get; set; }
+        public string auth0_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<employee> employee1 { get; set; }

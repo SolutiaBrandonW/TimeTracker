@@ -14,6 +14,7 @@ namespace DataContracts.Models
         public long? manager_id;
         public long security_level_id;
         public bool is_active;
+        public string auth0_id;
 
         public static bool EmployeeDTOValidity(EmployeeDTO employeeDTO)
         {

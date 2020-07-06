@@ -338,5 +338,28 @@ namespace Repository.Repositories.Employee
                 return new ReturnAPI<List<SecurityDTO>>(e.Message, 400, null);
             }
         }
+
+        public async Task<ReturnAPI<EmployeeDTO>> GetEmployeeByAuth0ID(string auth0_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var employee = await context.employees.Where(e => e.auth0_id == auth0_id).FirstOrDefaultAsync();
+                    if(employee == null)
+                    {
+                        return new ReturnAPI<EmployeeDTO>(400, null);
+                    }
+                    EmployeeDTO employeeDTO = new EmployeeDTO();
+                    employeeDTO = EmployeeMapper.mapToEmployeeDTO(employee, employeeDTO);
+                    return new ReturnAPI<EmployeeDTO>(200, employeeDTO);
+
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<EmployeeDTO>(e.Message, 400, null);
+            }
+        }
     }
 }
