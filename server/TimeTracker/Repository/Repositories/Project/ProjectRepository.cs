@@ -127,7 +127,20 @@ namespace Repository.Repositories.Project
                     project.end_date = projectDTO.end_date;
                     project.description = projectDTO.description;
                     project.status_id = projectDTO.status_id;
+                    if(project.is_active != projectDTO.is_active)
+                    {
+                        var assignmentQry = await context.assignments.Where(a => a.project_id == projectDTO.project_id).ToListAsync();
+                        if(assignmentQry.Count > 0)
+                        {
+                            foreach(assignment a in assignmentQry)
+                            {
+                                a.is_active = projectDTO.is_active;
+                            }
+                        }
+                    }
                     project.is_active = projectDTO.is_active;
+
+
                  
                     int saveChangesResult = await context.SaveChangesAsync();
                     if(saveChangesResult == 0)
@@ -148,13 +161,27 @@ namespace Repository.Repositories.Project
             {
                 using (var context = new TimeTrackingEntities())
                 {
-                    var query = await context.projects.Where(p => p.project_id == project_id).FirstOrDefaultAsync();
-                    if (query is null)
+                    //  get all assignment times for this project.
+                    //  get all assignments for this project
+                    //  get this project.
+                    //  delete everything.
+                    var assignment_timesQry = await context.assignment_time.Where(at => at.assignment.project_id == project_id).ToListAsync();
+                    var assignmentsQry = await context.assignments.Where(a => a.project_id == project_id).ToListAsync();
+                    var projectQry = await context.projects.Where(p => p.project_id == project_id).FirstOrDefaultAsync();
+                    if (projectQry is null)
                     {
                         throw new Exception();
                     }
-
-                    context.projects.Remove(query);
+                    if(assignment_timesQry.Count > 0)
+                    {
+                        context.assignment_time.RemoveRange(assignment_timesQry);
+                    }
+                    if(assignmentsQry.Count > 0)
+                    {
+                        context.assignments.RemoveRange(assignmentsQry);
+                    }
+               
+                    context.projects.Remove(projectQry);
 
                     int saveChangesResult = await context.SaveChangesAsync();
 
