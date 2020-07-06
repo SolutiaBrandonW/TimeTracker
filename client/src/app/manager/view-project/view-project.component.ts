@@ -127,7 +127,9 @@ export class ViewProjectComponent implements OnInit {
   }
 
   deleteProject(){
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will remove all assignments and time entries associated with this project.' },
+    });
     dialogRef.afterClosed().subscribe(data => {
       if(data === true){
         this.ps.deleteProject(this.project_id).subscribe(result => {
