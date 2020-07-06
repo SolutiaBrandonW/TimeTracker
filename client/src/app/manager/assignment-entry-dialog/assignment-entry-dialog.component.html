@@ -34,6 +34,17 @@
             <mat-option *ngFor="let role of roles" [value]="role.role_id">{{role.role_name}}</mat-option>
         </mat-select>
     </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Active?</mat-label>
+        <mat-select formControlName="is_active">
+            <mat-option [value]="true">
+                True
+            </mat-option>
+            <mat-option [value]="false">
+                False
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 
 <mat-dialog-actions>

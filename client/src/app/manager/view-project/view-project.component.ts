@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectAssignmentTime, AssignmentTimeService } from "../../assignment-time.service";
 import { ProjectService, Project } from "../../project.service";
@@ -9,6 +9,11 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
 import { map, mergeMap } from "rxjs/operators";
 import { forkJoin } from 'rxjs';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from "@angular/material/sort";
+
 
 @Component({
   selector: 'app-view-project',
@@ -24,7 +29,9 @@ export class ViewProjectComponent implements OnInit {
   assignmentTimes: ProjectAssignmentTime[];
   assignments:DetailedAssignment[]
   employee_names:string
-
+  dataSource: MatTableDataSource<ProjectAssignmentTime>
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(private route:ActivatedRoute,
               private router:Router,
               private ats:AssignmentTimeService,
@@ -39,6 +46,9 @@ export class ViewProjectComponent implements OnInit {
     this.ats.getAllAssignmentTimeByProject(this.project_id).subscribe(result => {
       this.assignmentTimes = result.Data
       console.log(result.Data)
+      this.dataSource = new MatTableDataSource<ProjectAssignmentTime>(this.assignmentTimes);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
 
     this.ps.getProject(this.project_id).pipe(
@@ -71,6 +81,7 @@ export class ViewProjectComponent implements OnInit {
       end_date:this.project.end_date,
       description:this.project.description,
       status_id:this.project.status_id,
+      is_active:this.project.is_active,
       editing : true,
     }
 
@@ -96,17 +107,17 @@ export class ViewProjectComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AssignmentEntryDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( data => {
-        if(data != null){
-         this.as.addAssignment(data).subscribe(result => {
-           console.log(result)
-           this.as.getAssignmentsByProject(data.project_id).subscribe(result =>{
+      if(data != null){
+        this.as.addAssignment(data).subscribe(result => {
+          console.log(result)
+          this.as.getAssignmentsByProject(data.project_id).subscribe(result =>{
             console.log(result)
             if(result.Data != null){
               this.assignments = result.Data
             }
           })
-         })
-       }
+        })
+      }
     })
   }
 
@@ -122,9 +133,16 @@ export class ViewProjectComponent implements OnInit {
   }
 
   deleteProject(){
-    this.ps.deleteProject(this.project_id).subscribe(result => {
-      console.log(result)
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will remove all assignments and time entries associated with this project.' },
+    });
+    dialogRef.afterClosed().subscribe(data => {
+      if(data === true){
+        this.ps.deleteProject(this.project_id).subscribe(result => {
+            console.log(result)
+          })
+          this.router.navigate(['project-time-entry'], {relativeTo: this.route.parent});
+      }
     })
-    this.router.navigate(['project-time-entry'], {relativeTo: this.route.parent});
   }
 }

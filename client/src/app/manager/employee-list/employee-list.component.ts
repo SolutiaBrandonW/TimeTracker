@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { EmployeeService, Employee, EmployeeList } from '../../employee.service';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
+import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTable } from "@angular/material/table";
 
 @Component({
   selector: 'app-employee-list',
@@ -15,7 +20,10 @@ export class EmployeeListComponent implements OnInit {
 
   displayedColumns: string[] = ['first_name', 'last_name', 'manager_name', 'security_level', 'actions'];
   employees: EmployeeList[] = [];
-
+  dataSource:MatTableDataSource<EmployeeList>
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatTable, {static: false}) table:MatTable<any>;
   constructor(private empServ: EmployeeService,
               public dialog: MatDialog,
               private _location: Location) { }
@@ -48,15 +56,15 @@ export class EmployeeListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => {
 
-      if(data != null){
+      if (data != null) {
         if (editing) {
-          this.empServ.updateEmployee(data).subscribe( val => {
+          this.empServ.updateEmployee(data).subscribe(val => {
             if (val.Code == 200) {
               this.getEmployeeList();
             }
           });
         } else {
-          this.empServ.addEmployee(data).subscribe( val => {
+          this.empServ.addEmployee(data).subscribe(val => {
             if (val.Code == 200) {
               this.getEmployeeList();
             }
@@ -66,20 +74,29 @@ export class EmployeeListComponent implements OnInit {
     })
   }
 
-  deleteEmployee(employee_id : number) {
-    this.empServ.deleteEmployeeById(employee_id).subscribe( val => {
-      if (val.Code == 200) {
-        this.employees = this.employees.filter(emp => emp.employee_id != employee_id);
-      } else {
-        console.log(val.Message);
-      }
+  deleteEmployee(employee_id: number) {
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will permenantly delete all employee assignments and assignment time entries.' },
     });
+    dialogRef.afterClosed().subscribe(data => {
+      if (data === true) {
+        this.empServ.deleteEmployeeById(employee_id).subscribe(val => {
+          if (val.Code == 200) {
+            this.employees = this.employees.filter(emp => emp.employee_id != employee_id);
+            this.refreshTable();
+          } else {
+            console.log(val.Message);
+          }
+        });
+      }
+    })
   }
 
   getEmployeeList() {
-    this.empServ.getEmployees().subscribe( employees_returned => {
+    this.empServ.getEmployees().subscribe(employees_returned => {
       this.employees = employees_returned.Data;
-      this.employees.forEach( emp => {
+      this.employees.forEach(emp => {
         this.empServ.getSecurityLevelByEmployeeId(emp.employee_id).subscribe(sec => {
           emp.security_level = sec.Data;
           if (emp.manager_id) {
@@ -89,7 +106,16 @@ export class EmployeeListComponent implements OnInit {
           }
         });
       });
+      this.dataSource = new MatTableDataSource<EmployeeList>(this.employees)
+      this.dataSource.paginator = this.paginator
+      this.dataSource.sort = this.sort
     });
+  }
+
+  refreshTable(){
+    this.dataSource.data = this.employees;
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   backClicked() {

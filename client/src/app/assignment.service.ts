@@ -64,6 +64,7 @@ export class DetailedAssignment {
   end_date: Date;
   role_id: number;
   role_name: string;
+  is_active:boolean
 }
 
 export class Role{

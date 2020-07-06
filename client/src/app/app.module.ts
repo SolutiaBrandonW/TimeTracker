@@ -13,6 +13,9 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import { MatSortModule } from "@angular/material/sort";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 
 import { MatIconModule, MatIcon } from "@angular/material/icon";
@@ -26,6 +29,7 @@ import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog
 import { LoginComponent } from './login/login.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
   declarations: [
@@ -36,6 +40,7 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     NavBarComponent,
     ProfileComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,10 +60,12 @@ import { ProfileComponent } from './profile/profile.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents:[TimeEntryDialogComponent]
+  entryComponents:[TimeEntryDialogComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }

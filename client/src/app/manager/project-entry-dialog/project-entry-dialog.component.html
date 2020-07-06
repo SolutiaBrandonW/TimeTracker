@@ -32,6 +32,17 @@
             <mat-option *ngFor="let status of statuses" [value]="status.status_id">{{status.status_name}}</mat-option>
         </mat-select >
     </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Active?</mat-label>
+        <mat-select matInput required formControlName="is_active">
+            <mat-option [value]="true">
+                True
+            </mat-option>
+            <mat-option [value]="false">
+                False
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 <mat-dialog-actions>
     <button class="mat-raised-button"(click)="close()">Close</button>
