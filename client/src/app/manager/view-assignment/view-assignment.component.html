@@ -8,11 +8,11 @@
             <label>End Date</label> {{assignment.end_date}}<br/>
         </div>
         <div>
-            <button mat-raised-button color="accent" (click)="openAssignmentDialog()">
+            <button mat-raised-button class="editBtn" (click)="openAssignmentDialog()">
                 Edit
             </button>
-            <button mat-icon-button type="button" color="warn" (click)="deleteAssignment()">
-                <mat-icon>delete</mat-icon>
+            <button mat-raised-button type="button" class="deleteBtn" (click)="deleteAssignment()">
+                Delete
             </button>
         </div>
         <div *ngIf="mat_table_data.data == undefined || mat_table_data.data.length == 0 ; else exists" >No Logged Hours.</div>
@@ -33,11 +33,11 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-raised-button color="accent" (click)="openAssignmentTimeDialog(row)">
+                        <button mat-raised-button class="editBtn" (click)="openAssignmentTimeDialog(row)">
                             Edit
                         </button>
-                        <button mat-icon-button type="button" color="warn" (click)="deleteAssignmentTime(row.assignment_time_id)">
-                            <mat-icon>delete</mat-icon>
+                        <button mat-raised-button type="button" class="deleteBtn" (click)="deleteAssignmentTime(row.assignment_time_id)">
+                            Delete
                         </button>
                     </td>
                 </ng-container>
