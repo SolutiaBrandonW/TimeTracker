@@ -91,14 +91,26 @@ namespace Repository.Repositories.Employee
             {
                 using (var context = new TimeTrackingEntities())
                 {
+                    var assignment_timesQry = await context.assignment_time.Where(at => at.assignment.employee_id == employee_id).ToListAsync();
+                    var assignmentsQry = await context.assignments.Where(a => a.employee_id == employee_id).ToListAsync();
+
                     var employee = await context.employees
                         .Where(emp => emp.employee_id == employee_id)
                         .FirstOrDefaultAsync();
 
                     if (employee != null)
                     {
+                        if(assignment_timesQry.Count > 0)
+                        {
+                            context.assignment_time.RemoveRange(assignment_timesQry);
+                        }
+                        if(assignmentsQry.Count > 0)
+                        {
+                            context.assignments.RemoveRange(assignmentsQry);
+                        }
+
                         context.employees.Remove(employee);
-                        if (context.SaveChanges() > 0)
+                        if (await context.SaveChangesAsync() > 0)
                         {
                             return new ReturnAPI("Success", 200);
                         }

@@ -177,7 +177,8 @@ namespace Repository.Repositories.Assignment
                         project_id = returnedAssignment.project_id,
                         start_date = returnedAssignment.start_date,
                         end_date = returnedAssignment.end_date,
-                        role_id = returnedAssignment.role_id
+                        role_id = returnedAssignment.role_id,
+                        is_active = returnedAssignment.is_active
                     };
 
                     return new ReturnAPI<AssignmentDTO>("Success", 200, assignmentDTO);
@@ -208,7 +209,8 @@ namespace Repository.Repositories.Assignment
                                     start_date = a.start_date,
                                     end_date = a.end_date,
                                     role_id = a.role_id,
-                                    role_name = a.role.role_name
+                                    role_name = a.role.role_name,
+                                    is_active = a.is_active
                                 };
                     if (query is null)
                     {
@@ -284,7 +286,8 @@ namespace Repository.Repositories.Assignment
                         employee_id = createAssignemntDTO.employee_id,
                         start_date = createAssignemntDTO.start_date,
                         end_date = createAssignemntDTO.end_date,
-                        role_id = createAssignemntDTO.role_id
+                        role_id = createAssignemntDTO.role_id,
+                        is_active = createAssignemntDTO.is_active
                     };
                     context.assignments.Add(create_assignment);
                     var queryReturn = await context.SaveChangesAsync();
