@@ -46,6 +46,10 @@ export class EmployeeService {
   getEmployeeByAuth0Id(auth0_id:string):Observable<APIReturn<Employee>>{
     return this.http.get<APIReturn<Employee>>(`https://localhost:44342/api/Employee/GetEmployeeByAuth0ID/${auth0_id}`);
   }
+
+  getEmployeeByEmployeeId(employee_id: number) : Observable<APIReturn<Employee>> {
+    return this.http.get<APIReturn<Employee>>(`https://localhost:44342/api/Employee/GetEmployeeByEmployeeId/${employee_id}`);
+  }
 }
 
 export class Employee {

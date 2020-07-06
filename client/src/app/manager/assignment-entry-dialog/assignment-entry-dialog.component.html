@@ -1,8 +1,8 @@
 <div *ngIf="editing; else adding">
-    <h2 mat-dialog-title>Add Assignment</h2>
+    <h2 mat-dialog-title>Edit Assignment</h2>
 </div>
 <ng-template #adding>
-    <h2 mat-dialog-title>Edit Assignment</h2>
+    <h2 mat-dialog-title>Add Assignment</h2>
 </ng-template>
 
 <div mat-dialog-content [formGroup]="form">
@@ -15,9 +15,7 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Project</mat-label>
-        <mat-select matInput required formControlName="project_id">
-            <mat-option [value]="project_id">{{projectName}}</mat-option>
-        </mat-select>
+        <input matInput formControlName="project_name">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">

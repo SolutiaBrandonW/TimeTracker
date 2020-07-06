@@ -13,19 +13,17 @@ import { Role, AssignmentService } from 'src/app/assignment.service';
 export class AssignmentEntryDialogComponent implements OnInit {
 
   form: FormGroup;
+  assignment_id: number
   employee_id: number
+  project_name:string
   project_id : number
   start_date: Date
   end_date: Date
   role_id: number
-  assignmentName:string
   is_active: boolean
-  editing = false;
-
-  projectName:string
+  editing: boolean = false
   employees:Employee[]
   roles:Role[]
-
 
   constructor(
     private fb: FormBuilder,
@@ -33,29 +31,35 @@ export class AssignmentEntryDialogComponent implements OnInit {
     private es:EmployeeService,
     private as:AssignmentService,
     @Inject(MAT_DIALOG_DATA) data) {
+    if (data.assignment_id) {
+      this.editing = true;
+      this.assignment_id = data.assignment_id;
+    }
     this.employee_id = data.employee_id;
     this.project_id = data.project_id;
     this.start_date = data.start_date;
     this.end_date = data.end_date;
     this.role_id = data.role_id;
-    this.assignmentName = data.assignmentName
-    this.editing = true;
-    this.projectName = data.projectName
-    this.is_active = data.is_active
+    this.is_active = data.is_active;
+    this.project_name = data.project_name;
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
+      assignment_id: new FormControl,
       employee_id:new FormControl,
-      project_id:new FormControl({value: this.project_id, disabled: true}),
+      project_name:new FormControl({value: "", disabled: true}),
+      project_id:new FormControl,
       start_date:new FormControl,
       end_date:new FormControl,
       role_id:new FormControl,
-      is_active:new FormControl
-        })
+      is_active: new FormControl
+    })
 
     this.form.patchValue({
+      assignment_id: this.assignment_id,
       employee_id: this.employee_id,
+      project_name: this.project_name,
       project_id: this.project_id,
       start_date: this.start_date,
       end_date: this.end_date,
@@ -74,7 +78,6 @@ export class AssignmentEntryDialogComponent implements OnInit {
         this.roles = result.Data
       }
     })
-    
   }
 
   save() {
@@ -86,5 +89,4 @@ export class AssignmentEntryDialogComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
-
 }

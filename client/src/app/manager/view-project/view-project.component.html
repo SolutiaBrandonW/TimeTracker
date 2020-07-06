@@ -11,7 +11,12 @@
     <span *ngIf="project != null">{{project.description}}</span><br>
     Status:
     <span *ngIf="project != null">{{statusName}}</span><br>
-    Employees: <span *ngFor="let assignment of assignments"><a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.employee_name, assignment.assignment_id ]">{{assignment.employee_name}}</a>, </span>
+    Employees:  
+    <span *ngFor="let assignment of assignments">
+        <a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.assignment_id]">
+            {{assignment.employee_name}}
+        </a>,
+    </span>
     <br><br>
     
     <button mat-raised-button class="editBtn"(click)="editProject()">Edit</button>

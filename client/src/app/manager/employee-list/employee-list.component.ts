@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { Observable } from 'rxjs';
 import { EmployeeService, Employee, EmployeeList } from '../../employee.service';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
 import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
@@ -26,9 +25,9 @@ export class EmployeeListComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: false}) table:MatTable<any>;
   constructor(private empServ: EmployeeService,
-    public dialog: MatDialog,
-    private _location: Location) { }
-
+              public dialog: MatDialog,
+              private _location: Location) { }
+              
   ngOnInit(): void {
     this.getEmployeeList();
   }
