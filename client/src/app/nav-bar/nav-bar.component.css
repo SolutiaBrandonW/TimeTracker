@@ -1,5 +1,6 @@
+/* @import '~@angular/material/theming'; */
 
 mat-toolbar a {
     text-decoration: none;
-    color: inherit;
+    color: #EE6C4D;
 }

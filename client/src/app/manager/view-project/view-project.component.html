@@ -14,8 +14,8 @@
     Employees: <span *ngFor="let assignment of assignments"><a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.employee_name, assignment.assignment_id ]">{{assignment.employee_name}}</a>, </span>
     <br><br>
     
-    <button mat-raised-button color="accent"(click)="editProject()">Edit</button>
-    <button mat-raised-button color="warn" (click)="deleteProject()">Delete</button>
+    <button mat-raised-button class="editBtn"(click)="editProject()">Edit</button>
+    <button mat-raised-button class="deleteBtn" (click)="deleteProject()">Delete</button>
 
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="start_time">
@@ -40,5 +40,5 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
     <div *ngIf="assignmentTimes != null && assignmentTimes.length == 0" >No Logged Hours.</div>
-    <button mat-raised-button color="primary" class="btnAdd" (click)="openAssignmentDialog()">Add Employee Assignment</button>
+    <button mat-raised-button class="btnAdd submitBtn" (click)="openAssignmentDialog()">Add Employee Assignment</button>
 </mat-card-content>

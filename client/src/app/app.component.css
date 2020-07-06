@@ -1,4 +1,3 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 mat-toolbar a {
     text-decoration: none;
@@ -11,34 +10,71 @@ mat-card {
     padding-bottom: 70px;
 }
 
-/deep/ mat-dialog-container {
+.mat-app-background{
+    height: 100%;
+}
+
+.title{
+    color:#EE6C4D;
+}
+
+::ng-deep .addBtn{
+    background-color: #2B4DA1 !important;
+    color: #E4E4E4;
+}
+::ng-deep .addBtnDisabled{
+    background-color: rgba(43, 76, 161, 0.5) !important;
+    color: #E4E4E4 !important;
+}
+::ng-deep .viewBtn{
+    background-color: #EE6C4D !important;
+    color: #E4E4E4;
+}
+::ng-deep .editBtn{
+    background-color: #29BA38 !important;
+    color: #E4E4E4;
+}
+::ng-deep .deleteBtn{
+    background-color: #D6403A !important;
+    color: #E4E4E4;
+}
+::ng-deep .submitBtn{
+    background-color: #293241 !important;
+    color: #EE6C4D;
+}
+
+::ng-deep .mat-dialog-title{
+    color:#EE6C4D;
+}
+::ng-deep mat-dialog-container {
     min-width: 300px;
 }
 
-/deep/ mat-form-field {
+::ng-deep mat-form-field {
     width: 100%;
 }
 
-/deep/ mat-dialog-actions button.mat-raised-button {
+::ng-deep mat-dialog-actions button.mat-raised-button {
     margin: 0px 10px 0px 0px;
 }
 
-/deep/ mat-card-title {
+::ng-deep mat-card-title {
     text-align: center;
+    color:#EE6C4D;
 }
 
-/deep/ .spinnyContain {
+::ng-deep .spinnyContain {
     padding-top: 50px;
     margin: 0 auto;
     text-align: center;
     position: relative
 }
 
-/deep/ .spinnyContain * {
+::ng-deep .spinnyContain * {
     margin: 0 auto;
 }
 
-/deep/ .spinnyContain span{
+::ng-deep .spinnyContain span{
     position: relative;
     top: 10px;
 }

@@ -1,6 +1,6 @@
 
 <div *ngIf="editing; else adding">
-    <h2 mat-dialog-title>Edit Time</h2>
+    <h2 mat-dialog-title class="title">Edit Time</h2>
 </div>
 <ng-template #adding>
     <h2 mat-dialog-title>Add Time</h2>
@@ -14,12 +14,12 @@
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Start Date</mat-label>
-        <input type="datetime-local" matInput formControlName="start_time">
+        <input type="datetime-local" matInput required formControlName="start_time">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>End Date</mat-label>
-        <input type="datetime-local" matInput formControlName="end_time">
+        <input type="datetime-local" matInput required formControlName="end_time">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -28,7 +28,7 @@
     </mat-form-field>
 </div>
 
-<mat-dialog-actions>
-    <button class="mat-raised-button"(click)="close()">Close</button>
-    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="close()">Close</button>
+    <button mat-raised-button class="submitBtn"(click)="save()">Save</button>
 </mat-dialog-actions>
