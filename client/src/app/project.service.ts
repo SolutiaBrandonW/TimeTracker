@@ -65,6 +65,7 @@ export class Project{
   end_date:Date
   description:string
   status_id:string
+  is_active:boolean
 }
 
 export class Status{

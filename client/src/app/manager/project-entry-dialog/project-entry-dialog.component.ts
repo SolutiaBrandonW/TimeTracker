@@ -17,6 +17,7 @@ export class ProjectEntryDialogComponent implements OnInit {
   end_date:Date
   description:string
   status_id:string
+  is_active:boolean
   editing = false;
 
   statuses:Status[]
@@ -32,6 +33,7 @@ export class ProjectEntryDialogComponent implements OnInit {
     this.end_date = data.end_date;
     this.description = data.description;
     this.status_id = data.status_id;
+    this.is_active = data.is_active;
     this.editing = data.editing;
   }
 
@@ -42,7 +44,8 @@ export class ProjectEntryDialogComponent implements OnInit {
       start_date:new FormControl,
       end_date:new FormControl,
       status_id:new FormControl,
-      description: new FormControl
+      description: new FormControl,
+      is_active:new FormControl,
     })
 
     this.form.patchValue({
@@ -51,7 +54,8 @@ export class ProjectEntryDialogComponent implements OnInit {
       start_date: this.start_date,
       end_date: this.end_date,
       description: this.description,
-      status_id: this.status_id
+      status_id: this.status_id,
+      is_active:this.is_active
     })
 
     this.ps.getAllStatuses().subscribe(result=>{

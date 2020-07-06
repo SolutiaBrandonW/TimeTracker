@@ -34,6 +34,7 @@ export class Assignment {
   start_date: Date;
   end_date: Date;
   role_id: number;
+  is_active: boolean;
 }
 
 //Used on the edit project screen to display employee names and role names 
@@ -46,6 +47,7 @@ export class DetailedAssignment {
   end_date: Date;
   role_id: number;
   role_name: string;
+  is_active:boolean
 }
 
 export class Role{

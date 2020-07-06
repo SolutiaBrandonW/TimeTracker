@@ -19,6 +19,7 @@ export class AssignmentEntryDialogComponent implements OnInit {
   end_date: Date
   role_id: number
   assignmentName:string
+  is_active: boolean
   editing = false;
 
   projectName:string
@@ -40,6 +41,7 @@ export class AssignmentEntryDialogComponent implements OnInit {
     this.assignmentName = data.assignmentName
     this.editing = true;
     this.projectName = data.projectName
+    this.is_active = data.is_active
   }
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class AssignmentEntryDialogComponent implements OnInit {
       start_date:new FormControl,
       end_date:new FormControl,
       role_id:new FormControl,
+      is_active:new FormControl
         })
 
     this.form.patchValue({
@@ -56,7 +59,8 @@ export class AssignmentEntryDialogComponent implements OnInit {
       project_id: this.project_id,
       start_date: this.start_date,
       end_date: this.end_date,
-      role_id: this.role_id
+      role_id: this.role_id,
+      is_active: this.is_active
     })
 
     this.es.getEmployees().subscribe(result => {

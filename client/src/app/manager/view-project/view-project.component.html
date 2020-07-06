@@ -13,7 +13,7 @@
     <span *ngIf="project != null">{{statusName}}</span><br>
     Employees: <span *ngFor="let assignment of assignments"><a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.employee_name, assignment.assignment_id ]">{{assignment.employee_name}}</a>, </span>
     <br><br>
-
+    
     <button mat-raised-button color="accent"(click)="editProject()">Edit</button>
     <button mat-raised-button color="warn" (click)="deleteProject()">Delete</button>
 

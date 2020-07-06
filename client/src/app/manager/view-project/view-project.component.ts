@@ -75,6 +75,7 @@ export class ViewProjectComponent implements OnInit {
       end_date:this.project.end_date,
       description:this.project.description,
       status_id:this.project.status_id,
+      is_active:this.project.is_active,
       editing : true,
     }
 

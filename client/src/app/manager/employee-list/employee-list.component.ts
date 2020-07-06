@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
 import { EmployeeService, Employee, EmployeeList } from '../../employee.service';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
+import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-employee-list',
@@ -18,8 +19,8 @@ export class EmployeeListComponent implements OnInit {
   employees: EmployeeList[] = [];
 
   constructor(private empServ: EmployeeService,
-              public dialog: MatDialog,
-              private _location: Location) { }
+    public dialog: MatDialog,
+    private _location: Location) { }
 
   ngOnInit(): void {
     this.getEmployeeList();
@@ -49,15 +50,15 @@ export class EmployeeListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => {
 
-      if(data != null){
+      if (data != null) {
         if (editing) {
-          this.empServ.updateEmployee(data).subscribe( val => {
+          this.empServ.updateEmployee(data).subscribe(val => {
             if (val.Code == 200) {
               this.getEmployeeList();
             }
           });
         } else {
-          this.empServ.addEmployee(data).subscribe( val => {
+          this.empServ.addEmployee(data).subscribe(val => {
             if (val.Code == 200) {
               this.getEmployeeList();
             }
@@ -67,20 +68,28 @@ export class EmployeeListComponent implements OnInit {
     })
   }
 
-  deleteEmployee(employee_id : number) {
-    this.empServ.deleteEmployeeById(employee_id).subscribe( val => {
-      if (val.Code == 200) {
-        this.employees = this.employees.filter(emp => emp.employee_id != employee_id);
-      } else {
-        console.log(val.Message);
-      }
+  deleteEmployee(employee_id: number) {
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will permenantly delete all employee assignments and assignment time entries.' },
     });
+    dialogRef.afterClosed().subscribe(data => {
+      if (data === true) {
+        this.empServ.deleteEmployeeById(employee_id).subscribe(val => {
+          if (val.Code == 200) {
+            this.employees = this.employees.filter(emp => emp.employee_id != employee_id);
+          } else {
+            console.log(val.Message);
+          }
+        });
+      }
+    })
   }
 
   getEmployeeList() {
-    this.empServ.getEmployees().subscribe( employees_returned => {
+    this.empServ.getEmployees().subscribe(employees_returned => {
       this.employees = employees_returned.Data;
-      this.employees.forEach( emp => {
+      this.employees.forEach(emp => {
         this.empServ.getSecurityLevelByEmployeeId(emp.employee_id).subscribe(sec => {
           emp.security_level = sec.Data;
           if (emp.manager_id) {

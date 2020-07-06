@@ -8,6 +8,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";
 import {Location} from '@angular/common';
+import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-view-time',
@@ -43,11 +44,17 @@ export class ViewTimeComponent implements OnInit {
   }
 
   deleteAssignmentTimeEntry(assignmentTime: AssignmentTime){
-    console.log(`Delete time: ${assignmentTime.assignment_time_id}`)
-    this.assiTimeServ.deleteAssignmentTime(assignmentTime.assignment_time_id).subscribe(result =>{
-      this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
-        this.assignmentTimes = assignmentTime_return.Data;
-      })
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will permanently delete this assignment time entry.' },
+    });
+    dialogRef.afterClosed().subscribe(data => {
+      if(data === true){
+        this.assiTimeServ.deleteAssignmentTime(assignmentTime.assignment_time_id).subscribe(result =>{
+            this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
+              this.assignmentTimes = assignmentTime_return.Data;
+            })
+          })
+      }
     })
   }
 
