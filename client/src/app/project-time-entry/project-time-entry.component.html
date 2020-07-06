@@ -1,5 +1,5 @@
 <mat-card-title>Project Time Entry</mat-card-title>
-<mat-card-content>
+<mat-card-content *ngIf="loggedIn">
     <div *ngIf="loading" class="spinnyContain">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
         <span>Loading...</span>
@@ -45,3 +45,4 @@
         
     </table>
 </mat-card-content>
+<div *ngIf="!loggedIn">Please Log in</div>

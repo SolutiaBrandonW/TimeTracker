@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
 import { map, mergeMap } from "rxjs/operators";
 import { forkJoin } from 'rxjs';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -99,8 +100,8 @@ export class ViewProjectComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AssignmentEntryDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( data => {
+      if(data != null){
         data.project_id = this.project_id;
-        if(data != null){
          this.as.addAssignment(data).subscribe(result => {
            console.log(result)
            this.as.getAssignmentsByProject(this.project_id).subscribe(result =>{
@@ -126,9 +127,14 @@ export class ViewProjectComponent implements OnInit {
   }
 
   deleteProject(){
-    this.ps.deleteProject(this.project_id).subscribe(result => {
-      console.log(result)
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.afterClosed().subscribe(data => {
+      if(data === true){
+        this.ps.deleteProject(this.project_id).subscribe(result => {
+            console.log(result)
+          })
+          this.router.navigate(['project-time-entry'], {relativeTo: this.route.parent});
+      }
     })
-    this.router.navigate(['project-time-entry'], {relativeTo: this.route.parent});
   }
 }

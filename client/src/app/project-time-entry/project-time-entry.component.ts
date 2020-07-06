@@ -20,6 +20,7 @@ export class ProjectTimeEntryComponent implements OnInit {
   currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
   employee_id: number
+  loggedIn:boolean = false;
 
   constructor(private pte: ProjectService,
     private ate: AssignmentService,
@@ -31,20 +32,12 @@ export class ProjectTimeEntryComponent implements OnInit {
     private es: EmployeeService) { }
 
   async ngOnInit() {
-    this.as.userProfile$.subscribe(res => {
-      if (res != null) {
-        this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
-          this.employee_id = result.Data.employee_id;
-        })
-      }
-    })
     try {
       this.as.userProfile$.subscribe(res => {
         if (res != null) {
           this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
             this.employee_id = result.Data.employee_id;
-
-
+            this.loggedIn = true;
 
             this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
               this.currProjectTimeEntries = project_return.Data;
@@ -59,8 +52,6 @@ export class ProjectTimeEntryComponent implements OnInit {
                 });
               });
               this.loading = false;
-
-              
             });
           })
         }
