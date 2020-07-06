@@ -14,6 +14,7 @@ namespace DataContracts.Models
         public DateTime start_date;
         public DateTime end_date;
         public long role_id;
+        public bool is_active;
 
     }
 

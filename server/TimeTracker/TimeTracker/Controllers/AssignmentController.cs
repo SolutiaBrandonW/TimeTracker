@@ -30,6 +30,20 @@ namespace TimeTracker.Controllers
             return await assignmentRepository.LogHours(assignmentTimeDTO);
         }
 
+        [Route("UpdateAssignment")]
+        [HttpPost()]
+        public async Task<ReturnAPI> UpdateAssignment([FromBody] AssignmentDTO assiDTO)
+        {
+            return await assignmentRepository.UpdateAssignment(assiDTO);
+        }
+
+        [Route("DeleteAssignmentByAssignmentId/{assignment_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI> DeleteAssignmentByAssignmentId(long assignment_id)
+        {
+            return await assignmentRepository.DeleteAssignmentByAssignmentId(assignment_id);
+        }
+
         [Route("GetAssignmentByAssignmentId/{assignment_id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<AssignmentDTO>> GetAssignmentByAssignmentId(long assignment_id)

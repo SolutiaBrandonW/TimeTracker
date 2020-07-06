@@ -45,6 +45,60 @@ namespace Repository.Repositories.Assignment
             }
         }
 
+        public async Task<ReturnAPI> DeleteAssignmentByAssignmentId(long assignment_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var assignments = context.assignments;
+                    var assignment = await assignments.Where(assi => assi.assignment_id == assignment_id).FirstOrDefaultAsync();
+                    assignments.Remove(assignment);
+                    var sqlReturn = await context.SaveChangesAsync();
+                    if (sqlReturn == 1)
+                    {
+                        return new ReturnAPI("Success", 200);
+                    }
+                    throw new Exception();                    
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
+        public async Task<ReturnAPI> UpdateAssignment(AssignmentDTO assiDTO)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var assignments = context.assignments;
+                    var assi = await assignments.Where(a => a.assignment_id == assiDTO.assignment_id).FirstOrDefaultAsync();
+
+                    assi.assignment_id = assiDTO.assignment_id;
+                    assi.employee_id = assiDTO.employee_id;
+                    assi.project_id = assiDTO.project_id;
+                    assi.start_date = assiDTO.start_date;
+                    assi.end_date = assiDTO.end_date;
+                    assi.role_id = assiDTO.role_id;
+                    assi.is_active = assiDTO.is_active;
+
+                    var sqlReturn = await context.SaveChangesAsync();
+                    if (sqlReturn == 1)
+                    {
+                        return new ReturnAPI("Success", 200);
+                    }
+                    throw new Exception();                    
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI(e.Message, 400);
+            }
+        }
+
         public async Task<ReturnAPI<AssignmentDTO>> GetAssignmentByAssignmentId(long assignment_id)
         {
             try
@@ -247,9 +301,5 @@ namespace Repository.Repositories.Assignment
                 return new ReturnAPI(e.Message, 400);
             }
         }
-
-
-
-
     }
 }
