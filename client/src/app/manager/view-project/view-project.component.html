@@ -13,7 +13,7 @@
     <span *ngIf="project != null">{{statusName}}</span><br>
     Employees:  
     <span *ngFor="let assignment of assignments">
-        <a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.assignment_id, assignment.employee_name ]">
+        <a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.assignment_id]">
             {{assignment.employee_name}}
         </a>,
     </span>

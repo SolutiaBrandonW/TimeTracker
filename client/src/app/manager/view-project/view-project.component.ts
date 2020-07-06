@@ -10,9 +10,6 @@ import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assig
 import { map, mergeMap } from "rxjs/operators";
 import { forkJoin } from 'rxjs';
 
-
-
-
 @Component({
   selector: 'app-view-project',
   templateUrl: './view-project.component.html',
@@ -94,16 +91,15 @@ export class ViewProjectComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       project_id : this.project_id,
-      projectName: this.projectName
+      project_name: this.projectName
     }
 
     const dialogRef = this.dialog.open(AssignmentEntryDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( data => {
-        data.project_id = this.project_id;
         if(data != null){
          this.as.addAssignment(data).subscribe(result => {
            console.log(result)
-           this.as.getAssignmentsByProject(this.project_id).subscribe(result =>{
+           this.as.getAssignmentsByProject(data.project_id).subscribe(result =>{
             console.log(result)
             if(result.Data != null){
               this.assignments = result.Data

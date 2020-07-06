@@ -20,6 +20,7 @@ import { AssignmentEntryDialogComponent } from './assignment-entry-dialog/assign
 import { MatIconModule } from "@angular/material/icon";
 import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 import { MatOptionModule } from '@angular/material/core';
+import { AssignmentTimeDialogComponent } from './assignment-time-dialog/assignment-time-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MatOptionModule } from '@angular/material/core';
     ViewAssignmentComponent,
     AssignmentEntryDialogComponent,
     EmployeeDialogComponent,
+    AssignmentTimeDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,9 @@ import { MatOptionModule } from '@angular/material/core';
     MatIconModule,
     MatSelectModule
   ],
-  entryComponents:[ProjectEntryDialogComponent, AssignmentEntryDialogComponent, EmployeeDialogComponent]
+  entryComponents:[ProjectEntryDialogComponent, 
+                   AssignmentEntryDialogComponent, 
+                   AssignmentTimeDialogComponent, 
+                   EmployeeDialogComponent]
 })
 export class ManagerModule { }
