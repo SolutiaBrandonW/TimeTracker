@@ -373,5 +373,27 @@ namespace Repository.Repositories.Employee
                 return new ReturnAPI<EmployeeDTO>(e.Message, 400, null);
             }
         }
+
+        public async Task<ReturnAPI<EmployeeDTO>> GetEmployeeByEmployeeId(long employee_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var employee = await context.employees.Where(e => e.employee_id == employee_id).FirstOrDefaultAsync();
+                    if(employee != null)
+                    {
+                        EmployeeDTO empDTO = new EmployeeDTO();
+                        empDTO = EmployeeMapper.mapToEmployeeDTO(employee, empDTO);
+                        return new ReturnAPI<EmployeeDTO>("Success", 200, empDTO);
+                    }
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<EmployeeDTO>(e.Message, 400, null);
+            }
+        }
     }
 }

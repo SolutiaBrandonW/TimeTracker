@@ -51,11 +51,16 @@ namespace Repository.Repositories.Assignment
             {
                 using (var context = new TimeTrackingEntities())
                 {
-                    var assignments = context.assignments;
-                    var assignment = await assignments.Where(assi => assi.assignment_id == assignment_id).FirstOrDefaultAsync();
-                    assignments.Remove(assignment);
+                    var db_assignments = context.assignments;
+                    var db_assignment_time = context.assignment_time;
+
+                    var assignment_times = await db_assignment_time.Where(ast => ast.assignment_id == assignment_id).ToListAsync();
+                    assignment_times.ForEach(ast => db_assignment_time.Remove(ast));
+
+                    var assignment = await db_assignments.Where(assi => assi.assignment_id == assignment_id).FirstOrDefaultAsync();
+                    db_assignments.Remove(assignment);
                     var sqlReturn = await context.SaveChangesAsync();
-                    if (sqlReturn == 1)
+                    if (sqlReturn > 0)
                     {
                         return new ReturnAPI("Success", 200);
                     }
@@ -77,7 +82,6 @@ namespace Repository.Repositories.Assignment
                     var assignments = context.assignments;
                     var assi = await assignments.Where(a => a.assignment_id == assiDTO.assignment_id).FirstOrDefaultAsync();
 
-                    assi.assignment_id = assiDTO.assignment_id;
                     assi.employee_id = assiDTO.employee_id;
                     assi.project_id = assiDTO.project_id;
                     assi.start_date = assiDTO.start_date;
@@ -138,7 +142,6 @@ namespace Repository.Repositories.Assignment
                 {
                     var assignmentTimes = context.assignment_time;
                     var queryList = await assignmentTimes.Where(a => a.assignment_id == assignment_id).ToListAsync();
-
 
                     List<AssignmentTimeDTO> loggedHoursByAssignment = new List<AssignmentTimeDTO>();
 
