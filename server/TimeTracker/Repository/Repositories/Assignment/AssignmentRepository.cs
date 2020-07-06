@@ -45,6 +45,37 @@ namespace Repository.Repositories.Assignment
             }
         }
 
+        public async Task<ReturnAPI<AssignmentDTO>> GetAssignmentByAssignmentId(long assignment_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var assignment = await context.assignments
+                                                    .Where(assi => assi.assignment_id == assignment_id)
+                                                    .Select(assi => new AssignmentDTO
+                                                    {
+                                                        assignment_id = assi.assignment_id,
+                                                        employee_id = assi.employee_id,
+                                                        start_date = assi.start_date,
+                                                        end_date = assi.end_date,
+                                                        project_id = assi.project_id,
+                                                        role_id = assi.role_id
+                                                    })
+                                                    .FirstOrDefaultAsync();
+                    if (assignment != null)
+                    {
+                        return new ReturnAPI<AssignmentDTO>("Success", 200, assignment);
+                    }
+                    throw new Exception();
+                }
+            } 
+            catch (Exception e)
+            {
+                return new ReturnAPI<AssignmentDTO>(e.Message, 400, null);
+            }
+        }
+
         public async Task<ReturnAPI<List<AssignmentTimeDTO>>> GetLoggedHoursByAssignment(long assignment_id)
         {
             try
@@ -136,6 +167,26 @@ namespace Repository.Repositories.Assignment
             catch (Exception e)
             {
                 return new ReturnAPI<List<DetailedAssignmentDTO>>(e.Message, 400, null);
+            }
+        }
+
+        public async Task<ReturnAPI<string>> GetRoleByRoleId(long role_id)
+        {
+            try
+            {
+                using (var context = new TimeTrackingEntities())
+                {
+                    var role = await context.roles.Where(id => id.role_id == role_id).FirstOrDefaultAsync(); 
+                    if (role != null)
+                    {
+                        return new ReturnAPI<string>("Success", 200, role.role_name);
+                    }
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                return new ReturnAPI<string>(e.Message, 400, null);
             }
         }
 

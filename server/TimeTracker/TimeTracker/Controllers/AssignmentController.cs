@@ -30,6 +30,13 @@ namespace TimeTracker.Controllers
             return await assignmentRepository.LogHours(assignmentTimeDTO);
         }
 
+        [Route("GetAssignmentByAssignmentId/{assignment_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<AssignmentDTO>> GetAssignmentByAssignmentId(long assignment_id)
+        {
+            return await assignmentRepository.GetAssignmentByAssignmentId(assignment_id);
+        }
+
         [Route("GetLoggedHoursByAssignment/{id:long}")]
         [HttpGet()]
         public async Task<ReturnAPI<List<AssignmentTimeDTO>>> GetLoggedHoursByAssignment(long id)
@@ -49,6 +56,13 @@ namespace TimeTracker.Controllers
         public async Task<ReturnAPI<List<DetailedAssignmentDTO>>> GetAssignmentsByProject(long project_id)
         {
             return await assignmentRepository.GetAssignmentsByProject(project_id);
+        }
+
+        [Route("GetRoleByRoleId/{role_id:long}")]
+        [HttpGet()]
+        public async Task<ReturnAPI<string>> GetRoleByRoleId(long role_id)
+        {
+            return await assignmentRepository.GetRoleByRoleId(role_id);
         }
 
         [Route("GetAllRoles")]
