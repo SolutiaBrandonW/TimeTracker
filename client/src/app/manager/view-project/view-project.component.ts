@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectAssignmentTime, AssignmentTimeService } from "../../assignment-time.service";
 import { ProjectService, Project } from "../../project.service";
@@ -10,6 +10,10 @@ import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assig
 import { map, mergeMap } from "rxjs/operators";
 import { forkJoin } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from "@angular/material/sort";
+
 
 
 
@@ -28,7 +32,9 @@ export class ViewProjectComponent implements OnInit {
   assignmentTimes: ProjectAssignmentTime[];
   assignments:DetailedAssignment[]
   employee_names:string
-
+  dataSource: MatTableDataSource<ProjectAssignmentTime>
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(private route:ActivatedRoute,
               private router:Router,
               private ats:AssignmentTimeService,
@@ -43,6 +49,9 @@ export class ViewProjectComponent implements OnInit {
     this.ats.getAllAssignmentTimeByProject(this.project_id).subscribe(result => {
       this.assignmentTimes = result.Data
       console.log(result.Data)
+      this.dataSource = new MatTableDataSource<ProjectAssignmentTime>(this.assignmentTimes);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
 
     this.ps.getProject(this.project_id).pipe(

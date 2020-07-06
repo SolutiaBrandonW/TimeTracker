@@ -4,11 +4,13 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatCardModule, MatCard } from "@angular/material/card";
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule, MatButton } from "@angular/material/button";
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
 
 import { ManagerRoutingModule } from './manager-routing.module';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
@@ -44,7 +46,9 @@ import { MatOptionModule } from '@angular/material/core';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   entryComponents:[ProjectEntryDialogComponent, AssignmentEntryDialogComponent, EmployeeDialogComponent]
 })

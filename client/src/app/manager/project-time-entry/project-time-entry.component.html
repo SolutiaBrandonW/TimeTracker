@@ -4,15 +4,15 @@
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
         <span>Loading...</span>
     </div>
-    <div *ngIf="!loading">
-        <table mat-table [dataSource]="currProjectTimeEntries">
-            <ng-container matColumnDef="project">
-                <th mat-header-cell *matHeaderCellDef> Project </th>
+    <div [hidden]="loading">
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Project </th>
                 <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="hours">
-                <th mat-header-cell *matHeaderCellDef> Hours </th>
+            <ng-container matColumnDef="projectHours">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Hours </th>
                 <td mat-cell *matCellDef="let element">
                     <span *ngIf="element.projectHours; else nullBlock"> {{element.projectHours}} </span>
                     <ng-template #nullBlock> 0 </ng-template>
@@ -20,12 +20,12 @@
             </ng-container>
 
             <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
                 <td mat-cell *matCellDef="let element"> {{element.description}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
+            <ng-container matColumnDef="status_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                 <td mat-cell *matCellDef="let element"> {{element.status_name}} </td>
             </ng-container>
 
@@ -45,6 +45,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         <button mat-raised-button color="primary" class="btnAdd" (click)="openDialogAddProject()">Add Project</button>
         <button mat-raised-button color="primary" class="btnAddCenter" (click)="viewEmployees()">View Employees</button>
     </div>

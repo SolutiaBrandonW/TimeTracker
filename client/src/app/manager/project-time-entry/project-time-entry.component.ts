@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../../project.service';
 import { AssignmentService } from '../../assignment.service';
@@ -9,6 +9,9 @@ import { AssignmentTimeService } from "../../assignment-time.service";
 import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
 import { AuthService } from 'src/app/auth.service';
 import { EmployeeService } from 'src/app/employee.service';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from "@angular/material/sort";
 
 @Component({
   selector: 'app-project-time-entry',
@@ -17,11 +20,13 @@ import { EmployeeService } from 'src/app/employee.service';
 })
 export class ProjectTimeEntryComponent implements OnInit {
 
-  displayedColumns: string[] = ['project', 'hours', 'description', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'projectHours', 'description', 'status_name', 'actions'];
   currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
   employee_id;
-
+  dataSource: MatTableDataSource<ProjectTimeEntry>
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(private pte: ProjectService,
     private ate: AssignmentService,
     private atServ: AssignmentTimeService,
@@ -32,7 +37,7 @@ export class ProjectTimeEntryComponent implements OnInit {
     public es: EmployeeService) { }
 
   async ngOnInit() {
-    try {
+   // try {
       this.as.userProfile$.subscribe(res => {
         if (res != null) {
           this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
@@ -55,16 +60,21 @@ export class ProjectTimeEntryComponent implements OnInit {
                   }
                 });
               });
+              this.dataSource = new MatTableDataSource<ProjectTimeEntry>(this.currProjectTimeEntries);
+              this.dataSource.sort = this.sort;
+              this.dataSource.paginator = this.paginator;
               this.loading = false;
             });
 
           })
         }
       })
-    } catch (e) {
-      console.log("Error: " + e);
-    }
+    // } catch (e) {
+    //   console.log("Error: " + e);
+    // }
   }
+
+  
 
   viewProject(projectName: string, project_id: number) {
     this.router.navigate(['view-project', projectName, project_id], { relativeTo: this.route });
@@ -106,7 +116,9 @@ export class ProjectTimeEntryComponent implements OnInit {
                 }
               });
             });
+            this.refreshTable();
           });
+        
         })
       }
     })
@@ -134,5 +146,10 @@ export class ProjectTimeEntryComponent implements OnInit {
         })
       }
     })
+  }
+  refreshTable(){
+    this.dataSource.data = this.currProjectTimeEntries;
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 }
