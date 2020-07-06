@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import {SwitchMap}
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { Project, ProjectService } from '../../project.service'
 import { Assignment, AssignmentService } from '../../assignment.service'
 import { AssignmentTime, AssignmentTimeService } from '../../assignment-time.service'
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-view-assignment',
@@ -36,14 +34,6 @@ export class ViewAssignmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.assiServ.getAssignmentByAssignmentId(this.assignment_id).pipe(
-      
-      switchMap(assi => { this.assignment = assi.Data })
-
-    );
-
-    /** 
     this.assiServ.getAssignmentByAssignmentId(this.assignment_id).subscribe( assi => {
       this.assignment = assi.Data;
       // Get project info for name
@@ -58,10 +48,10 @@ export class ViewAssignmentComponent implements OnInit {
     this.assiTimeServ.getLoggedHoursByAssignment(this.assignment_id).subscribe( assiTimes => {
       this.assignment_times = assiTimes.Data;
     });
-    */
   }
 
   backClicked() {
     this._location.back();
   }
+
 }
