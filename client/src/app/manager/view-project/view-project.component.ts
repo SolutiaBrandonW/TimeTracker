@@ -29,9 +29,15 @@ export class ViewProjectComponent implements OnInit {
   assignmentTimes: ProjectAssignmentTime[];
   assignments:DetailedAssignment[]
   employee_names:string
-  dataSource: MatTableDataSource<ProjectAssignmentTime>
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  dataSource = new MatTableDataSource<ProjectAssignmentTime>();
+  private paginator: MatPaginator;
+  private sort: MatSort;
+  @ViewChild(MatSort, { static: false }) set MatSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.dataSource.paginator = mp;
+  }
   constructor(private route:ActivatedRoute,
               private router:Router,
               private ats:AssignmentTimeService,
@@ -46,7 +52,7 @@ export class ViewProjectComponent implements OnInit {
     this.ats.getAllAssignmentTimeByProject(this.project_id).subscribe(result => {
       this.assignmentTimes = result.Data
       console.log(result.Data)
-      this.dataSource = new MatTableDataSource<ProjectAssignmentTime>(this.assignmentTimes);
+      this.dataSource.data = this.assignmentTimes;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
