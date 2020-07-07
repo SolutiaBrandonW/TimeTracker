@@ -3,24 +3,38 @@
     <button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
     <br>
 
-    Start Date: 
-    <span *ngIf="project != null">{{(project.start_date | date:'M-d-yyyy h:mm aa')}}</span><br>
-    End Date:
-    <span *ngIf="project != null">{{(project.end_date | date:'M-d-yyyy h:mm aa')}}</span><br>
-    Description:
-    <span *ngIf="project != null">{{project.description}}</span><br>
-    Status:
-    <span *ngIf="project != null">{{statusName}}</span><br>
-    Employees:  
-    <span *ngFor="let assignment of assignments">
-        <a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.assignment_id]">
-            {{assignment.employee_name}}
-        </a>,
-    </span>
-    <br><br>
-    
-    <button mat-raised-button class="editBtn"(click)="editProject()">Edit</button>
-    <button mat-raised-button class="deleteBtn" (click)="deleteProject()">Delete</button>
+    <div class="meta-contain">
+        <div class="meta-info-labels">
+            <span>Start Date:</span>
+            <span>End Date:</span>
+            <span>Description:</span>
+            <span>Status:</span>
+            <span>Employees:</span>
+        </div>
+        <div class="meta-info">
+            <span *ngIf="project.start_date != null; else none">{{(project.start_date | date:'M-d-yyyy h:mm aa')}}</span>
+            <span *ngIf="project.end_date != null; else none">{{(project.end_date | date:'M-d-yyyy h:mm aa')}}</span>
+            <span *ngIf="project.description != null; else none">{{project.description}}</span>
+            <span *ngIf="statusName != null; else none">{{statusName}}</span>
+            <div class="meta-info-employees">
+            <ng-container *ngIf="assignments.length > 0; else none">
+                <span *ngFor="let assignment of assignments; let i=index">
+                    <a [routerLink]="['/manager/project-time-entry/view-assignment/', assignment.assignment_id]">
+                        {{assignment.employee_name}}
+                        <ng-container *ngIf="assignments.length - 1 != i">, </ng-container>
+                    </a>
+                </span>
+            </ng-container>
+            </div>
+            <ng-template #none>
+                <span>None</span>
+            </ng-template>
+        </div>
+        <div class="meta-buttons">
+            <button mat-raised-button class="editBtn"(click)="editProject()">Edit</button>
+            <button mat-raised-button class="deleteBtn" (click)="deleteProject()">Delete</button>
+        </div> 
+    </div>
 
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="start_time">
