@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { AssignmentTimeService } from 'src/app/assignment-time.service';
+import { AssignmentTimeService } from 'src/app/services/assignment-time.service';
 
 
 @Component({

@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AssignmentTime, AssignmentTimeService } from "../../assignment-time.service"
-import { AssignmentService, Assignment } from "../../assignment.service";
+import { AssignmentTime, AssignmentTimeService } from "../../services/assignment-time.service"
+import { AssignmentService, Assignment } from "../../services/assignment.service";
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TimeEntryDialogComponent } from "../../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";

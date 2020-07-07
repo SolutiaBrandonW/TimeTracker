@@ -2,12 +2,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core'
 
-import { ProjectService, ProjectTimeEntry } from '../project.service';
-import { AssignmentService } from '../assignment.service';
+import { ProjectService, ProjectTimeEntry } from '../services/project.service';
+import { AssignmentService } from '../services/assignment.service';
 import { TimeEntryDialogComponent } from '../time-entry-dialog/time-entry-dialog.component';
-import { AssignmentTimeService } from "../assignment-time.service";
-import { AuthService } from '../auth.service';
-import { EmployeeService } from '../employee.service';
+import { AssignmentTimeService } from "../services/assignment-time.service";
+import { AuthService } from '../services/auth.service';
+import { EmployeeService } from '../services/employee.service';
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';

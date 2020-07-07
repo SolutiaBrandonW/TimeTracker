@@ -5,7 +5,7 @@ import { ProjectTimeEntryComponent } from './project-time-entry/project-time-ent
 import { ViewTimeComponent } from "./project-time-entry/view-time/view-time.component";
 import { LoginComponent } from "./login/login.component";
 import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const appRoutes: Routes = [

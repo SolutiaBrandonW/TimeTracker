@@ -2,7 +2,7 @@ import { Injectable, ɵSWITCH_ELEMENT_REF_FACTORY__POST_R3__ } from '@angular/co
 import { HttpClient } from "@angular/common/http";
 
 import { Observable, BehaviorSubject } from 'rxjs';
-import { APIReturn, APIMetaReturn } from '../app/api.service';
+import { APIReturn, APIMetaReturn } from './api.service';
 
 @Injectable({
   providedIn: 'root'

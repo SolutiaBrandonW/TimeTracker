@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, Profile } from '../auth.service';
-import { EmployeeService, Employee } from '../employee.service';
+import { AuthService, Profile } from '../services/auth.service';
+import { EmployeeService, Employee } from '../services/employee.service';
 
 @Component({
   selector: 'app-nav-bar',

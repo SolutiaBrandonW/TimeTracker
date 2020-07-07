@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
 import { Observable } from 'rxjs';
-import { APIReturn, APIMetaReturn } from '../app/api.service';
+import { APIReturn, APIMetaReturn } from './api.service';
 import { AssignmentTime } from './assignment-time.service';
 
 @Injectable({

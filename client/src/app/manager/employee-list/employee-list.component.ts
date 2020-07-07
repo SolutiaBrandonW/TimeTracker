@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { EmployeeService, Employee, EmployeeList } from '../../employee.service';
+import { EmployeeService, Employee, EmployeeList } from '../../services/employee.service';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
 import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 import { MatTableDataSource } from '@angular/material/table';

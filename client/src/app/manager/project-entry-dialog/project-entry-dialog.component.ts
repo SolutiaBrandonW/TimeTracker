@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { Status, ProjectService } from 'src/app/project.service';
+import { Status, ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-project-entry-dialog',

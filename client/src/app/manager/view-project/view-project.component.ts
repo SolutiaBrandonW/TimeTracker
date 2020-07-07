@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProjectAssignmentTime, AssignmentTimeService } from "../../assignment-time.service";
-import { ProjectService, Project } from "../../project.service";
-import { AssignmentService, DetailedAssignment } from "../../assignment.service";
+import { ProjectAssignmentTime, AssignmentTimeService } from "../../services/assignment-time.service";
+import { ProjectService, Project } from "../../services/project.service";
+import { AssignmentService, DetailedAssignment } from "../../services/assignment.service";
 import {Location} from '@angular/common';
 import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";

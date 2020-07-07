@@ -6,12 +6,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 
-import { Project, ProjectService } from '../../project.service'
-import { Assignment, AssignmentService } from '../../assignment.service'
-import { AssignmentTime, AssignmentTimeService } from '../../assignment-time.service'
+import { Project, ProjectService } from '../../services/project.service'
+import { Assignment, AssignmentService } from '../../services/assignment.service'
+import { AssignmentTime, AssignmentTimeService } from '../../services/assignment-time.service'
 import { AssignmentTimeDialogComponent } from '../assignment-time-dialog/assignment-time-dialog.component';
 import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
-import { EmployeeService } from 'src/app/employee.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 
 @Component({

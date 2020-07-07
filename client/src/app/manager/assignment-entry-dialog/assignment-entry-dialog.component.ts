@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { Employee, EmployeeService } from 'src/app/employee.service';
-import { Role, AssignmentService } from 'src/app/assignment.service';
+import { Employee, EmployeeService } from 'src/app/services/employee.service';
+import { Role, AssignmentService } from 'src/app/services/assignment.service';
 
 
 @Component({
