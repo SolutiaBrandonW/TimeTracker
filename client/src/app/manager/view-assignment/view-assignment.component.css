@@ -1,3 +1,31 @@
 button {
     margin: 0px 5px;
 }
+
+.meta-contain {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    width: 95%;
+    margin: 0 auto 20px;
+}
+
+.meta-info {
+    margin: 0 20px;
+    max-width: 500px;
+}
+
+.meta-info-labels > span,
+.meta-info > span {
+    display: block;
+    padding: 8px 0;
+}
+
+.meta-info-labels span {
+    font-weight: bold;
+}
+
+.meta-buttons {
+    align-self: flex-end;
+}

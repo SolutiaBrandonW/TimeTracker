@@ -2,18 +2,28 @@
     <mat-card-title>{{project.name + " - " + employee_name}}</mat-card-title>
     <mat-card-content>
         <button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
-        <div>
-            <label>Role</label> {{employee_role}}<br/>
-            <label>Start Date</label> {{assignment.start_date}}<br/>
-            <label>End Date</label> {{assignment.end_date}}<br/>
-        </div>
-        <div>
-            <button mat-raised-button class="editBtn" (click)="openAssignmentDialog()">
-                Edit
-            </button>
-            <button mat-raised-button type="button" class="deleteBtn" (click)="deleteAssignment()">
-                Delete
-            </button>
+        <div class="meta-contain">
+            <div class="meta-info-labels">
+                <span>Role:</span> 
+                <span>Start Date:</span>
+                <span>End Date:</span>
+            </div>
+            <div class="meta-info">
+                <span *ngIf="employee_name; else none">{{ employee_role }}</span>
+                <span *ngIf="assignment.start_date; else none">{{ assignment.start_date }}</span>
+                <span *ngIf="assignment.end_date; else none">{{ assignment.end_date }}</span>
+                <ng-template #none>
+                    <span>None</span>
+                </ng-template>
+            </div>
+            <div class="meta-buttons">
+                <button mat-raised-button class="editBtn" (click)="openAssignmentDialog()">
+                    Edit
+                </button>
+                <button mat-raised-button type="button" class="deleteBtn" (click)="deleteAssignment()">
+                    Delete
+                </button>
+            </div>
         </div>
         <div *ngIf="mat_table_data.data == undefined || mat_table_data.data.length == 0 ; else exists" >No Logged Hours.</div>
         <ng-template #exists>
