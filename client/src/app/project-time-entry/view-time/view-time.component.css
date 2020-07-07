@@ -2,17 +2,7 @@ button {
     margin: 0px 5px;
 }
 
-.align-left{
-    float:left !important; 
- }
- 
  .center {
     text-align: center; 
     margin-right: 55px; /*width from the left to the far right of the button */   
- }
-
- .btnFloatRight{
-     float: right;
-     margin-right: 50px;
-     margin-top: 25px;
  }

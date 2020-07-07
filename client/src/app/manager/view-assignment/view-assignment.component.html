@@ -1,7 +1,7 @@
-<div *ngIf="project; else failure">
+<button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
+<ng-container *ngIf="project != undefined && assignment != undefined; else loading">
     <mat-card-title>{{project.name + " - " + employee_name}}</mat-card-title>
     <mat-card-content>
-        <button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
         <div class="meta-contain">
             <div class="meta-info-labels">
                 <span>Role:</span> 
@@ -25,7 +25,7 @@
                 </button>
             </div>
         </div>
-        <div *ngIf="mat_table_data.data == undefined || mat_table_data.data.length == 0 ; else exists" >No Logged Hours.</div>
+        <div class="data-nothing" *ngIf="mat_table_data.data == undefined || mat_table_data.data.length == 0 ; else exists" >There's nothing here...</div>
         <ng-template #exists>
             <table mat-table [dataSource]="mat_table_data">
                 <ng-container matColumnDef="start_time">
@@ -56,5 +56,10 @@
             </table>
         </ng-template>
     </mat-card-content>
-</div>
-<ng-template #failure>500: server error</ng-template>
+</ng-container>
+<ng-template #loading>
+    <div class="spinnyContain">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <span>Loading...</span>
+    </div>
+</ng-template>

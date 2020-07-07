@@ -1,8 +1,8 @@
+
+<button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
 <mat-card-title>Employees</mat-card-title>
 <mat-card-content>
-    <button mat-button type="button" class="align-left" (click)="backClicked()">&#8619;Back</button>
     <table mat-table [dataSource]="dataSource" matSort>
-        
         <ng-container matColumnDef="first_name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
             <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>

@@ -37,7 +37,7 @@ export class ViewAssignmentComponent implements OnInit {
     this.assignment_id = this.route.snapshot.params['assignment_id'];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.refreshPageData();
   }
 

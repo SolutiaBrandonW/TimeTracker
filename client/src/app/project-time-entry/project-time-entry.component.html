@@ -1,10 +1,10 @@
 <mat-card-title>Project Time Entry</mat-card-title>
 <mat-card-content [hidden]="loggedIn">
-    <div *ngIf="loading" class="spinnyContain">
+    <div *ngIf="loading; else loaded" class="spinnyContain">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
         <span>Loading...</span>
     </div>
-    <div [hidden]="loading">
+    <ng-template #loaded>
         <table mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Project </th>
@@ -48,8 +48,6 @@
 
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-    </div>
-
+    </ng-template>
 </mat-card-content>
 <div *ngIf="!loggedIn">Please Log in</div>
