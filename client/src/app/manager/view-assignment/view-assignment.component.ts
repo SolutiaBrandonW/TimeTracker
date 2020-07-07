@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 import { Project, ProjectService } from '../../project.service'
 import { Assignment, AssignmentService } from '../../assignment.service'
@@ -10,6 +12,7 @@ import { AssignmentTime, AssignmentTimeService } from '../../assignment-time.ser
 import { AssignmentTimeDialogComponent } from '../assignment-time-dialog/assignment-time-dialog.component';
 import { AssignmentEntryDialogComponent } from '../assignment-entry-dialog/assignment-entry-dialog.component';
 import { EmployeeService } from 'src/app/employee.service';
+import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-view-assignment',
@@ -27,13 +30,22 @@ export class ViewAssignmentComponent implements OnInit {
   employee_name: string;
   assignment_times: AssignmentTime[];
 
-  constructor( private assiTimeServ: AssignmentTimeService,
-               private assiServ: AssignmentService,
-               private empServ: EmployeeService,
-               private projServ: ProjectService,
-               public dialog: MatDialog,
-               private _location: Location,
-               private route: ActivatedRoute) {
+  private paginator: MatPaginator;
+  private sort: MatSort;
+  @ViewChild(MatSort, { static: false }) set MatSort(sort: MatSort) {
+    this.mat_table_data.sort = sort;
+  }
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.mat_table_data.paginator = mp;
+  }
+
+  constructor(private assiTimeServ: AssignmentTimeService,
+    private assiServ: AssignmentService,
+    private empServ: EmployeeService,
+    private projServ: ProjectService,
+    public dialog: MatDialog,
+    private _location: Location,
+    private route: ActivatedRoute) {
     this.assignment_id = this.route.snapshot.params['assignment_id'];
   }
 
@@ -42,45 +54,59 @@ export class ViewAssignmentComponent implements OnInit {
   }
 
   refreshPageData() {
-    this.assiServ.getAssignmentByAssignmentId(this.assignment_id).subscribe( assi => {
+    this.assiServ.getAssignmentByAssignmentId(this.assignment_id).subscribe(assi => {
       this.assignment = assi.Data;
       // Get project info for name
-      this.projServ.getProject(this.assignment.project_id).subscribe( proj => {
+      this.projServ.getProject(this.assignment.project_id).subscribe(proj => {
         this.project = proj.Data;
       });
-      this.empServ.getEmployeeByEmployeeId(this.assignment.employee_id).subscribe( emp => {
+      this.empServ.getEmployeeByEmployeeId(this.assignment.employee_id).subscribe(emp => {
         this.employee_name = `${emp.Data.first_name} ${emp.Data.last_name}`;
       });
       // Get role name
-      this.assiServ.getRoleByRoleId(this.assignment.role_id).subscribe( role => {
+      this.assiServ.getRoleByRoleId(this.assignment.role_id).subscribe(role => {
         this.employee_role = role.Data;
       });
     });
-    this.assiTimeServ.getLoggedHoursByAssignment(this.assignment_id).subscribe( assiTimes => {
+    this.assiTimeServ.getLoggedHoursByAssignment(this.assignment_id).subscribe(assiTimes => {
       this.assignment_times = assiTimes.Data;
       this.refreshTable();
     });
   }
 
-  deleteAssignmentTime(assignment_time_id:number) {
-    this.assiTimeServ.deleteAssignmentTime(assignment_time_id).subscribe(result => {
-      if(result.Code == 200) {
-        this.assignment_times = this.assignment_times.filter(ast => ast.assignment_time_id != assignment_time_id);
-        this.refreshTable();
-      } else {
-        console.log(result.Message);
-      }    
+  deleteAssignmentTime(assignment_time_id: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will permanently delete this assignment time entry.' },
     });
+    dialogRef.afterClosed().subscribe(data => {
+      if (data === true) {
+        this.assiTimeServ.deleteAssignmentTime(assignment_time_id).subscribe(result => {
+          if (result.Code == 200) {
+            this.assignment_times = this.assignment_times.filter(ast => ast.assignment_time_id != assignment_time_id);
+            this.refreshTable();
+          } else {
+            console.log(result.Message);
+          }
+        });
+      }
+    })
   }
 
   deleteAssignment() {
-    this.assiServ.deleteAssignmentByAssignmentId(this.assignment_id).subscribe(result => {
-      if(result.Code == 200) {
-        this.backClicked();
-      } else {
-        console.log(result.Message);
-      }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'This will permanently delete this assignment and all time entries associated with it.' },
     });
+    dialogRef.afterClosed().subscribe(data => {
+      if (data === true) {
+        this.assiServ.deleteAssignmentByAssignmentId(this.assignment_id).subscribe(result => {
+          if (result.Code == 200) {
+            this.backClicked();
+          } else {
+            console.log(result.Message);
+          }
+        });
+      }
+    })
   }
 
   openAssignmentDialog() {
@@ -102,18 +128,18 @@ export class ViewAssignmentComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignmentEntryDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(data => {
-      if(data != null){
+      if (data != null) {
         this.assiServ.updateAssignment(data).subscribe(result => {
-          if(result.Code == 200) {
+          if (result.Code == 200) {
             this.refreshPageData();
           } else {
             console.log(result.Message);
-          }  
+          }
         });
       }
     });
   }
-  
+
   openAssignmentTimeDialog(assignment_time: AssignmentTime) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -130,7 +156,7 @@ export class ViewAssignmentComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignmentTimeDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(data => {
-      if(data != null){
+      if (data != null) {
         this.assiTimeServ.updateAssignmentTime(data).subscribe(ast => {
           if (ast.Code == 200) {
             var index = this.assignment_times.findIndex(x => x.assignment_time_id == data.assignment_time_id);
@@ -144,8 +170,10 @@ export class ViewAssignmentComponent implements OnInit {
     })
   }
 
-  refreshTable () {
+  refreshTable() {
     this.mat_table_data.data = this.assignment_times;
+    this.mat_table_data.paginator = this.paginator;
+    this.mat_table_data.sort = this.sort;
   }
 
   backClicked() {
