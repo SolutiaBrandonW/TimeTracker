@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵSWITCH_ELEMENT_REF_FACTORY__POST_R3__ } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { APIReturn, APIMetaReturn } from '../app/api.service';
 
 @Injectable({
@@ -9,7 +9,14 @@ import { APIReturn, APIMetaReturn } from '../app/api.service';
 })
 export class ProjectService {
 
+  private selectedProjectTimeEntrySource = new BehaviorSubject<ProjectTimeEntry>(null);
+  selectedProjectTimeEntry = this.selectedProjectTimeEntrySource.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  setSelectedProjectTimeEntry(projectTImeEntry:ProjectTimeEntry){
+    this.selectedProjectTimeEntrySource.next(projectTImeEntry)
+  }
 
   getProjects() : Observable<APIReturn<ProjectTimeEntry[]>> {
     return this.http.get<APIReturn<ProjectTimeEntry[]>>(`https://localhost:44342/api/Project/GetProjects`)

@@ -4,3 +4,11 @@ mat-toolbar a {
     text-decoration: none;
     color: #EE6C4D;
 }
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.welcome-name{
+    padding-right: 20px;
+}
