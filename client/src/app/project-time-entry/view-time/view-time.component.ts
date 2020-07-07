@@ -5,7 +5,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AssignmentTime, AssignmentTimeService } from "../../assignment-time.service"
 import { AssignmentService, Assignment } from "../../assignment.service";
 import { AppRoutingModule } from 'src/app/app-routing.module';
-import { TimeEntryDialogComponent } from "../time-entry-dialog/time-entry-dialog.component";
+import { TimeEntryDialogComponent } from "../../time-entry-dialog/time-entry-dialog.component";
 import { MatButton } from "@angular/material/button";
 import { Location } from '@angular/common';
 import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";

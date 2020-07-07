@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../../project.service';
 import { AssignmentService } from '../../assignment.service';
-import { TimeEntryDialogComponent } from '../../project-time-entry/time-entry-dialog/time-entry-dialog.component';
+import { TimeEntryDialogComponent } from '../../time-entry-dialog/time-entry-dialog.component';
 import { AssignmentTimeService } from "../../assignment-time.service";
 import { ProjectEntryDialogComponent } from '../project-entry-dialog/project-entry-dialog.component';
 import { AuthService } from 'src/app/auth.service';

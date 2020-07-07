@@ -25,7 +25,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectTimeEntryComponent } from './project-time-entry/project-time-entry.component';
 import { ViewTimeComponent } from './project-time-entry/view-time/view-time.component';
-import { TimeEntryDialogComponent } from './project-time-entry/time-entry-dialog/time-entry-dialog.component';
+import { TimeEntryDialogComponent } from './time-entry-dialog/time-entry-dialog.component';
 import { LoginComponent } from './login/login.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProfileComponent } from './profile/profile.component';
