@@ -8,4 +8,6 @@
         <button mat-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
         <button mat-button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
     </header>
+    <span class="example-spacer"></span>
+    <span class="welcome-name"*ngIf="employee_name != null">Welcome, {{employee_name}}</span>
 </mat-toolbar>

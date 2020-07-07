@@ -1,10 +1,10 @@
 <mat-card-title>Project Time Entry</mat-card-title>
-<mat-card-content [hidden]="loggedIn">
-    <div *ngIf="loading; else loaded" class="spinnyContain">
+<mat-card-content *ngIf="loggedIn; else PleaseLogIn">
+    <div *ngIf="loading" class="spinnyContain">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
         <span>Loading...</span>
     </div>
-    <ng-template #loaded>
+    <div *ngIf="!loading">
         <table mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Project </th>
@@ -37,7 +37,8 @@
                         Add
                     </button>
 
-                    <button mat-raised-button class="viewBtn" (click)="viewTimeEntry(row.name, row.projectAssignmentId)">
+                    <button mat-raised-button class="viewBtn"
+                        (click)="viewTimeEntry(row.name, row.projectAssignmentId)">
                         View
                     </button>
                 </td>
@@ -47,7 +48,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    </ng-template>
+        <mat-paginator [pageSizeOptions]="[10, 15, 25]" showFirstLastButtons></mat-paginator>
+    </div>
 </mat-card-content>
-<div *ngIf="!loggedIn">Please Log in</div>
+<ng-template #PleaseLogIn>Please Log in</ng-template>

@@ -13,9 +13,7 @@ export class AuthService {
 
   profile:Profile
   auth0_id: string
-  employee_id:number
 
-  employee_id$:Observable<number>
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
@@ -44,12 +42,21 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
+  private employeeIDSubject$ = new BehaviorSubject<number>(null);
+  employeeID$ = this.employeeIDSubject$.asObservable();
+
   constructor(private router: Router, private es: EmployeeService) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
+
+    this.getUser$().subscribe(result =>{
+      this.es.getEmployeeByAuth0Id(result.sub).subscribe(ret => {
+        this.employeeIDSubject$.next(ret.Data.employee_id)
+      })
+    })
   }
 
   // When calling, options can be passed if desired
@@ -130,11 +137,6 @@ export class AuthService {
     });
   }
 
-  async getEmployeeId(){
-    return this.employee_id;
-  }
-
- 
 }
 
 export class Profile{

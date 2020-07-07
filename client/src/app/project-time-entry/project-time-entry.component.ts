@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core'
 
 import { ProjectService, ProjectTimeEntry } from '../project.service';
 import { AssignmentService } from '../assignment.service';
@@ -9,8 +9,9 @@ import { AssignmentTimeService } from "../assignment-time.service";
 import { AuthService } from '../auth.service';
 import { EmployeeService } from '../employee.service';
 import { MatPaginator } from "@angular/material/paginator";
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { map, mergeMap, filter } from "rxjs/operators";
 
 @Component({
   selector: 'app-project-time-entry',
@@ -23,10 +24,16 @@ export class ProjectTimeEntryComponent implements OnInit {
   currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
   employee_id: number
-  loggedIn:boolean = false;
-  dataSource: MatTableDataSource<ProjectTimeEntry>
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  loggedIn: boolean = false;
+  dataSource = new MatTableDataSource<ProjectTimeEntry>();
+  private paginator: MatPaginator;
+  private sort: MatSort;
+  @ViewChild(MatSort, { static: false }) set MatSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.dataSource.paginator = mp;
+  }
 
   constructor(private pte: ProjectService,
     private ate: AssignmentService,
@@ -37,44 +44,37 @@ export class ProjectTimeEntryComponent implements OnInit {
     private as: AuthService,
     private es: EmployeeService) { }
 
-  async ngOnInit() {
-   // try {
-      this.as.userProfile$.subscribe(res => {
-        if (res != null) {
-          this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
-            this.employee_id = result.Data.employee_id;
-            this.loggedIn = true;
-
-            this.pte.getProjectTimeEntries(this.employee_id).subscribe(project_return => {
-              this.currProjectTimeEntries = project_return.Data;
-              this.currProjectTimeEntries.forEach(cpte => {
-                this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-                  // Get Assignment ID
-                  cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-                  this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-                    // Get Assignment Hours
-                    cpte.projectHours = projectHours_return.Data;
-                  });
-                });
-              });
-              this.dataSource = new MatTableDataSource<ProjectTimeEntry>(this.currProjectTimeEntries);
-              this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator;
-              console.log(this.dataSource.paginator)
-              this.loading = false;
-            });
-          })
-        }
+  ngOnInit() {
+    //get the employee id from the Auth Service
+    this.as.employeeID$.pipe(
+      map(employee_id => {
+        this.employee_id = employee_id
+        this.loggedIn = true;
+        return employee_id;
+      }),
+      //filter out the null values (When it hasn't been created yet)
+      filter(employee_id => employee_id != null),
+      mergeMap(employee_id => {
+        const projTimes = this.pte.getProjectTimeEntries(employee_id)
+        return projTimes;
       })
-
-
-    // } catch (e) {
-    //   console.log("Error: " + e);
-    // }
-  }
-
-  public async initializeData() {
-    this.employee_id = this.as.employee_id;
+    ).subscribe(result => {
+      this.currProjectTimeEntries = result.Data
+      //for each entry, get the assignment id and the project hours.
+      this.currProjectTimeEntries.forEach(cpte => {
+        this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).pipe(
+          map(assignmentsReturn => {
+            cpte.projectAssignmentId = assignmentsReturn.Data.assignment_id;
+            return assignmentsReturn.Data
+          }),
+          mergeMap(assignments => this.pte.getEmployeeProjectHours(assignments.assignment_id))
+        ).subscribe(projectHours => {
+          cpte.projectHours = projectHours.Data
+        })
+      });
+      this.refreshTable();
+      this.loading = false;
+    })
   }
 
   viewTimeEntry(projectName: string, assignmentId: number) {
@@ -82,7 +82,6 @@ export class ProjectTimeEntryComponent implements OnInit {
   }
 
   openTimeEntryDialog(projectName: string, assignment_id: number) {
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -94,16 +93,27 @@ export class ProjectTimeEntryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data != null) {
         data.assignment_id = assignment_id
-        this.atServ.addAssignmentTime(data).subscribe(result => {
-          this.pte.getEmployeeProjectHours(data.assignment_id).subscribe(projectHours_return => {
+        //add the assignment
+        this.atServ.addAssignmentTime(data).pipe(
+          map(result => {
+            return result.Code
+          }),
+          //filter out the negative codes
+          filter(code => code === 200),
+          mergeMap(() => this.pte.getEmployeeProjectHours(data.assignment_id))
+        ).subscribe(hours => {
+          if (hours.Code === 200) {
+            //find the project and update the hours
             let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
-            project.projectHours = projectHours_return.Data;
-          });
+            project.projectHours = hours.Data;
+          }
         })
       }
     })
   }
-  refreshTable(){
+
+
+  refreshTable() {
     this.dataSource.data = this.currProjectTimeEntries;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

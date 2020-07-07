@@ -59,10 +59,10 @@ export class ViewTimeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data === true) {
         this.assiTimeServ.deleteAssignmentTime(assignmentTime.assignment_time_id).subscribe(result => {
-          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
-            this.assignmentTimes = assignmentTime_return.Data;
-            this.refreshTable()
-          })
+          if (result.Code === 200) {
+            this.assignmentTimes = this.assignmentTimes.filter(at => at.assignment_time_id != assignmentTime.assignment_time_id)
+            this.refreshTable();
+          }
         })
       }
     })
@@ -93,10 +93,9 @@ export class ViewTimeComponent implements OnInit {
       if (data != null) {
         this.assiTimeServ.setSelectedAssignmentTimeEntry(data).subscribe(result => {
           if (result.Code === 200) {
-            this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
-              this.assignmentTimes = assignmentTime_return.Data;
-              this.refreshTable()
-            })
+            var index = this.assignmentTimes.findIndex(obj => obj.assignment_time_id == data.assignment_time_id)
+            this.assignmentTimes[index] = data;
+            this.refreshTable();
           }
         })
       }
@@ -123,7 +122,6 @@ export class ViewTimeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data != null) {
         this.assiTimeServ.addAssignmentTime(data).subscribe(result => {
-          console.log(result)
           this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
             this.assignmentTimes = assignmentTime_return.Data;
             this.refreshTable()
