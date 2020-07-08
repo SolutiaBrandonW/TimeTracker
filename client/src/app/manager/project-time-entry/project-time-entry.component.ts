@@ -53,7 +53,7 @@ export class ProjectTimeEntryComponent implements OnInit {
       }),
       //filter out the null values (When it hasn't been created yet)
       filter(employee_id => employee_id != null),
-      mergeMap(employee_id => {
+      mergeMap((employee_id) => {
         const projTimes = this.pte.getProjects()
         return projTimes;
       })
