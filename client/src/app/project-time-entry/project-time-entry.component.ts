@@ -82,33 +82,40 @@ export class ProjectTimeEntryComponent implements OnInit {
   }
 
   openTimeEntryDialog(projectName: string, assignment_id: number) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      projectName: projectName
-    }
+    this.ate.getAssignmentByAssignmentId(assignment_id).subscribe(assiReturn => {
+      if (assiReturn.Code === 200) {
 
-    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(data => {
-      if (data != null) {
-        data.assignment_id = assignment_id
-        //add the assignment
-        this.atServ.addAssignmentTime(data).pipe(
-          map(result => {
-            return result.Code
-          }),
-          //filter out the negative codes
-          filter(code => code === 200),
-          mergeMap(() => this.pte.getEmployeeProjectHours(data.assignment_id))
-        ).subscribe(hours => {
-          if (hours.Code === 200) {
-            //find the project and update the hours
-            let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
-            project.projectHours = hours.Data;
-          }
-        })
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.minWidth = 350,
+      dialogConfig.data = {
+        projectName: projectName,
+        assignment: assiReturn.Data
       }
+
+      const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(data => {
+        if (data != null) {
+          data.assignment_id = assignment_id
+          //add the assignment
+          this.atServ.addAssignmentTime(data).pipe(
+            map(result => {
+              return result.Code
+            }),
+            //filter out the negative codes
+            filter(code => code === 200),
+            mergeMap(() => this.pte.getEmployeeProjectHours(data.assignment_id))
+          ).subscribe(hours => {
+            if (hours.Code === 200) {
+              //find the project and update the hours
+              let project = this.currProjectTimeEntries.find(obj => obj.projectAssignmentId == assignment_id);
+              project.projectHours = hours.Data;
+            }
+          })
+        }
+      })
+    }
     })
   }
 

@@ -73,29 +73,35 @@ export class ViewTimeComponent implements OnInit {
   }
 
   openDialogEdit(assignmentTimeEntry: AssignmentTime) {
+    this.assiServ.getAssignmentByAssignmentId(this.assignmentId).subscribe(assiReturn => {
+      if (assiReturn.Code === 200) {
 
-    const dialogConfig = new MatDialogConfig();
+        const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.closeOnNavigation = true;
-    dialogConfig.data = {
-      assignment_time_id: assignmentTimeEntry.assignment_time_id,
-      assignment_id: assignmentTimeEntry.assignment_id,
-      start_time: assignmentTimeEntry.start_time,
-      end_time: assignmentTimeEntry.end_time,
-      projectName: this.projectName,
-      description: assignmentTimeEntry.description
-    }
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.closeOnNavigation = true;
+        dialogConfig.minWidth = 350,
+        dialogConfig.data = {
+          assignment_time_id: assignmentTimeEntry.assignment_time_id,
+          assignment_id: assignmentTimeEntry.assignment_id,
+          start_time: assignmentTimeEntry.start_time,
+          end_time: assignmentTimeEntry.end_time,
+          projectName: this.projectName,
+          description: assignmentTimeEntry.description,
+          assignment: assiReturn.Data
+        }
 
-    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
-    dialogRef.afterClosed().subscribe(data => {
-      if (data != null) {
-        this.assiTimeServ.setSelectedAssignmentTimeEntry(data).subscribe(result => {
-          if (result.Code === 200) {
-            var index = this.assignmentTimes.findIndex(obj => obj.assignment_time_id == data.assignment_time_id)
-            this.assignmentTimes[index] = data;
-            this.refreshTable();
+        const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+        dialogRef.afterClosed().subscribe(data => {
+          if (data != null) {
+            this.assiTimeServ.setSelectedAssignmentTimeEntry(data).subscribe(result => {
+              if (result.Code === 200) {
+                var index = this.assignmentTimes.findIndex(obj => obj.assignment_time_id == data.assignment_time_id)
+                this.assignmentTimes[index] = data;
+                this.refreshTable();
+              }
+            })
           }
         })
       }
@@ -104,28 +110,35 @@ export class ViewTimeComponent implements OnInit {
 
   openDialogAdd() {
 
-    const dialogConfig = new MatDialogConfig();
+    this.assiServ.getAssignmentByAssignmentId(this.assignmentId).subscribe(assiReturn => {
+      if (assiReturn.Code === 200) {
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.closeOnNavigation = true;
-    dialogConfig.data = {
-      assignment_id: this.assignmentId,
-      start_time: undefined,
-      end_time: undefined,
-      projectName: this.projectName,
-      description: undefined
-    }
+        const dialogConfig = new MatDialogConfig();
 
-    const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.closeOnNavigation = true;
+        dialogConfig.minWidth = 350,
+        dialogConfig.data = {
+          assignment_id: this.assignmentId,
+          start_time: undefined,
+          end_time: undefined,
+          projectName: this.projectName,
+          description: undefined,
+          assignment: assiReturn.Data
+        }
 
-    dialogRef.afterClosed().subscribe(data => {
-      if (data != null) {
-        this.assiTimeServ.addAssignmentTime(data).subscribe(result => {
-          this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
-            this.assignmentTimes = assignmentTime_return.Data;
-            this.refreshTable()
-          })
+        const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig)
+
+        dialogRef.afterClosed().subscribe(data => {
+          if (data != null) {
+            this.assiTimeServ.addAssignmentTime(data).subscribe(result => {
+              this.assiTimeServ.getLoggedHoursByAssignment(this.assignmentId).subscribe(assignmentTime_return => {
+                this.assignmentTimes = assignmentTime_return.Data;
+                this.refreshTable()
+              })
+            })
+          }
         })
       }
     })

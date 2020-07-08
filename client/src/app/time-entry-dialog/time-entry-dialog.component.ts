@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from "@angular/forms";
-import { ProjectService, Project } from '../services/project.service';
 import { Assignment, AssignmentService } from '../services/assignment.service';
 @Component({
   selector: 'app-time-entry-dialog',
@@ -37,15 +36,19 @@ export class TimeEntryDialogComponent implements OnInit {
       this.description = data.description;
       this.editing = true;
     }
+    this.assignment = data.assignment
   }
 
   ngOnInit(): void {
+
+    console.log(this.assignment.start_date)
+    console.log(this.assignment.end_date)
     this.form = new FormGroup({
       assignment_time_id: new FormControl,
       assignment_id: new FormControl,
       projectName: new FormControl({ value: "", disabled: true }, [Validators.required]),
-      start_time: new FormControl('', [Validators.required]),
-      end_time: new FormControl('', [Validators.required]),
+      start_time: new FormControl('', [Validators.required, withinProjectDates(this.assignment.start_date, this.assignment.end_date)]),
+      end_time: new FormControl('', [Validators.required, withinProjectDates(this.assignment.start_date, this.assignment.end_date)]),
       description: new FormControl('')
     })
 
@@ -57,12 +60,6 @@ export class TimeEntryDialogComponent implements OnInit {
       end_time: this.end_time,
       description: this.description
     })
-
-
-    this.assignmentService.getAssignmentByAssignmentId(this.assignment_id).subscribe(result => {
-      this.assignment = result.Data
-    })
-
   }
 
 
@@ -75,12 +72,22 @@ export class TimeEntryDialogComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
+
+  get startTimeInput() { return this.form.get('start_time'); }
+  get endTimeInput() { return this.form.get('end_time'); }
+
+  getErrorMessage(dateControl: AbstractControl){
+    if(dateControl.hasError('enteredDateInvalid')){
+      return "Date must be within assignment date range"
+    }
+    return 'Please enter a date'
+  }
 }
-export function compareProjectDates(assiStartDate: Date, assiEndDate: Date) :ValidatorFn {
+//Entered time must be within the employee's assignment date range.
+export function withinProjectDates(assiStartDate: Date, assiEndDate: Date): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const enteredDate = control.value;
-    return enteredDate ? {'enteredDate': {value: control.value}} : null;
-    
-    return null;
+    const invalid_date = (enteredDate < assiStartDate || enteredDate > assiEndDate);
+    return invalid_date ? { 'enteredDateInvalid': { value: control.value } } : null;
   };
 }
