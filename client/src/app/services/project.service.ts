@@ -34,6 +34,9 @@ export class ProjectService {
     return this.http.get<APIReturn<number>>(`https://localhost:44342/api/Employee/GetEmployeeHoursByAssignment/${assignment_id}`)
   }
 
+  getHoursByProject(project_id:number): Observable<APIReturn<number>> {
+    return this.http.get<APIReturn<number>>(`https://localhost:44342/api/Project/GetHoursByProject/${project_id}`)
+  }
   addProject(project:Project):Observable<APIMetaReturn>{
     return this.http.post<APIMetaReturn>("https://localhost:44342/api/Project/addProject", project)
   }

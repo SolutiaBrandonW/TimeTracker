@@ -12,6 +12,9 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from "@angular/material/sort";
+import { map, mergeMap, filter } from "rxjs/operators";
+import { forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'app-project-time-entry',
@@ -23,10 +26,16 @@ export class ProjectTimeEntryComponent implements OnInit {
   displayedColumns: string[] = ['name', 'projectHours', 'description', 'status_name', 'actions'];
   currProjectTimeEntries: ProjectTimeEntry[];
   loading: boolean = true;
-  employee_id;
-  dataSource: MatTableDataSource<ProjectTimeEntry>
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  employee_id: number
+  dataSource = new MatTableDataSource<ProjectTimeEntry>();
+  private paginator: MatPaginator;
+  private sort: MatSort;
+  @ViewChild(MatSort, { static: false }) set MatSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.dataSource.paginator = mp;
+  }
   constructor(private pte: ProjectService,
     private ate: AssignmentService,
     private atServ: AssignmentTimeService,
@@ -36,43 +45,37 @@ export class ProjectTimeEntryComponent implements OnInit {
     public as: AuthService,
     public es: EmployeeService) { }
 
-  async ngOnInit() {
-    // try {
-    this.as.userProfile$.subscribe(res => {
-      if (res != null) {
-        this.es.getEmployeeByAuth0Id(res.sub).subscribe(result => {
-          this.employee_id = result.Data.employee_id;
-          this.pte.getProjects().subscribe(project_return => {
-            this.currProjectTimeEntries = project_return.Data;
-            this.currProjectTimeEntries.forEach(cpte => {
-              this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-                // Get Assignment ID
-                if (assignment_return.Data != null) {
-                  // if the project has an assignment associated with this manager,
-                  cpte.hasRecord = true;
-                  cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-                  this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-                    // Get Assignment Hours
-                    cpte.projectHours = projectHours_return.Data;
-                  });
-                } else {
-                  cpte.hasRecord = false;
-                }
-              });
-            });
-            this.dataSource = new MatTableDataSource<ProjectTimeEntry>(this.currProjectTimeEntries);
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.loading = false;
-
-          });
-
+  ngOnInit() {
+    this.as.employeeID$.pipe(
+      map(employee_id => {
+        this.employee_id = employee_id
+        return employee_id;
+      }),
+      //filter out the null values (When it hasn't been created yet)
+      filter(employee_id => employee_id != null),
+      mergeMap(employee_id => {
+        const projTimes = this.pte.getProjects()
+        return projTimes;
+      })
+    ).subscribe(result => {
+      this.currProjectTimeEntries = result.Data
+      //for each entry, get the assignment id and the project hours.
+      this.currProjectTimeEntries.forEach(cpte => {
+        const assignments = this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id)
+        const hours = this.pte.getHoursByProject(cpte.project_id)
+        forkJoin([assignments, hours]).subscribe(result => {
+          if (result[0].Data != null) {
+            cpte.projectAssignmentId = result[0].Data.assignment_id
+            cpte.hasRecord = true;
+          } else {
+            cpte.hasRecord = false;
+          }
+          cpte.projectHours = result[1].Data
         })
-      }
+      });
+      this.refreshTable();
+      this.loading = false;
     })
-    // } catch (e) {
-    //   console.log("Error: " + e);
-    // }
   }
 
 
@@ -95,31 +98,12 @@ export class ProjectTimeEntryComponent implements OnInit {
     const dialogRef = this.dialog.open(ProjectEntryDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
       if (data != null) {
-        console.log(data)
         this.pte.addProject(data).subscribe(result => {
-          console.log(result)
-          //reload projects window 
-          this.pte.getProjects().subscribe(project_return => {
-            this.currProjectTimeEntries = project_return.Data;
-            this.currProjectTimeEntries.forEach(cpte => {
-              this.ate.getAssignmentByProjectAndEmployee(cpte.project_id, this.employee_id).subscribe(assignment_return => {
-                // Get Assignment ID
-                if (assignment_return.Data != null) {
-                  // if the project has an assignment associated with this manager,
-                  cpte.hasRecord = true;
-                  cpte.projectAssignmentId = assignment_return.Data.assignment_id;
-                  this.pte.getEmployeeProjectHours(cpte.projectAssignmentId).subscribe(projectHours_return => {
-                    // Get Assignment Hours
-                    cpte.projectHours = projectHours_return.Data;
-                  });
-                } else {
-                  cpte.hasRecord = false;
-                }
-              });
-            });
-            this.refreshTable();
-          });
-
+          if (result.Code === 200) {
+            data.hasRecord = false;
+            this.currProjectTimeEntries.push(data)
+            this.refreshTable()
+          }
         })
       }
     })
@@ -134,10 +118,10 @@ export class ProjectTimeEntryComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.minWidth = 350,
-        dialogConfig.data = {
-          projectName: projectName,
-          assignment: assiReturn.Data
-        }
+          dialogConfig.data = {
+            projectName: projectName,
+            assignment: assiReturn.Data
+          }
 
         const dialogRef = this.dialog.open(TimeEntryDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(data => {
