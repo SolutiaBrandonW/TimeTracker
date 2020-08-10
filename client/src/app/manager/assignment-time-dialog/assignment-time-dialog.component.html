@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Edit Assignment Time</h2>
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Start Time</mat-label>
+        <input type="datetime-local" matInput required formControlName="start_time">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End Time</mat-label>
+        <input type="datetime-local" matInput required formControlName="end_time">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input type="textarea" matInput required formControlName="description">
+    </mat-form-field>
+</div>
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

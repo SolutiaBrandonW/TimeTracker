@@ -1,0 +1,109 @@
+::ng-deep html,
+::ng-deep body {
+    margin: 0;
+    height: 100%;
+}
+
+::ng-deep .content-container,
+::ng-deep table, 
+::ng-deep .data-nothing {
+    width: 95%;
+    margin: 0 auto;
+}
+
+::ng-deep app-root,
+::ng-deep .mat-app-background {
+    display: block;
+    height: 100%;
+}
+
+mat-toolbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+mat-card {
+    width: 85%;
+    margin: 20px auto;
+    position: relative;
+}
+
+.title{
+    color:#EE6C4D;
+}
+
+::ng-deep .data-nothing {
+    font-style: italic;
+    padding: 20px 0;
+}
+
+::ng-deep .addBtn{
+    background-color: #2B4DA1 !important;
+    color: #E4E4E4;
+}
+::ng-deep .addBtnDisabled{
+    background-color: rgba(43, 76, 161, 0.5) !important;
+    color: #E4E4E4 !important;
+}
+::ng-deep .viewBtn{
+    background-color: #EE6C4D !important;
+    color: #E4E4E4;
+}
+::ng-deep .editBtn{
+    background-color: #29BA38 !important;
+    color: #E4E4E4;
+}
+::ng-deep .deleteBtn{
+    background-color: #D6403A !important;
+    color: #E4E4E4;
+}
+::ng-deep .submitBtn{
+    background-color: #293241 !important;
+    color: #EE6C4D;
+}
+
+::ng-deep .mat-dialog-title{
+    color:#EE6C4D;
+}
+
+::ng-deep .align-left {
+    float: left;
+    position: relative;
+    z-index: 100;
+}
+
+::ng-deep .spinnyContain {
+    padding-top: 50px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative
+}
+
+::ng-deep .spinnyContain * {
+    margin: 0 auto;
+}
+
+::ng-deep .spinnyContain span{
+    position: relative;
+    top: 10px;
+}
+
+::ng-deep mat-dialog-container {
+    min-width: 300px;
+}
+
+::ng-deep mat-form-field {
+    width: 100%;
+}
+
+::ng-deep mat-dialog-actions button.mat-raised-button {
+    margin: 0px 10px 0px 0px;
+}
+
+::ng-deep mat-card-title.mat-card-title {
+    color:#EE6C4D;
+    text-align: center;
+    margin: 0 0 40px;
+}
+
+

@@ -1,0 +1,16 @@
+<div class="center">
+    <div> <!-- mat-dialog-content [formGroup]="form" -->
+        <h4 class="mat-card-title">Login</h4>
+        <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+    </div>
+</div>

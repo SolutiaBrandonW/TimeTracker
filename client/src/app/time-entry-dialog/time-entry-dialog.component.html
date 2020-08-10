@@ -1,0 +1,36 @@
+
+<div *ngIf="editing; else adding">
+    <h2 mat-dialog-title class="title">Edit Time</h2>
+</div>
+<ng-template #adding>
+    <h2 mat-dialog-title>Add Time</h2>
+</ng-template>
+
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Project Name</mat-label>
+        <input matInput formControlName="projectName">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <input id="startTimeInput" type="datetime-local" matInput required formControlName="start_time">
+        <mat-error *ngIf="startTimeInput.invalid">{{getErrorMessage(startTimeInput)}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End Date</mat-label>
+        <input type="datetime-local" matInput required formControlName="end_time">
+        <mat-error *ngIf="endTimeInput.invalid">{{getErrorMessage(endTimeInput)}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea  matInput formControlName="description"></textarea>
+    </mat-form-field>
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="close()">Close</button>
+    <button mat-raised-button class="submitBtn"(click)="save()">Save</button>
+</mat-dialog-actions>

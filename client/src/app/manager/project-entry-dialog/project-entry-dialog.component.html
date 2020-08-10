@@ -1,0 +1,50 @@
+<div *ngIf="editing; else adding">
+    <h2 mat-dialog-title>Edit Project</h2>
+</div>
+<ng-template #adding>
+    <h2 mat-dialog-title>Add Project</h2>
+</ng-template>
+
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Project Name</mat-label>
+        <input matInput required formControlName="name">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <input type="datetime-local" matInput formControlName="start_date">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End Date</mat-label>
+        <input type="datetime-local" matInput formControlName="end_date">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea  matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select  matInput required formControlName="status_id">
+            <mat-option *ngFor="let status of statuses" [value]="status.status_id">{{status.status_name}}</mat-option>
+        </mat-select >
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Active?</mat-label>
+        <mat-select matInput required formControlName="is_active">
+            <mat-option [value]="true">
+                True
+            </mat-option>
+            <mat-option [value]="false">
+                False
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

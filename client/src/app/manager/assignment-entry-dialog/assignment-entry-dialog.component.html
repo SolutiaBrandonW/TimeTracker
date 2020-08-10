@@ -1,0 +1,53 @@
+<div *ngIf="editing; else adding">
+    <h2 mat-dialog-title>Edit Assignment</h2>
+</div>
+<ng-template #adding>
+    <h2 mat-dialog-title>Add Assignment</h2>
+</ng-template>
+
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Employee</mat-label>
+        <mat-select matInput required formControlName="employee_id">
+            <mat-option *ngFor="let employee of employees" [value]="employee.employee_id">{{employee.first_name + " " + employee.last_name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Project</mat-label>
+        <input matInput formControlName="project_name">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <input type="datetime-local" matInput required formControlName="start_date">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End Date</mat-label>
+        <input type="datetime-local" matInput required formControlName="end_date">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <mat-select matInput required formControlName="role_id">
+            <mat-option *ngFor="let role of roles" [value]="role.role_id">{{role.role_name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Active?</mat-label>
+        <mat-select formControlName="is_active">
+            <mat-option [value]="true">
+                True
+            </mat-option>
+            <mat-option [value]="false">
+                False
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

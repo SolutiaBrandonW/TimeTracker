@@ -1,0 +1,57 @@
+
+<div *ngIf="editing; else adding">
+    <h2 mat-dialog-title>Edit Employee</h2>
+</div>
+<ng-template #adding>
+    <h2 mat-dialog-title>Add Employee</h2>
+</ng-template>
+
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="first_name">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="last_name">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Manager</mat-label>
+        <mat-select formControlName="manager_id">
+            <mat-option>
+                None
+            </mat-option>
+            <mat-option [value]="man.employee_id" *ngFor="let man of managers">
+                {{man.first_name + " " + man.last_name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Security Level</mat-label>
+        <mat-select formControlName="security_level_id">
+            <mat-option [value]="sec.security_level_id" *ngFor="let sec of security_levels">
+                {{sec.security_level}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Active?</mat-label>
+        <mat-select formControlName="is_active">
+            <mat-option [value]="true">
+                True
+            </mat-option>
+            <mat-option [value]="false">
+                False
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>
