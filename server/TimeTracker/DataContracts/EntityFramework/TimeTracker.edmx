@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TimeTrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="assignment">
+          <Key>
+            <PropertyRef Name="assignment_id" />
+          </Key>
+          <Property Name="assignment_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="project_id" Type="bigint" Nullable="false" />
+          <Property Name="employee_id" Type="bigint" Nullable="false" />
+          <Property Name="start_date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="end_date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="role_id" Type="bigint" Nullable="false" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="assignment_time">
+          <Key>
+            <PropertyRef Name="assignment_time_id" />
+          </Key>
+          <Property Name="assignment_time_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="assignment_id" Type="bigint" Nullable="false" />
+          <Property Name="start_time" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="end_time" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manager_id" Type="bigint" />
+          <Property Name="security_level_id" Type="bigint" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="auth0_id" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="project_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="start_date" Type="datetime2" Precision="7" />
+          <Property Name="end_date" Type="datetime2" Precision="7" />
+          <Property Name="description" Type="varchar" MaxLength="200" />
+          <Property Name="status_id" Type="bigint" Nullable="false" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="security_level">
+          <Key>
+            <PropertyRef Name="security_level_id" />
+          </Key>
+          <Property Name="security_level_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="secrity_level" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_assignment_project">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="assignment" Type="Self.assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="assignment">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assignment_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="assignment" Type="Self.assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="assignment">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assignment_time_assignment">
+          <End Role="assignment" Type="Self.assignment" Multiplicity="1" />
+          <End Role="assignment_time" Type="Self.assignment_time" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="assignment">
+              <PropertyRef Name="assignment_id" />
+            </Principal>
+            <Dependent Role="assignment_time">
+              <PropertyRef Name="assignment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="employee1" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="employee1">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_project_status">
+          <End Role="status" Type="Self.status" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_security_level_security_level">
+          <End Role="security_level" Type="Self.security_level" Multiplicity="1" />
+          <End Role="security_level1" Type="Self.security_level" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="security_level">
+              <PropertyRef Name="security_level_id" />
+            </Principal>
+            <Dependent Role="security_level1">
+              <PropertyRef Name="security_level_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ArchiveProject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="project_id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="CreateAssignment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="project_id" Type="bigint" Mode="In" />
+          <Parameter Name="employee_id" Type="bigint" Mode="In" />
+          <Parameter Name="start_date" Type="datetime2" Mode="In" />
+          <Parameter Name="end_date" Type="datetime2" Mode="In" />
+          <Parameter Name="role_id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="GetEmployeeBySecuritylevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="security_level_name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetHoursByAssignment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="assignment_id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="GetHoursByProject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="project_id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="UpdateProjectStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="project_id" Type="bigint" Mode="In" />
+          <Parameter Name="status_name" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="TimeTrackingModelStoreContainer">
+          <EntitySet Name="assignment" EntityType="Self.assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assignment_time" EntityType="Self.assignment_time" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="project" EntityType="Self.project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="security_level" EntityType="Self.security_level" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="status" EntityType="Self.status" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_assignment_project" Association="Self.FK_assignment_project">
+            <End Role="project" EntitySet="project" />
+            <End Role="assignment" EntitySet="assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assignment_role" Association="Self.FK_assignment_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="assignment" EntitySet="assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assignment_time_assignment" Association="Self.FK_assignment_time_assignment">
+            <End Role="assignment" EntitySet="assignment" />
+            <End Role="assignment_time" EntitySet="assignment_time" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_employee" Association="Self.FK_employee_employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employee1" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_project_status" Association="Self.FK_project_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_security_level_security_level" Association="Self.FK_security_level_security_level">
+            <End Role="security_level" EntitySet="security_level" />
+            <End Role="security_level1" EntitySet="security_level" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TimeTrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="assignment">
+          <Key>
+            <PropertyRef Name="assignment_id" />
+          </Key>
+          <Property Name="assignment_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="project_id" Type="Int64" Nullable="false" />
+          <Property Name="employee_id" Type="Int64" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="role_id" Type="Int64" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <NavigationProperty Name="project" Relationship="Self.FK_assignment_project" FromRole="assignment" ToRole="project" />
+          <NavigationProperty Name="role" Relationship="Self.FK_assignment_role" FromRole="assignment" ToRole="role" />
+          <NavigationProperty Name="assignment_time" Relationship="Self.FK_assignment_time_assignment" FromRole="assignment" ToRole="assignment_time" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manager_id" Type="Int64" />
+          <Property Name="security_level_id" Type="Int64" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="employee1" Relationship="Self.FK_employee_employee" FromRole="employee" ToRole="employee1" />
+          <NavigationProperty Name="employee2" Relationship="Self.FK_employee_employee" FromRole="employee1" ToRole="employee" />
+          <Property Name="auth0_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="project_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="start_date" Type="DateTime" Precision="7" />
+          <Property Name="end_date" Type="DateTime" Precision="7" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="status_id" Type="Int64" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <NavigationProperty Name="assignments" Relationship="Self.FK_assignment_project" FromRole="project" ToRole="assignment" />
+          <NavigationProperty Name="status" Relationship="Self.FK_project_status" FromRole="project" ToRole="status" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="assignments" Relationship="Self.FK_assignment_role" FromRole="role" ToRole="assignment" />
+        </EntityType>
+        <EntityType Name="security_level">
+          <Key>
+            <PropertyRef Name="security_level_id" />
+          </Key>
+          <Property Name="security_level_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="secrity_level" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="security_level1" Relationship="Self.FK_security_level_security_level" FromRole="security_level" ToRole="security_level1" />
+          <NavigationProperty Name="security_level2" Relationship="Self.FK_security_level_security_level" FromRole="security_level1" ToRole="security_level" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="projects" Relationship="Self.FK_project_status" FromRole="status" ToRole="project" />
+        </EntityType>
+        <EntityType Name="assignment_time">
+          <Key>
+            <PropertyRef Name="assignment_time_id" />
+          </Key>
+          <Property Name="assignment_id" Type="Int64" Nullable="false" />
+          <Property Name="start_time" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="end_time" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="assignment" Relationship="Self.FK_assignment_time_assignment" FromRole="assignment_time" ToRole="assignment" />
+          <Property Name="assignment_time_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_assignment_project">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="assignment" Type="Self.assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="assignment">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assignment_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="assignment" Type="Self.assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="assignment">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assignment_time_assignment">
+          <End Role="assignment" Type="Self.assignment" Multiplicity="1" />
+          <End Role="assignment_time" Type="Self.assignment_time" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="assignment">
+              <PropertyRef Name="assignment_id" />
+            </Principal>
+            <Dependent Role="assignment_time">
+              <PropertyRef Name="assignment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employee_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="employee1" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="employee1">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_project_status">
+          <End Role="status" Type="Self.status" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_security_level_security_level">
+          <End Role="security_level" Type="Self.security_level" Multiplicity="1" />
+          <End Role="security_level1" Type="Self.security_level" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="security_level">
+              <PropertyRef Name="security_level_id" />
+            </Principal>
+            <Dependent Role="security_level1">
+              <PropertyRef Name="security_level_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TimeTrackingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="assignments" EntityType="Self.assignment" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="projects" EntityType="Self.project" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="security_level" EntityType="Self.security_level" />
+          <EntitySet Name="status" EntityType="Self.status" />
+          <EntitySet Name="assignment_time" EntityType="Self.assignment_time" />
+          <AssociationSet Name="FK_assignment_project" Association="Self.FK_assignment_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="assignment" EntitySet="assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assignment_role" Association="Self.FK_assignment_role">
+            <End Role="role" EntitySet="roles" />
+            <End Role="assignment" EntitySet="assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assignment_time_assignment" Association="Self.FK_assignment_time_assignment">
+            <End Role="assignment" EntitySet="assignments" />
+            <End Role="assignment_time" EntitySet="assignment_time" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employee_employee" Association="Self.FK_employee_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employee1" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_project_status" Association="Self.FK_project_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_security_level_security_level" Association="Self.FK_security_level_security_level">
+            <End Role="security_level" EntitySet="security_level" />
+            <End Role="security_level1" EntitySet="security_level" />
+          </AssociationSet>
+          <FunctionImport Name="ArchiveProject">
+          <Parameter Name="project_id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="CreateAssignment" ReturnType="Collection(Int32)">
+            <Parameter Name="project_id" Mode="In" Type="Int64" />
+            <Parameter Name="employee_id" Mode="In" Type="Int64" />
+            <Parameter Name="start_date" Mode="In" Type="DateTime" />
+            <Parameter Name="end_date" Mode="In" Type="DateTime" />
+            <Parameter Name="role_id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="GetEmployeeBySecuritylevel" ReturnType="Collection(TimeTrackingModel.GetEmployeeBySecuritylevel_Result)">
+          <Parameter Name="security_level_name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetHoursByProject" ReturnType="Collection(TimeTrackingModel.GetHoursByProject_Result)">
+          <Parameter Name="project_id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateProjectStatus">
+            <Parameter Name="project_id" Mode="In" Type="Int64" />
+            <Parameter Name="status_name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetHoursByAssignment" ReturnType="Collection(Int32)">
+          <Parameter Name="assignment_id" Mode="In" Type="Int64" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetEmployeeBySecuritylevel_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="secrity_level" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetHoursByProject_Result">
+          <Property Type="Int64" Name="Project_ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Hours_Worked" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TimeTrackingModelStoreContainer" CdmEntityContainer="TimeTrackingEntities">
+          <EntitySetMapping Name="assignments">
+            <EntityTypeMapping TypeName="TimeTrackingModel.assignment">
+              <MappingFragment StoreEntitySet="assignment">
+                <ScalarProperty Name="assignment_id" ColumnName="assignment_id" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="TimeTrackingModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="auth0_id" ColumnName="auth0_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+                <ScalarProperty Name="security_level_id" ColumnName="security_level_id" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="projects">
+            <EntityTypeMapping TypeName="TimeTrackingModel.project">
+              <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="TimeTrackingModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="security_level">
+            <EntityTypeMapping TypeName="TimeTrackingModel.security_level">
+              <MappingFragment StoreEntitySet="security_level">
+                <ScalarProperty Name="security_level_id" ColumnName="security_level_id" />
+                <ScalarProperty Name="secrity_level" ColumnName="secrity_level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="status">
+            <EntityTypeMapping TypeName="TimeTrackingModel.status">
+              <MappingFragment StoreEntitySet="status">
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_name" ColumnName="status_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="assignment_time">
+            <EntityTypeMapping TypeName="TimeTrackingModel.assignment_time">
+              <MappingFragment StoreEntitySet="assignment_time">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="assignment_time_id" ColumnName="assignment_time_id" />
+                <ScalarProperty Name="assignment_id" ColumnName="assignment_id" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ArchiveProject" FunctionName="TimeTrackingModel.Store.ArchiveProject" />
+          <FunctionImportMapping FunctionImportName="CreateAssignment" FunctionName="TimeTrackingModel.Store.CreateAssignment" />
+          <FunctionImportMapping FunctionImportName="GetEmployeeBySecuritylevel" FunctionName="TimeTrackingModel.Store.GetEmployeeBySecuritylevel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackingModel.GetEmployeeBySecuritylevel_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="secrity_level" ColumnName="secrity_level" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetHoursByProject" FunctionName="TimeTrackingModel.Store.GetHoursByProject">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackingModel.GetHoursByProject_Result">
+                <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Hours_Worked" ColumnName="Hours_Worked" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateProjectStatus" FunctionName="TimeTrackingModel.Store.UpdateProjectStatus" />
+          <FunctionImportMapping FunctionImportName="GetHoursByAssignment" FunctionName="TimeTrackingModel.Store.GetHoursByAssignment" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
